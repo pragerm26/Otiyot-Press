@@ -1,0 +1,1755 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Otiyot+ Press</title>
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --sky: #29abe2;
+  --sky-soft: rgba(41,171,226,.12);
+  --gold: #e8b840;
+  --gold-soft: rgba(232,184,64,.14);
+  --navy: #0d2340;
+  --ink: #1a2f4a;
+  --mist: #f0f5fa;
+  --card: #fff;
+  --border: #dde8f2;
+  --muted: #7a9bb8;
+  --toggle-off: #c5d7e8;
+  --radius: 14px;
+  --bar-h: 72px;
+  --green: #34a853;
+  --sidebar-w: 300px;
+  --shadow: 0 1px 2px rgba(13,35,64,.04), 0 4px 12px rgba(13,35,64,.06);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Rubik', sans-serif;
+  background: var(--mist);
+  color: var(--ink);
+  height: 100vh;
+  overflow: hidden;
+}
+.app {
+  display: grid;
+  grid-template-columns: var(--sidebar-w) 1fr;
+  height: 100vh;
+}
+
+/* ── Navy bars ── */
+.bar {
+  background: var(--navy);
+  height: var(--bar-h);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+.bar::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    -55deg, transparent, transparent 8px,
+    rgba(255,255,255,.03) 8px, rgba(255,255,255,.03) 9px
+  );
+}
+.bar::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--gold), var(--sky));
+}
+.bar > * { position: relative; z-index: 1; }
+
+/* ── Brand ── */
+.brand {
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  gap: 12px;
+  width: 100%;
+}
+.logo {
+  width: 42px; height: 42px;
+  border-radius: 10px;
+  border: 2px solid rgba(255,255,255,.18);
+  background: rgba(255,255,255,.08);
+  color: var(--gold);
+  font-size: 22px; font-weight: 600;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.brand-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.brand-title {
+  font-size: 19px; font-weight: 600;
+  color: #fff; letter-spacing: .3px; line-height: 1.1;
+}
+.plus { color: var(--gold); }
+.brand-sub {
+  font-size: 9px; font-weight: 300;
+  color: rgba(255,255,255,.5);
+  letter-spacing: .8px; text-transform: uppercase;
+}
+.beta {
+  font-size: 8px; font-weight: 700;
+  letter-spacing: .5px; text-transform: uppercase;
+  color: var(--navy); background: var(--gold);
+  border-radius: 4px; padding: 1px 6px;
+  width: fit-content; margin-top: 1px;
+}
+
+/* ── Sidebar ── */
+.sidebar {
+  background: var(--mist);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+.controls {
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.row {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 11px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  transition: border-color .2s, box-shadow .2s, background .2s;
+}
+.row:hover {
+  border-color: rgba(41,171,226,.35);
+  box-shadow: 0 0 0 3px rgba(41,171,226,.06);
+}
+/* Highlight rows light up when their toggle is ON */
+#row-niqqud:has(#nk-on:checked) {
+  border-color: rgba(41,171,226,.55);
+  background: linear-gradient(135deg, #fff 60%, rgba(41,171,226,.07));
+  box-shadow: 0 0 0 3px rgba(41,171,226,.10);
+}
+#row-shoresh:has(#sh-on:checked) {
+  border-color: rgba(155,81,224,.55);
+  background: linear-gradient(135deg, #fff 60%, rgba(155,81,224,.08));
+  box-shadow: 0 0 0 3px rgba(155,81,224,.12);
+}
+#row-trope:has(#tp-on:checked) {
+  border-color: rgba(232,184,64,.65);
+  background: linear-gradient(135deg, #fff 55%, rgba(232,184,64,.12));
+  box-shadow: 0 0 0 3px rgba(232,184,64,.14);
+}
+.row-top { display: flex; align-items: center; gap: 10px; }
+label.row-top { cursor: pointer; }
+.row-icon {
+  width: 32px; height: 32px;
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 15px; flex-shrink: 0;
+}
+.i-sky { background: rgba(41,171,226,.12); }
+.i-gold { background: rgba(232,184,64,.15); }
+.i-purple { background: rgba(155,81,224,.13); }
+.i-soft { background: rgba(41,171,226,.08); }
+.i-green { background: rgba(52,168,83,.12); }
+.row-body { flex: 1; min-width: 0; }
+.row-title { font-size: 12.5px; font-weight: 500; line-height: 1.2; }
+.row-sub { font-size: 10px; color: var(--muted); font-weight: 300; margin-top: 2px; }
+.val { font-size: 12px; font-weight: 500; color: var(--sky); margin-left: auto; }
+
+/* ── Switch ── */
+.switch { position: relative; width: 40px; height: 24px; flex-shrink: 0; }
+.switch input { opacity: 0; width: 0; height: 0; position: absolute; }
+.track {
+  position: absolute; inset: 0;
+  background: var(--toggle-off);
+  border-radius: 24px; cursor: pointer;
+  transition: background .22s, box-shadow .22s;
+}
+.track::before {
+  content: '';
+  position: absolute;
+  width: 18px; height: 18px;
+  left: 3px; top: 3px;
+  background: #fff; border-radius: 50%;
+  transition: transform .22s cubic-bezier(.4,0,.2,1);
+  box-shadow: 0 1px 3px rgba(0,0,0,.2);
+}
+/* Default ON = sky, with a soft glow so it feels “live” */
+.switch input:checked + .track {
+  background: var(--sky);
+  box-shadow: 0 0 0 3px rgba(41,171,226,.28), 0 1px 4px rgba(41,171,226,.35);
+}
+.switch input:checked + .track::before { transform: translateX(16px); }
+
+/* Per-feature accents so each highlight toggle feels distinct when ON */
+#row-shoresh .switch input:checked + .track {
+  background: #9b51e0;
+  box-shadow: 0 0 0 3px rgba(155,81,224,.30), 0 1px 4px rgba(155,81,224,.40);
+}
+#row-trope .switch input:checked + .track {
+  background: #e8b840;
+  box-shadow: 0 0 0 3px rgba(232,184,64,.35), 0 1px 5px rgba(232,184,64,.45);
+}
+#row-niqqud .switch input:checked + .track {
+  background: var(--sky);
+  box-shadow: 0 0 0 3px rgba(41,171,226,.30), 0 1px 4px rgba(41,171,226,.40);
+}
+
+.switch.sm { width: 30px; height: 18px; }
+.switch.sm .track { border-radius: 18px; }
+.switch.sm .track::before { width: 12px; height: 12px; }
+.switch.sm input:checked + .track::before { transform: translateX(12px); }
+.switch.sm input:checked + .track { box-shadow: 0 0 0 2px rgba(41,171,226,.25); }
+
+/* ── Form controls ── */
+input[type=range] {
+  -webkit-appearance: none; appearance: none;
+  width: 100%; height: 4px; border-radius: 2px;
+  background: var(--border); outline: none; cursor: pointer;
+}
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px; height: 16px; border-radius: 50%;
+  background: var(--sky);
+  box-shadow: 0 0 0 3px rgba(41,171,226,.2);
+}
+select, input[type=text] {
+  font-family: inherit; width: 100%;
+  padding: 7px 9px;
+  border: 1px solid var(--border); border-radius: 8px;
+  font-size: 12px; color: var(--ink); background: var(--card);
+  outline: none;
+}
+select:focus, input[type=text]:focus { border-color: var(--sky); }
+.btn {
+  font-family: inherit; font-size: 11px; font-weight: 500;
+  padding: 7px 10px; border-radius: 8px;
+  border: 1px solid var(--border); background: var(--mist);
+  color: var(--ink); cursor: pointer; transition: background .15s;
+}
+.btn:hover { background: var(--border); }
+.btn.sky {
+  background: var(--sky); border-color: var(--sky);
+  color: #fff; font-weight: 600;
+}
+.btn.sky:hover { opacity: .9; }
+
+/* ── Expandable panels ── */
+.divider { height: 1px; background: var(--border); margin: 0 -12px; }
+.strip {
+  display: flex; align-items: center; gap: 8px;
+  cursor: pointer; user-select: none;
+}
+.dots { display: flex; gap: 3px; flex: 1; }
+.dot {
+  flex: 1; height: 5px; border-radius: 3px;
+  transition: opacity .15s; background: #ccc;
+}
+.dot.off { opacity: .2; }
+.hint { font-size: 11px; font-weight: 500; color: var(--muted); }
+.strip:hover .hint { color: var(--ink); }
+.chev { font-size: 10px; color: var(--muted); }
+.panel {
+  display: none;
+  margin: -2px -12px -11px;
+  border-top: 1px solid var(--border);
+  border-radius: 0 0 var(--radius) var(--radius);
+  overflow: hidden;
+}
+.panel.open { display: block; }
+.panel-block {
+  padding: 10px 11px;
+  border-bottom: 1px solid var(--border);
+  display: flex; flex-direction: column; gap: 10px;
+}
+.bulk { display: flex; gap: 6px; }
+.bulk .btn { flex: 1; font-size: 10px; padding: 5px 0; }
+.bulk .on { border-color: var(--sky); color: var(--sky); }
+.bulk .off { border-color: #e57373; color: #e57373; }
+.seg {
+  display: flex; background: var(--border);
+  border-radius: 9px; padding: 2px; gap: 2px;
+}
+.seg button {
+  flex: 1; font-family: inherit; font-size: 10px; font-weight: 500;
+  padding: 6px 0; border: none; border-radius: 7px;
+  background: transparent; color: var(--muted); cursor: pointer;
+}
+.seg button.active {
+  background: var(--card); color: var(--sky);
+  box-shadow: 0 1px 3px rgba(0,0,0,.1);
+}
+.op-top {
+  display: flex; justify-content: space-between;
+  font-size: 10px; font-weight: 500; color: var(--muted); margin-bottom: 5px;
+}
+.nk-row {
+  display: flex; align-items: center; gap: 9px;
+  padding: 6px 11px; border-bottom: 1px solid var(--border);
+}
+.nk-row:last-child { border-bottom: none; }
+.nk-char { font-size: 16px; width: 28px; text-align: center; direction: rtl; }
+.nk-label { flex: 1; font-size: 11px; }
+.sh-color { display: flex; align-items: center; gap: 9px; font-size: 11px; }
+.note {
+  font-size: 9.5px; color: var(--muted); font-weight: 300; line-height: 1.4;
+}
+.note.note-warn { color: #c0392b; font-weight: 500; }
+.sh-suggest-wrap { position: relative; width: 100%; }
+.sh-suggest {
+  position: absolute;
+  z-index: 40;
+  top: calc(100% + 4px);
+  left: 0; right: 0;
+  max-height: 220px;
+  overflow-y: auto;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(13,35,64,.12), 0 2px 6px rgba(13,35,64,.06);
+  direction: rtl;
+}
+.sh-suggest[hidden] { display: none !important; }
+.sh-suggest-item {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 11px;
+  cursor: pointer;
+  font-size: 13px;
+  border-bottom: 1px solid var(--mist);
+  transition: background .12s;
+}
+.sh-suggest-item:last-child { border-bottom: none; }
+.sh-suggest-item:hover,
+.sh-suggest-item.active {
+  background: rgba(155,81,224,.10);
+}
+.sh-suggest-item .root {
+  font-weight: 600;
+  font-size: 15px;
+  letter-spacing: .02em;
+}
+.sh-suggest-item .occ {
+  font-size: 10px;
+  color: var(--muted);
+  font-weight: 400;
+  white-space: nowrap;
+}
+.sh-suggest-empty {
+  padding: 10px 12px;
+  font-size: 11.5px;
+  color: #c0392b;
+  font-weight: 500;
+  text-align: center;
+}
+.stepper { display: flex; align-items: center; gap: 6px; }
+.stepper .btn { width: 32px; padding: 6px 0; font-size: 14px; line-height: 1; }
+.stepper input {
+  width: 56px; text-align: center; font-family: inherit;
+  font-size: 13px; font-weight: 500; color: var(--ink);
+  padding: 6px 4px; border: 1px solid var(--border); border-radius: 8px; outline: none;
+}
+.stepper input:focus { border-color: var(--sky); }
+.stepper span { font-size: 10px; color: var(--muted); }
+
+/* ── Swatches & colour picker ── */
+.swatch {
+  width: 18px; height: 18px; padding: 0;
+  border-radius: 4px; flex-shrink: 0;
+  border: 1px solid rgba(0,0,0,.15); cursor: pointer;
+  transition: transform .12s, box-shadow .12s;
+}
+.swatch:hover { transform: scale(1.15); box-shadow: 0 0 0 3px rgba(41,171,226,.25); }
+.sh-color .swatch { width: 22px; height: 22px; border-radius: 5px; }
+.cp-overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(13,35,64,.45); z-index: 1000;
+  align-items: center; justify-content: center;
+}
+.cp-overlay.open { display: flex; }
+.cp-card {
+  width: 244px; background: var(--card);
+  border: 1px solid var(--border); border-radius: var(--radius);
+  box-shadow: 0 10px 30px rgba(13,35,64,.35); padding: 12px;
+}
+.cp-head { display: flex; align-items: center; gap: 9px; margin-bottom: 10px; }
+.cp-preview {
+  width: 34px; height: 34px; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; direction: rtl; border: 1px solid var(--border);
+}
+.cp-title { flex: 1; font-size: 12.5px; font-weight: 600; }
+.cp-close {
+  border: none; background: none; cursor: pointer;
+  font-size: 14px; color: var(--muted); padding: 2px 6px; border-radius: 6px;
+}
+.cp-close:hover { color: var(--ink); background: var(--mist); }
+.cp-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; }
+.cp-chip {
+  aspect-ratio: 1; border-radius: 7px; cursor: pointer; padding: 0;
+  border: 1px solid rgba(0,0,0,.12); transition: transform .1s;
+}
+.cp-chip:hover { transform: scale(1.12); }
+.cp-chip.selected { outline: 2px solid var(--ink); outline-offset: 1px; }
+.cp-hexrow { display: flex; align-items: center; gap: 6px; margin-top: 10px; }
+.cp-hexrow label { font-size: 10px; font-weight: 500; color: var(--muted); }
+.cp-hex {
+  flex: 1; min-width: 0; font-family: inherit; font-size: 12px;
+  text-transform: uppercase; padding: 6px 8px;
+  border: 1px solid var(--border); border-radius: 7px;
+  color: var(--ink); background: var(--mist); outline: none;
+}
+.cp-hex:focus { border-color: var(--sky); }
+.cp-hex.invalid { border-color: #e57373; }
+.cp-actions { display: flex; gap: 6px; margin-top: 10px; }
+.cp-btn {
+  flex: 1; font-family: inherit; font-size: 10px; font-weight: 600;
+  padding: 7px 0; border-radius: 7px; cursor: pointer;
+  border: 1px solid var(--border); background: var(--mist); color: var(--ink);
+}
+.cp-btn:hover { background: var(--border); }
+.cp-btn.primary { background: var(--sky); border-color: var(--sky); color: #fff; }
+.cp-btn.primary:hover { opacity: .88; }
+.cp-btn.reset { border-color: #e57373; color: #e57373; background: transparent; }
+.cp-btn.reset:hover { background: rgba(229,115,115,.1); }
+.cp-resetall {
+  display: block; width: 100%; margin-top: 8px;
+  border: none; background: none; font-family: inherit;
+  font-size: 10px; color: var(--muted); cursor: pointer; text-decoration: underline;
+}
+.cp-resetall:hover { color: var(--ink); }
+
+/* ── Print / footer ── */
+.print {
+  padding: 4px 12px 8px;
+  display: flex; flex-direction: column; gap: 6px;
+}
+.print-label {
+  font-size: 10px; font-weight: 600; color: var(--muted);
+  text-transform: uppercase; letter-spacing: .7px; padding-left: 2px;
+}
+.print .btn {
+  padding: 9px 10px; text-align: left;
+  display: flex; gap: 8px; align-items: center;
+  border-radius: 11px; background: var(--card);
+}
+.print .btn:hover {
+  border-color: rgba(41,171,226,.4);
+  box-shadow: 0 0 0 3px rgba(41,171,226,.06);
+}
+/* Centered bar across the bottom of the sample / preview area */
+.page-wrap { position: relative; }
+.preview-load-bar {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  z-index: 20;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 18px 16px 22px;
+  pointer-events: none;
+  background: linear-gradient(to bottom, transparent, rgba(255,255,255,.92) 45%, rgba(255,255,255,.98));
+}
+.preview-load-bar[hidden] { display: none !important; }
+.preview-load-bar .btn-full-preview {
+  pointer-events: auto;
+  background: linear-gradient(135deg, #1a6bb5, #2980b9);
+  color: #fff;
+  border: 1px solid #1a6bb5;
+  font-weight: 700;
+  font-size: 15px;
+  padding: 14px 28px;
+  letter-spacing: .02em;
+  text-align: center;
+  justify-content: center;
+  border-radius: 14px;
+  box-shadow: 0 4px 18px rgba(26,107,181,.35);
+  min-width: 240px;
+}
+.preview-load-bar .btn-full-preview:hover {
+  background: linear-gradient(135deg, #155a9a, #1f6fa3);
+  border-color: #155a9a;
+  box-shadow: 0 6px 22px rgba(26,107,181,.45);
+  color: #fff;
+}
+/* Preview-only state: banner + fade at bottom of viewer */
+.preview-banner {
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  margin: 0 0 12px;
+  padding: 8px 14px;
+  background: #fff3cd;
+  border: 1.5px dashed #d4a017;
+  border-radius: 10px;
+  color: #7a4f00;
+  font-size: 12px; font-weight: 600;
+  letter-spacing: .02em;
+  text-align: center;
+}
+.preview-banner .preview-badge {
+  background: #d4a017; color: #fff;
+  font-size: 10px; font-weight: 700;
+  padding: 2px 8px; border-radius: 999px;
+  text-transform: uppercase; letter-spacing: .06em;
+}
+.viewer.is-preview {
+  position: relative;
+}
+.footer {
+  padding: 2px 16px 12px; text-align: center;
+  font-size: 9.5px; color: var(--muted); letter-spacing: .3px;
+}
+.setup { display: flex; align-items: center; gap: 6px; }
+.setup .btn { flex: 1; }
+.status {
+  font-size: 10px; color: var(--muted);
+  word-break: break-all; line-height: 1.35;
+}
+.status.ok { color: var(--green); font-weight: 500; }
+
+/* ── Stage (right side) ── */
+.stage { display: flex; flex-direction: column; min-width: 0; min-height: 0; }
+.tabs {
+  padding: 0 16px; gap: 6px; height: 100%;
+  align-items: flex-end; display: flex;
+}
+.tab {
+  font-family: inherit;
+  display: flex; flex-direction: column; align-items: center; gap: 2px;
+  padding: 10px 20px 11px; min-width: 100px;
+  border: 1px solid rgba(255,255,255,.12); border-bottom: none;
+  border-radius: 10px 10px 0 0;
+  background: rgba(255,255,255,.07); color: #fff;
+  cursor: pointer; margin-bottom: 3px; transition: background .2s;
+}
+.tab:hover:not(:disabled) { background: rgba(255,255,255,.16); }
+.tab.active {
+  background: var(--mist); color: var(--navy); border-color: var(--mist);
+}
+.tab:disabled { opacity: .45; cursor: not-allowed; }
+.tab-he { font-size: 16px; font-weight: 500; line-height: 1; }
+.tab-en { font-size: 10px; font-weight: 400; letter-spacing: .3px; opacity: .75; }
+
+.bookbar {
+  display: flex; align-items: center; gap: 8px;
+  padding: 10px 16px; background: var(--card);
+  border-bottom: 1px solid var(--border); flex-shrink: 0;
+}
+.bookbar select { width: auto; min-width: 120px; }
+.bookbar .sp { flex: 1; }
+
+.work { flex: 1; display: flex; min-height: 0; position: relative; }
+.page-wrap { flex: 1; min-width: 0; padding: 14px; display: flex; }
+.viewer {
+  flex: 1; overflow-y: auto;
+  background: var(--card);
+  border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 32px 40px; direction: rtl; outline: none;
+  line-height: 2.3;
+  font-family: var(--hf, 'Rubik'), 'Arial Hebrew', David, sans-serif;
+  font-size: var(--fs, 12pt);
+  letter-spacing: var(--ls, 0);
+}
+.viewer p, .viewer span.pasuk-unit { margin-bottom: .35em; break-inside: avoid; }
+.viewer span.pasuk-unit { display: inline; margin-bottom: 0; }
+.viewer span.pasuk-unit + span.pasuk-unit::before { content: ' '; }
+/* Skip layout/paint for off-screen blocks (Ctrl+F still works — nodes stay in the DOM) */
+.viewer p.pasuk-unit,
+.viewer .pasuk-rashi,
+.viewer .pasuk-tosafot,
+.viewer .tr-block {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 3.5em;
+}
+.viewer .chunk-host { display: contents; }
+/* One block per chapter: off-screen chapters skip layout + paint (works in flow mode too) */
+.viewer .chunk { content-visibility: auto; contain-intrinsic-size: auto 900px; }
+.viewer .virt-space { width: 100%; }
+.viewer .virt-win { width: 100%; will-change: transform; }
+.viewer .virt-row { /* rows are already culled by the virtual list */ }
+/* Parasha gaps: petucha (open) ≈ four-finger space; setuma (closed) smaller */
+.viewer .parasha-gap {
+  display: inline-block;
+  vertical-align: baseline;
+  height: 0.2em;
+}
+.viewer .parasha-gap.petucha {
+  width: 4em; /* traditional four-finger / open-parasha gap */
+}
+.viewer .parasha-gap.setuma {
+  width: 1.5em; /* closed-parasha gap */
+}
+.viewer .vn {
+  font-size: .4em; color: var(--muted);
+  margin-left: .7em; letter-spacing: 0; user-select: none;
+}
+.viewer .ch {
+  font-size: .5em; color: var(--gold); font-weight: 600;
+  text-align: center; letter-spacing: 0; margin: .8em 0 .2em;
+  content-visibility: auto;
+  contain-intrinsic-size: auto 1.5em;
+}
+.pane {
+  min-width: 0;
+  font-family: var(--hf, 'Rubik'), 'Arial Hebrew', David, sans-serif;
+  font-size: var(--fs, 12pt);
+  letter-spacing: var(--ls, 0);
+}
+/* Skip layout/paint for off-screen pasuk rows — big win on long ranges */
+.pasuk-row, .viewer .pane > .w, .viewer .pane > div:not(.ch):not(.range-banner):not(.pdf-page-end) {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 2.2em;
+}
+/* Force real heights while placing PDF page-end markers */
+.viewer.measuring-pages .pasuk-unit,
+.viewer.measuring-pages .pasuk-rashi,
+.viewer.measuring-pages .pasuk-tosafot,
+.viewer.measuring-pages .tr-block,
+.viewer.measuring-pages .ch,
+.viewer.measuring-pages .pasuk-row,
+.viewer.measuring-pages .pane > div {
+  content-visibility: visible !important;
+  contain-intrinsic-size: auto !important;
+}
+.viewer.tikkun { display: grid; grid-template-columns: 1fr 1fr; }
+.viewer.tikkun .pane { padding: 0 24px; }
+.viewer.tikkun .pane + .pane { border-right: 1px solid var(--border); }
+
+.results { max-height: 160px; overflow-y: auto; font-size: 11.5px; }
+.results div { padding: 5px 7px; border-bottom: 1px solid var(--mist); }
+.results [data-r] { cursor: pointer; }
+.results [data-r]:hover { background: var(--mist); }
+
+/* Search slide-over — hidden by default, full-width page */
+.utility {
+  display: none;
+  position: absolute; top: 0; right: 0; bottom: 0;
+  width: 290px;
+  background: var(--mist);
+  border-left: 1px solid var(--border);
+  padding: 14px 12px;
+  overflow-y: auto;
+  flex-direction: column; gap: 9px;
+  z-index: 20;
+  box-shadow: -8px 0 24px rgba(13,35,64,.12);
+}
+.utility.open { display: flex; }
+
+
+.range-tools { display: inline-flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.tanach-tools {
+  display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+  padding-left: 8px; border-left: 1px solid var(--border); margin-left: 4px;
+}
+.tanach-tools[hidden] { display: none !important; }
+.range-label {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 11px; font-weight: 500; color: var(--muted); white-space: nowrap;
+}
+.range-label input {
+  width: 110px; padding: 6px 8px; font-size: 12px;
+  border: 1px solid var(--border); border-radius: 8px; color: var(--ink);
+}
+.chk {
+  display: flex; align-items: center; gap: 5px;
+  font-size: 11.5px; font-weight: 500; color: var(--ink);
+  cursor: pointer; user-select: none; white-space: nowrap;
+}
+.chk input { accent-color: var(--sky); width: 14px; height: 14px; }
+.viewer .layer-label {
+  font-size: .42em; color: var(--sky); font-weight: 600;
+  letter-spacing: 0; margin: .35em 0 .1em; text-align: right;
+}
+
+/* Per-pasuk row: main text + dedicated Rashi column */
+.pasuk-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0 18px;
+  margin-bottom: .55em;
+  align-items: start;
+}
+.viewer.has-rashi .pasuk-row {
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+  padding-bottom: .45em;
+  border-bottom: 1px solid rgba(13,35,64,.06);
+}
+.pasuk-main { min-width: 0; }
+.pasuk-side { min-width: 0; display: flex; flex-direction: column; gap: .35em; }
+.pasuk-rashi {
+  min-width: 0;
+  font-size: .68em;
+  line-height: 1.55;
+  color: #222;
+  direction: rtl;
+  background: transparent;
+  border: 1px solid #ccc;
+  border-right: 3px solid #555;
+  border-radius: 6px;
+  padding: 8px 10px;
+}
+.pasuk-rashi .layer-label {
+  color: #333;
+  display: block;
+  margin-bottom: 4px;
+  font-size: .9em;
+  font-weight: 700;
+  letter-spacing: .03em;
+  opacity: 1;
+}
+.pasuk-rashi .rashi-body { direction: rtl; color: #111; }
+/* Keep Rashi itself neutral (no coloured nikud) — better for B&W print preview */
+.pasuk-rashi .c { background: transparent !important; }
+.pasuk-rashi .nk, .pasuk-rashi .tr { color: inherit !important; font-weight: inherit !important; }
+.pasuk-rashi .rashi-en {
+  direction: ltr;
+  text-align: left;
+  margin-top: .45em;
+  padding-top: .4em;
+  border-top: 1px solid #bbb;
+  font-size: .95em;
+  color: #222;
+  line-height: 1.45;
+}
+.pasuk-rashi .rashi-en .layer-label {
+  color: #444;
+  font-size: .85em;
+  margin-bottom: 2px;
+}
+.pasuk-tosafot {
+  min-width: 0;
+  font-size: .66em;
+  line-height: 1.5;
+  color: #111;
+  direction: rtl;
+  background: transparent;
+  border: 1px solid #999;
+  border-right: 3px solid #333;
+  border-radius: 6px;
+  padding: 8px 10px;
+  margin-top: .35em;
+}
+.pasuk-tosafot .layer-label {
+  color: #222;
+  display: block;
+  margin-bottom: 4px;
+  font-size: .9em;
+  font-weight: 700;
+}
+/* דיבור המתחיל — bold lemma in Rashi / Tosafot (stacked + any mode) */
+.pasuk-rashi .w.dh,
+.pasuk-tosafot .w.dh,
+.pasuk-rashi .dh-block,
+.pasuk-tosafot .dh-block,
+.pasuk-rashi .w.dh .c,
+.pasuk-tosafot .w.dh .c,
+.pasuk-rashi .w.dh .nk,
+.pasuk-tosafot .w.dh .nk {
+  font-weight: 700 !important;
+  font-synthesis: weight !important; /* synthesize bold when the face has no bold cut */
+}
+.pasuk-rashi .dh-sep,
+.pasuk-tosafot .dh-sep {
+  font-weight: 400 !important;
+  opacity: .85;
+  margin: 0 .15em;
+}
+/* Tosafot: first word of the dibbur is larger (Vilna / traditional look) */
+.pasuk-tosafot .w.dh-first,
+.pasuk-tosafot .w.dh-first .c {
+  font-size: 1.4em;
+  font-weight: 700 !important;
+  line-height: 1;
+  font-synthesis: weight !important;
+}
+.pasuk-rashi .comm-unit + .comm-unit,
+.pasuk-tosafot .comm-unit + .comm-unit {
+  margin-top: .55em;
+}
+/* Vilna columns — same rule, higher specificity so it wins over body weight */
+.vilna-daf .dh,
+.vilna-daf .vb.comm .dh,
+.vilna-daf .vb .dh {
+  font-weight: 700 !important;
+  font-synthesis: weight !important;
+}
+.vilna-daf .vb.comm .big,
+.vilna-daf .vb.tosafot .big {
+  font-size: calc(1em * var(--c-big, 1.35));
+  font-weight: 700 !important;
+  font-synthesis: weight !important;
+  line-height: 0;
+}
+@media print {
+  .pasuk-tosafot {
+    background: transparent !important;
+    border: 0.6pt solid #000 !important;
+    border-right: 1.6pt solid #000 !important;
+    color: #000 !important;
+    border-radius: 0 !important;
+  }
+}
+
+/* Translation: print-friendly, light, no heavy fill */
+.viewer .tr-block {
+  font-size: .7em;
+  line-height: 1.5;
+  color: #3a4a5c;
+  direction: ltr;
+  text-align: left;
+  margin: .15em 0 .4em;
+  padding: 4px 0 4px 10px;
+  background: transparent;
+  border-left: 2px solid var(--sky);
+  border-radius: 0;
+}
+.viewer .tr-block .layer-label {
+  color: var(--sky);
+  text-align: left;
+  font-size: .85em;
+  margin-bottom: 2px;
+  opacity: .8;
+}
+
+/* Legacy single-column rashi (when not in row layout) */
+.viewer .rashi-block {
+  font-size: .72em; line-height: 1.55; color: #3a4a5c;
+  margin: .15em 0 .5em; padding: 8px 10px;
+  background: transparent;
+  border-right: 3px solid var(--gold);
+  border-radius: 8px;
+  direction: rtl;
+}
+
+/* Paper-like page sheet (regular aspect ratio on screen) */
+.page-wrap {
+  justify-content: center;
+  background: #e4ebf2;
+}
+.viewer {
+  max-width: 820px;
+  width: 100%;
+  margin: 0 auto;
+  box-shadow: 0 1px 3px rgba(13,35,64,.08), 0 12px 28px rgba(13,35,64,.1);
+  border-radius: 4px;
+  min-height: min(100%, 1100px); /* roughly letter/A4 proportions when filled */
+}
+.viewer.tikkun {
+  max-width: 1100px;
+}
+@media (max-width: 900px) {
+  .viewer.has-rashi .pasuk-row {
+    grid-template-columns: 1fr;
+  }
+  .pasuk-rashi {
+    border-right: none;
+    border-top: 3px solid var(--gold);
+  }
+}
+
+
+/* ── Polish layer ── */
+.row {
+  box-shadow: var(--shadow);
+}
+.controls::-webkit-scrollbar { width: 6px; }
+.controls::-webkit-scrollbar-thumb {
+  background: var(--border); border-radius: 6px;
+}
+.controls::-webkit-scrollbar-thumb:hover { background: var(--muted); }
+
+.bookbar {
+  flex-wrap: wrap;
+  gap: 8px 10px;
+  padding: 10px 16px;
+  box-shadow: 0 1px 0 var(--border);
+}
+.bookbar select {
+  min-width: 110px;
+  max-width: 180px;
+  background: var(--mist);
+  border-radius: 9px;
+  font-weight: 500;
+}
+.bookbar select:hover { border-color: rgba(41,171,226,.4); }
+.bookbar .btn {
+  background: var(--card);
+  min-width: 34px;
+}
+/* keep the blue "Go" button blue (the rule above would otherwise turn it white-on-white) */
+.bookbar .btn.sky {
+  background: var(--sky);
+  border-color: var(--sky);
+  color: #fff;
+}
+
+.range-tools { display: inline-flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.tanach-tools {
+  display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+  padding: 0;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  margin-left: 0;
+}
+.tanach-tools[hidden] { display: none !important; }
+.range-label {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 11px; font-weight: 500; color: var(--muted); white-space: nowrap;
+}
+.range-label input {
+  width: 118px; padding: 6px 8px; font-size: 12px; font-weight: 500;
+  border: 1px solid var(--border); border-radius: 8px;
+  color: var(--ink); background: var(--card);
+  font-variant-numeric: tabular-nums;
+}
+.range-label input:focus { border-color: var(--sky); outline: none; box-shadow: 0 0 0 3px var(--sky-soft); }
+.chk {
+  display: flex; align-items: center; gap: 5px;
+  font-size: 11.5px; font-weight: 500; color: var(--ink);
+  cursor: pointer; user-select: none; white-space: nowrap;
+  padding: 4px 8px; border-radius: 8px;
+  transition: background .15s;
+}
+.chk:hover { background: rgba(41,171,226,.08); }
+.chk input { accent-color: var(--sky); width: 14px; height: 14px; cursor: pointer; }
+.chk input:checked + span, .chk:has(input:checked) { color: var(--navy); }
+
+/* Locked / unavailable on this tab — visible but grayed out and not clickable */
+.chk.unavailable,
+.tanach-tools .unavailable {
+  opacity: 0.42;
+  pointer-events: none;
+  cursor: not-allowed;
+  filter: grayscale(0.35);
+}
+.chk.unavailable:hover { background: transparent; }
+/* Range tools: gray From/To/Go when locked, but Clear stays fully clickable (Siddur etc.) */
+.range-tools.unavailable {
+  /* don't kill pointer-events on the whole group — Clear must work */
+}
+.range-tools.unavailable label.range-label,
+.range-tools.unavailable #btn-range-apply,
+.range-tools.unavailable input[type="text"] {
+  opacity: 0.42;
+  filter: grayscale(0.35);
+  cursor: not-allowed;
+  pointer-events: none;
+}
+.range-tools.unavailable #btn-range-clear {
+  opacity: 1;
+  filter: none;
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.viewer {
+  box-shadow: var(--shadow);
+  scroll-behavior: smooth;
+}
+.viewer:empty::before,
+.viewer .empty-state {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  min-height: 40vh; text-align: center; direction: ltr;
+  color: var(--muted); gap: 8px; padding: 40px 20px;
+}
+.viewer .empty-state .empty-icon { font-size: 36px; opacity: .5; }
+.viewer .empty-state .empty-title { font-size: 15px; font-weight: 500; color: var(--ink); }
+.viewer .empty-state .empty-sub { font-size: 12px; max-width: 280px; line-height: 1.45; }
+
+.viewer .ch {
+  font-size: .55em; color: var(--gold); font-weight: 600;
+  text-align: center; letter-spacing: .02em;
+  margin: 1.1em 0 .35em;
+  padding-bottom: .25em;
+  border-bottom: 1px solid rgba(232,184,64,.25);
+}
+.viewer .range-banner {
+  direction: ltr; text-align: center;
+  font-size: 11px; font-weight: 500; color: var(--sky);
+  background: var(--sky-soft); border-radius: 8px;
+  padding: 6px 12px; margin: 0 0 1em;
+  letter-spacing: .02em;
+}
+
+/* print-friendly overrides already set above; keep labels readable */
+.viewer .layer-label {
+  display: block; font-size: .85em; font-weight: 600;
+  letter-spacing: .04em; margin-bottom: 3px; opacity: .75;
+}
+
+/* Toast */
+.toast {
+  position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(20px);
+  background: var(--navy); color: #fff; font-size: 12.5px; font-weight: 500;
+  padding: 10px 18px; border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(13,35,64,.25);
+  opacity: 0; pointer-events: none; transition: opacity .25s, transform .25s;
+  z-index: 2000; max-width: 90vw; text-align: center;
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+.toast.ok { background: #1a5c38; }
+.toast.warn { background: #8a4b00; }
+
+/* Loading spinner in status */
+.status.loading::before {
+  content: ''; display: inline-block;
+  width: 8px; height: 8px; border-radius: 50%;
+  border: 2px solid var(--border); border-top-color: var(--sky);
+  animation: spin .7s linear infinite;
+  margin-right: 6px; vertical-align: -1px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.tab { transition: background .2s, color .2s, transform .15s; }
+.tab:hover:not(:disabled):not(.active) { transform: translateY(-1px); }
+.tab.active { font-weight: 500; }
+
+select:disabled, .btn:disabled { opacity: .5; cursor: not-allowed; }
+
+/* Siddur multi-section checkbox picker */
+.sid-picker { position: relative; }
+.sid-picker[hidden] { display: none !important; }
+.sid-picker summary {
+  list-style: none; cursor: pointer; user-select: none;
+  padding: 7px 12px; font-size: 12px; font-weight: 500;
+  background: var(--mist); border: 1px solid var(--border); border-radius: 9px;
+}
+.sid-picker summary::-webkit-details-marker { display: none; }
+.sid-picker summary::after { content: ' ▾'; color: var(--muted); }
+.sid-picker[open] summary { border-color: var(--sky); }
+.sid-pop {
+  position: absolute; top: calc(100% + 4px); left: 0; z-index: 30;
+  width: 360px; max-height: 520px; overflow-y: auto;
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 10px; box-shadow: 0 8px 24px rgba(13,35,64,.18); padding: 8px;
+}
+.sid-actions { display: flex; gap: 6px; margin-bottom: 8px; }
+.sid-actions .btn { flex: 1; }
+.sid-pop .chk { display: flex; white-space: normal; padding: 3px 6px; border-radius: 6px; }
+.sid-pop .chk:hover { background: rgba(41,171,226,.08); }
+
+/* ── Level 1: Weekday / Shabbos / Yom Tov / Other ─────────────────── */
+.sid-cat {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  margin-bottom: 6px;
+  background: var(--mist);
+  overflow: hidden;
+}
+.sid-cat:last-child { margin-bottom: 0; }
+.sid-cat-sum {
+  list-style: none;
+  cursor: pointer;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 10px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--navy);
+}
+.sid-cat-sum::-webkit-details-marker { display: none; }
+.sid-cat-sum::after {
+  content: '▸';
+  font-size: 11px;
+  color: var(--muted);
+  transition: transform .15s;
+  margin-left: 8px;
+}
+.sid-cat[open] > .sid-cat-sum::after { transform: rotate(90deg); }
+.sid-cat-name { flex: 1; }
+.sid-cat-count {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--muted);
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1px 7px;
+  margin-right: 4px;
+}
+.sid-cat-body {
+  padding: 4px 6px 8px;
+  background: var(--card);
+  border-top: 1px solid var(--border);
+}
+
+/* ── Level 2: service (Shacharis / Mincha / Kabbalas Shabbos…) ─────── */
+.sid-svc {
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  margin: 5px 0;
+  background: var(--mist);
+  overflow: hidden;
+}
+.sid-svc-sum {
+  list-style: none;
+  cursor: pointer;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 9px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--navy);
+}
+.sid-svc-sum::-webkit-details-marker { display: none; }
+.sid-svc-sum::after {
+  content: '▸';
+  font-size: 10px;
+  color: var(--muted);
+  transition: transform .15s;
+  margin-left: 6px;
+}
+.sid-svc[open] > .sid-svc-sum::after { transform: rotate(90deg); }
+.sid-svc-name { flex: 1; }
+.sid-svc-count {
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--muted);
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  padding: 0 6px;
+  margin-right: 3px;
+}
+.sid-svc-body {
+  padding: 3px 5px 6px;
+  background: var(--card);
+  border-top: 1px solid var(--border);
+}
+
+/* ── Level 3: section headers (Pesukei D'Zimra, Birchos HaShachar…) ── */
+.sid-sec-title {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  color: var(--sky);
+  padding: 7px 6px 2px;
+  margin-top: 3px;
+}
+.sid-sec-title:first-child { margin-top: 0; }
+
+@media (max-width: 900px) {
+  .app { grid-template-columns: 1fr; }
+  .sidebar { display: none; }
+}
+
+/* PDF page-end markers in the preview (approximate print page boundaries) */
+.pdf-page-end {
+  display: flex; align-items: center; gap: 10px;
+  margin: 1.1em 0;
+  color: #8a4b00;
+  font-size: 10px; font-weight: 600; letter-spacing: .04em;
+  text-transform: uppercase; user-select: none;
+  pointer-events: none;
+}
+.pdf-page-end::before, .pdf-page-end::after {
+  content: ''; flex: 1; height: 0;
+  border-top: 2px dashed #d4a017;
+}
+.pdf-page-end span {
+  white-space: nowrap; padding: 2px 10px;
+  border: 1.5px dashed #d4a017; border-radius: 999px;
+  background: #fff8e8;
+  color: #8a4b00;
+}
+.pdf-page-end span::before {
+  content: 'Preview · ';
+  opacity: .75;
+  font-weight: 500;
+}
+
+@media print {
+  .sidebar, .bar, .bookbar, .utility, .print, .preview-banner, .preview-load-bar { display: none !important; }
+  body, .app, .stage, .work, .page-wrap {
+    display: block; height: auto; overflow: visible; padding: 0; background: #fff;
+  }
+  .app { display: block; }
+  .viewer { border: none; padding: 0; overflow: visible !important; height: auto !important; max-height: none !important; }
+  /* Virtual list: once expanded for print, flow as normal document */
+  .virt-space {
+    height: auto !important;
+    position: static !important;
+  }
+  .virt-win {
+    position: static !important;
+    transform: none !important;
+    will-change: auto !important;
+  }
+  .range-banner { display: none !important; }
+  .viewer .chunk, .viewer p.pasuk-unit, .viewer .pasuk-rashi, .viewer .pasuk-tosafot,
+  .viewer .tr-block, .viewer .ch { content-visibility: visible !important; }
+  .virt-page-end { display: none !important; } /* don't force extra breaks from preview marks */
+  * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  @page { margin: 12mm; }
+  .page-break {
+    page-break-before: always;
+    break-before: page;
+    margin: 0; height: 0; overflow: hidden;
+    border: none; color: transparent; background: transparent;
+  }
+  .page-break::before, .page-break::after, .page-break span { display: none; }
+  .ch { page-break-after: avoid; }
+  p, .pasuk-row { orphans: 3; widows: 3; page-break-inside: avoid; break-inside: avoid; }
+  .pasuk-rashi {
+    background: transparent !important;
+    border: 0.6pt solid #000 !important;
+    border-right: 1.6pt solid #000 !important;
+    color: #000 !important;
+    border-radius: 0 !important;
+  }
+  .pasuk-rashi .layer-label { color: #000 !important; opacity: 1 !important; }
+  .pasuk-rashi .rashi-body, .pasuk-rashi .rashi-en { color: #000 !important; }
+  .pasuk-rashi .rashi-en { border-top: 0.5pt solid #000; }
+  .tr-block {
+    background: transparent !important;
+    border-left: 1.2pt solid #000;
+    color: #000;
+    font-size: 9.5pt;
+  }
+  /* Preview-only markers: never force breaks when printing — the browser paginates for real */
+  .pdf-page-end { display: none !important; }
+  /* Keep intentional highlight backgrounds (shoresh whole-word, trope, nikud block)
+     so they survive "Save as PDF" / print. Only strip decorative ones on Rashi/Tosafot. */
+  .pasuk-rashi .c, .pasuk-tosafot .c,
+  .pasuk-rashi .nk, .pasuk-tosafot .nk { background: transparent !important; }
+
+  .page-wrap { background: #fff; padding: 0; }
+  .viewer {
+    max-width: none;
+    box-shadow: none;
+    border: none;
+    min-height: 0;
+    padding: 0;
+  }
+  .viewer.has-rashi .pasuk-row {
+    grid-template-columns: 1.3fr 1fr;
+    border-bottom: 0.4pt solid #ddd;
+  }
+}
+
+.side-section-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 12px 4px 4px;
+  margin-top: 4px;
+}
+.side-section-label:first-child { margin-top: 0; padding-top: 4px; }
+.tool-hint {
+  font-size: 10px;
+  color: var(--muted);
+  font-weight: 500;
+  padding: 2px 8px;
+  background: var(--mist);
+  border-radius: 6px;
+  white-space: nowrap;
+}
+.row.dimmed {
+  opacity: 0.48;
+}
+.row.dimmed .row-sub-note {
+  display: block;
+  font-size: 10px;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+/* ═══════ Vilna-style three-column Gemara (pixel layout) ═══════ */
+@font-face {
+  font-family: 'VilnaSquare';
+  src: url('./fonts/Frank%20Ruehl.otf') format('opentype');
+  font-display: swap;
+}
+@font-face {
+  font-family: 'VilnaRashi';
+  src: url('./fonts/Noto%20Rashi.otf') format('opentype');
+  font-display: swap;
+}
+
+/* When showing Vilna, don't let viewer letter-spacing / size cascade into the daf. */
+.viewer.vilna-mode {
+  letter-spacing: 0 !important;
+  font-size: medium !important;
+  font-family: serif !important;
+  line-height: normal !important;
+}
+
+/* Design width comes from --vilna-w set by vilna.js; fonts/sizes also via CSS vars.
+   CRITICAL: isolate from .viewer letter-spacing / font-size / font-family so the
+   pixel-measured 3-column layout is not stretched by sidebar controls. */
+.vilna-daf {
+  width: var(--vilna-w, 940px);
+  box-sizing: content-box;
+  margin: 0 auto 1.5rem;
+  padding: 8px 4px 16px;
+  background: transparent;
+  color: var(--ink);
+  direction: rtl;
+  font-kerning: normal;
+  text-rendering: optimizeLegibility;
+  /* Reset parent (.viewer / .pane) overrides that break measured lines */
+  letter-spacing: 0 !important;
+  font-size: medium !important;
+  font-family: serif !important;
+  line-height: normal !important;
+}
+.vilna-daf-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font: 700 20px/1.4 "VilnaSquare", "Frank Ruehl Libre", "Frank Ruhl Libre", serif;
+  letter-spacing: 0;
+  padding: 0 4px 8px;
+  border-bottom: 1px solid var(--border, #dde8f2);
+  margin-bottom: 8px;
+}
+.vilna-masechet { font-weight: 700; }
+.vilna-daf-ref { font-weight: 700; opacity: .9; }
+.vilna-body { position: relative; width: 100%; }
+
+/* One region = one band of the page; its blocks are absolutely placed in px. */
+.vilna-region {
+  position: relative;
+  width: var(--vilna-w, 940px);
+  overflow: visible;
+}
+.vb {
+  position: absolute;
+  top: 0;
+  box-sizing: border-box;
+}
+
+/* Every line is explicit: no browser wrapping, exact per-line word-spacing from the layout. */
+.vl {
+  white-space: nowrap;
+  overflow: visible;
+  letter-spacing: 0;
+  text-align: justify;
+  text-align-last: justify;
+}
+.vb.gemara {
+  font: var(--g-font);
+  height: auto;
+  letter-spacing: 0;
+}
+.vb.gemara .vl {
+  height: var(--g-lh);
+  line-height: var(--g-lh);
+}
+.vb.comm {
+  font: var(--c-font);
+  letter-spacing: 0;
+}
+.vb.comm .vl {
+  height: var(--c-lh);
+  line-height: var(--c-lh);
+}
+
+.dh { font-weight: 700 !important; font-synthesis: weight !important; } /* dibbur hamatchil */
+.vb.gemara .dh { font-weight: var(--g-bold, 700) !important; font-synthesis: weight !important; }
+.vb.gemara .big {
+  font-size: calc(1em * var(--g-big, 1.3));
+  font-weight: var(--g-bold, 700) !important;
+  font-synthesis: weight !important;
+  line-height: 0;
+} /* מתני׳ / גמ׳ */
+.vb.comm .big {
+  font-size: calc(1em * var(--c-big, 1.35));
+  font-weight: var(--c-bold, 700) !important;
+  font-synthesis: weight !important;
+}
+
+.vilna-missing,
+.vilna-error {
+  text-align: center;
+  padding: 2rem;
+  color: #7a2b1d;
+}
+.vilna-error {
+  border: 1px solid #c44;
+  background: #fff5f5;
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin: 12px 0;
+  direction: ltr;
+  text-align: left;
+}
+.vilna-error-title { font-weight: 600; color: #a30; margin-bottom: 4px; }
+.vilna-error-msg { font-size: 12.5px; color: #555; margin-bottom: 8px; }
+
+@media print {
+  .vilna-daf {
+    letter-spacing: 0 !important;
+    font-size: medium !important;
+    zoom: .75 !important;            /* 948px design width -> fits a ~725px printable page */
+    transform: none !important;
+  }
+  .vilna-region {
+    page-break-inside: avoid;
+    position: relative !important;
+  }
+  .vb { position: absolute !important; }
+  .vilna-daf { background: transparent; color: #000; }
+}
+</style>
+<style id="dyn"></style>
+</head>
+<body>
+<div class="app">
+
+  <!-- ════════ LEFT: control bar ════════ -->
+  <aside class="sidebar">
+    <div class="bar brand">
+      <div class="logo">א</div>
+      <div class="brand-text">
+        <div class="brand-title">Otiyot<span class="plus">+</span> Press</div>
+        <div class="brand-sub">Hebrew text press</div>
+        <span class="beta">Open Beta</span>
+      </div>
+    </div>
+
+    <div class="controls">
+<!-- Tikkun column picker (shown only in two-column mode) -->
+      <div class="row" id="side-card" style="display:none">
+        <div class="row-top">
+          <div class="row-icon i-gold">📖</div>
+          <div class="row-body">
+            <div class="row-title">Tikkun columns</div>
+            <div class="row-sub">Pick a column, then adjust settings below</div>
+          </div>
+        </div>
+        <div class="seg" id="side-seg">
+          <button class="active" data-m="R">Right column</button>
+          <button data-m="L">Left column</button>
+        </div>
+        <div class="seg" id="content-seg">
+          <button class="active" data-m="full">Niqqud &amp; trope</button>
+          <button data-m="stam">Letters only</button>
+        </div>
+        <button class="btn" id="side-copy">Copy settings to other column</button>
+      </div>
+
+<!-- Library status kept in DOM for JS, hidden from UI -->
+      <div id="row-library" hidden>
+        <div class="status" id="status-texts"></div>
+        <div class="status" id="status-csv"></div>
+      </div>
+
+<!-- Font -->
+      <div class="row" id="row-font">
+        <div class="row-top">
+          <div class="row-icon i-gold">א</div>
+          <div class="row-body">
+            <div class="row-title">Hebrew Font</div>
+            <div class="row-sub">Bundled fonts load automatically</div>
+          </div>
+        </div>
+        <select id="font-picker"><option value="UserFont_Dyslex_Kriyah">Dyslex-Kriyah (Default)</option><option value="Rubik">Rubik</option></select>
+        <div class="status" id="status-fonts">Default font active</div>
+      </div>
+<!-- Letter size -->
+      <div class="row" id="row-size">
+        <div class="row-top">
+          <div class="row-icon i-green">🔠</div>
+          <div class="row-body">
+            <div class="row-title">Letter Size</div>
+            <div class="row-sub">Type a size, like in Google Docs</div>
+          </div>
+        </div>
+        <div class="stepper">
+          <button class="btn" id="fs-minus" title="Smaller">−</button>
+          <input type="text" id="fs" value="12" inputmode="decimal" aria-label="Font size in points">
+          <button class="btn" id="fs-plus" title="Bigger">+</button>
+          <span>pt</span>
+        </div>
+      </div>
+<!-- Letter spacing -->
+      <div class="row" id="row-spacing">
+        <div class="row-top">
+          <div class="row-icon i-soft">↔</div>
+          <div class="row-body">
+            <div class="row-title">Letter Spacing</div>
+            <div class="row-sub">Extra space between letters</div>
+          </div>
+          <span class="val" id="ls-val">0px</span>
+        </div>
+        <input type="range" id="ls" min="0" max="10" step="1" value="0">
+      </div>
+
+<!-- Color Niqqud -->
+      <div class="row" id="row-niqqud">
+        <label class="row-top" for="nk-on">
+          <div class="row-icon i-sky">🎨</div>
+          <div class="row-body">
+            <div class="row-title">Color Niqqud</div>
+            <div class="row-sub">Highlight vowel marks by colour</div>
+          </div>
+          <div class="switch">
+            <input type="checkbox" id="nk-on" checked>
+            <span class="track"></span>
+          </div>
+        </label>
+        <div class="divider"></div>
+        <div class="strip" id="nk-strip" title="Customise individual niqqud">
+          <div class="dots" id="nk-dots"></div>
+          <span class="hint">Customize</span>
+          <span class="chev" id="nk-chev">▼</span>
+        </div>
+        <div class="panel" id="nk-panel">
+          <div class="panel-block">
+            <div class="bulk">
+              <button class="btn on" id="nk-all-on">✓ All on</button>
+              <button class="btn off" id="nk-all-off">✕ All off</button>
+            </div>
+            <div class="seg" id="nk-mode">
+              <button class="active" data-m="block">Block</button>
+              <button data-m="char">Niqqud only</button>
+            </div>
+            <div>
+              <div class="op-top"><span>Opacity</span><span id="nk-op-val">60%</span></div>
+              <input type="range" id="nk-op" min="10" max="100" value="60">
+            </div>
+          </div>
+          <div id="nk-rows"></div>
+        </div>
+      </div>
+<!-- Shoresh Highlight -->
+      <div class="row" id="row-shoresh">
+        <label class="row-top" for="sh-on">
+          <div class="row-icon i-purple">🌱</div>
+          <div class="row-body">
+            <div class="row-title">Shoresh Highlight</div>
+            <div class="row-sub">Search a root, see it in the text</div>
+          </div>
+          <div class="switch">
+            <input type="checkbox" id="sh-on">
+            <span class="track"></span>
+          </div>
+        </label>
+        <div class="sh-suggest-wrap">
+          <input type="text" id="sh-root" dir="rtl" placeholder="Type a shoresh, e.g. אמר" autocomplete="off" aria-autocomplete="list" aria-controls="sh-suggest" aria-expanded="false">
+          <div class="sh-suggest" id="sh-suggest" role="listbox" hidden></div>
+        </div>
+        <div class="note" id="sh-count"></div>
+        <div class="divider"></div>
+        <div class="strip" id="sh-strip">
+          <div class="dots"><div class="dot" id="sh-dot" style="background:#e8b840"></div></div>
+          <span class="hint">Customize</span>
+          <span class="chev" id="sh-chev">▼</span>
+        </div>
+        <div class="panel" id="sh-panel">
+          <div class="panel-block">
+            <div class="sh-color">
+              <button class="swatch" id="sh-color" data-v="#e8b840" style="background:#e8b840" aria-label="Shoresh colour"></button>
+              <span>Shoresh colour</span>
+            </div>
+            <div class="seg" id="sh-mode">
+              <button class="active" data-m="bar">Underline</button>
+              <button data-m="char">Letters</button>
+              <button data-m="word">Whole word</button>
+            </div>
+            <div>
+              <div class="op-top"><span>Opacity</span><span id="sh-op-val">100%</span></div>
+              <input type="range" id="sh-op" min="10" max="100" value="100">
+            </div>
+            <div class="note">Matches words built on that root (prefixes, suffixes, weak letters allowed).</div>
+          </div>
+        </div>
+      </div>
+<!-- Trope Highlight — individual notes -->
+      <div class="row" id="row-trope">
+        <label class="row-top" for="tp-on">
+          <div class="row-icon i-gold">🎵</div>
+          <div class="row-body">
+            <div class="row-title">Trope Highlight</div>
+            <div class="row-sub">Cantillation marks (mainly Tanach)</div>
+            <span class="row-sub-note" id="trope-avail-note" hidden>Most useful on Tanach</span>
+          </div>
+          <div class="switch">
+            <input type="checkbox" id="tp-on">
+            <span class="track"></span>
+          </div>
+        </label>
+        <div class="divider"></div>
+        <div class="strip" id="tp-strip" title="Customise individual trope colours">
+          <div class="dots" id="tp-dots"></div>
+          <span class="hint">Customize</span>
+          <span class="chev" id="tp-chev">▼</span>
+        </div>
+        <div class="panel" id="tp-panel">
+          <div class="panel-block">
+            <div class="bulk">
+              <button class="btn on" id="tp-all-on">✓ All on</button>
+              <button class="btn off" id="tp-all-off">✕ All off</button>
+            </div>
+            <div class="seg" id="tp-mode">
+              <button class="active" data-m="mark">Marks only</button>
+              <button data-m="char">Whole word</button>
+            </div>
+            <div>
+              <div class="op-top"><span>Opacity</span><span id="tp-op-val">100%</span></div>
+              <input type="range" id="tp-op" min="10" max="100" value="100">
+            </div>
+          </div>
+          <div id="tp-rows"></div>
+        </div>
+      </div>
+</div>
+
+    <div class="print">
+      <div class="print-label">🖨️ Layout &amp; printing</div>
+      <button class="btn" id="btn-tikkun">📖 Two-column Tikkun layout</button>
+      <button class="btn" id="btn-print">📄 Print / Export PDF</button>
+    </div>
+    <div class="footer">Otiyot+ Press · v1.2</div>
+  </aside>
+
+  <!-- ════════ RIGHT: books + text ════════ -->
+  <div class="stage">
+    <header class="bar">
+      <nav class="tabs" id="tabs">
+        <button class="tab active" data-c="tanach">
+          <span class="tab-he">תנ״ך</span>
+          <span class="tab-en">Tanach</span>
+        </button>
+        <button class="tab" data-c="mishna">
+          <span class="tab-he">משנה</span>
+          <span class="tab-en">Mishna</span>
+        </button>
+        <button class="tab" data-c="gemara">
+          <span class="tab-he">גמרא</span>
+          <span class="tab-en">Gemara</span>
+        </button>
+        <button class="tab" data-c="siddur">
+          <span class="tab-he">סידור</span>
+          <span class="tab-en">Siddur</span>
+        </button>
+      </nav>
+    </header>
+
+    <div class="bookbar">
+      <select id="select-category" aria-label="Section"><option value="">Section</option></select>
+      <select id="select-title" aria-label="Book"><option value="">Book</option></select>
+      <select id="select-chapter" aria-label="Chapter"><option value="">Chapter</option></select>
+      <details id="siddur-picker" class="sid-picker" hidden>
+        <summary id="siddur-count">Sections</summary>
+        <div class="sid-pop">
+          <div class="sid-actions">
+            <button class="btn" id="siddur-all">All</button>
+            <button class="btn" id="siddur-none">None</button>
+          </div>
+          <div id="siddur-list"></div>
+        </div>
+      </details>
+      <button class="btn" id="ch-prev" title="Previous chapter" aria-label="Previous">◀</button>
+      <button class="btn" id="ch-next" title="Next chapter" aria-label="Next">▶</button>
+      <button class="btn" id="btn-tools" title="Word &amp; root search" aria-label="Search">🔍</button>
+      <div class="sp"></div>
+      <div id="corpus-tools" class="tanach-tools">
+        <span id="range-tools" class="range-tools" data-why="">
+          <label class="range-label" title="Starting ref">From
+            <input type="text" id="range-from" placeholder="1:1" dir="ltr" autocomplete="off" spellcheck="false" style="width:72px">
+          </label>
+          <label class="range-label" title="Ending ref (inclusive)">To
+            <input type="text" id="range-to" placeholder="6:20" dir="ltr" autocomplete="off" spellcheck="false" style="width:72px">
+          </label>
+          <button type="button" class="btn sky" id="btn-range-apply" title="Apply range">Go</button>
+        </span>
+        <!-- Outside range-tools so Siddur (and other locked corpora) never gray/disable it -->
+        <button type="button" class="btn" id="btn-range-clear" title="Clear range and page text">Clear</button>
+        <label class="chk" id="lab-translation"><input type="checkbox" id="opt-translation"> English</label>
+        <label class="chk" id="lab-rashi"><input type="checkbox" id="opt-rashi"> Rashi</label>
+        <label class="chk" id="lab-rashi-en" title="English Rashi"><input type="checkbox" id="opt-rashi-en"> Rashi EN</label>
+        <label class="chk" id="lab-tosafot" title="Tosafot (Gemara)"><input type="checkbox" id="opt-tosafot"> Tosafot</label>
+        <label class="chk" id="lab-vilna" title="Traditional three-column Vilna layout via Sefaria"><input type="checkbox" id="opt-vilna"> Vilna layout</label>
+        <label class="chk" id="lab-pdf-breaks" title="Show approximate PDF page ends in the preview (can slow large views)"><input type="checkbox" id="opt-pdf-breaks"> PDF page ends</label>
+        <label class="chk" id="lab-edit" title="Make the page editable (edits are lost whenever the view re-renders)"><input type="checkbox" id="opt-edit"> Edit text</label>
+        <label class="chk" id="lab-line-break" title="When on, each unit starts on a new line. When off, text flows continuously."><input type="checkbox" id="opt-line-break"> Line break after pasuk</label>
+      </div>
+    </div>
+
+    <div class="work">
+      <main class="page-wrap">
+        <div id="text-viewer" class="viewer" contenteditable="false" spellcheck="false">
+          <div class="empty-state">
+            <div class="empty-icon">ספר</div>
+            <div class="empty-title">Choose a book to begin</div>
+            <div class="empty-sub">Pick a section and book above. On Tanach you can set a pasuk range and toggle Translation or Rashi.</div>
+          </div>
+        </div>
+        <div class="preview-load-bar" id="preview-load-bar" hidden>
+          <button type="button" class="btn btn-full-preview" id="btn-full-preview">📖 Load Full Preview</button>
+        </div>
+      </main>
+
+      <aside class="utility" id="utility" hidden>
+        <div class="row">
+          <div class="row-top">
+            <div class="row-icon i-sky">🔍</div>
+            <div class="row-body"><div class="row-title">Word Search</div></div>
+            <button class="btn" id="btn-tools-close" title="Close" style="width:30px;padding:5px 0;flex:0;margin-left:auto">✕</button>
+          </div>
+          <input type="text" id="word-search-input" placeholder="Find a word in the text…">
+          <div class="results" id="word-search-results"></div>
+        </div>
+        <div class="row">
+          <div class="row-top">
+            <div class="row-icon i-purple">🌱</div>
+            <div class="row-body"><div class="row-title">Nach Root Lookup</div></div>
+          </div>
+          <input type="text" id="root-search-input" dir="rtl" placeholder="שורש  e.g. אבד">
+          <div class="results" id="root-search-results"></div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</div>
+
+<!-- Colour picker modal -->
+<div class="cp-overlay" id="cp-overlay">
+  <div class="cp-card" role="dialog" aria-label="Choose colour">
+    <div class="cp-head">
+      <div class="cp-preview" id="cp-preview"></div>
+      <div class="cp-title" id="cp-title"></div>
+      <button class="cp-close" id="cp-close" aria-label="Close">✕</button>
+    </div>
+    <div class="cp-grid" id="cp-grid"></div>
+    <div class="cp-hexrow">
+      <label for="cp-hex">Hex #</label>
+      <input class="cp-hex" id="cp-hex" maxlength="6" spellcheck="false">
+    </div>
+    <div class="cp-actions">
+      <button class="cp-btn reset" id="cp-reset">Reset</button>
+      <button class="cp-btn" id="cp-cancel">Cancel</button>
+      <button class="cp-btn primary" id="cp-apply">Apply</button>
+    </div>
+    <button class="cp-resetall" id="cp-resetall">Reset all niqqud colours</button>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script src="vilna.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

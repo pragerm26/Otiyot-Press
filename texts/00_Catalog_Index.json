@@ -1,0 +1,2088 @@
+{
+  "schema_version": "1.0",
+  "description": "Reorganized Sefaria Full Library + Educational Resources into 6 sections. Titles follow 'Book Descriptor' format (e.g. Genesis Hebrew, Berakhot Tosafot Hebrew, Genesis Rashi English).",
+  "sections": {
+    "Tanakh": {
+      "description": "Tanakh (Torah, Prophets, Writings) - Hebrew text",
+      "count": 39,
+      "books": [
+        {
+          "title": "Amos Hebrew",
+          "book": "Amos",
+          "language": "Hebrew",
+          "path": "sefaria_full/Tanakh/Tanakh/Prophets/Amos/Hebrew/merged.json"
+        },
+        {
+          "title": "Daniel Hebrew",
+          "book": "Daniel",
+          "language": "Hebrew",
+          "path": "sefaria_full/Tanakh/Tanakh/Writings/Daniel/Hebrew/merged.json"
+        },
+        {
+          "title": "Deuteronomy Hebrew",
+          "book": "Deuteronomy",
+          "language": "Hebrew",
+          "path": "sefaria_full/Tanakh/Tanakh/Torah/Deuteronomy/Hebrew/merged.json"
+        },
+        {
+          "title": "Ecclesiastes Hebrew",
+          "book": "Ecclesiastes",
+          "language": "Hebrew",
+          "path": "sefaria_full/Tanakh/Tanakh/Writings/Ecclesiastes/Hebrew/merged.json"
+        },
+        {
+          "title": "Esther Hebrew",
+          "book": "Esther",
+          "language": "Hebrew",
+          "path": "sefaria_full/Tanakh/Tanakh/Writings/Esther/Hebrew/merged.json"
+        },
+        {
+          "title": "Exodus Hebrew",
+          "book": "Exodus",
+          "language": "Hebrew",
+          "path": "sefaria_full/Tanakh/Tanakh/Torah/Exodus/Hebrew/merged.json"
+        },
+        {
+          "title": "Ezekiel Hebrew",
+          "book": "Ezekiel",
+          "language": "Hebrew",
+          "path": "sefaria_full/Tanakh/Tanakh/Prophets/Ezekiel/Hebrew/merged.json"
+        },
+        {
+          "title": "Ezra Hebrew",
+          "book": "Ezra",
+          "language": "Hebrew",
+          "path": "sefaria_full/Tanakh/Tanakh/Writings/Ezra/Hebrew/merged.json"
+        },
+        {
+          "title": "Genesis Hebrew",
+          "book": "Genesis",
+          "language": "Hebrew",
+          "path": "sefaria_full/Tanakh/Tanakh/Torah/Genesis/Hebrew/merged.json"
+        },
+        {
+          "title": "Habakkuk Hebrew",
+          "book": "Habakkuk",
+          "language": "Hebrew",
+          "path": "sefaria_full/Tanakh/Tanakh/Prophets/Habakkuk/Hebrew/merged.json"
+        },
+        {
+          "title": "Haggai Hebrew",
+          "book": "Haggai",
+          "language": "Hebrew",
+          "path": "sefaria_full/Tanakh/Tanakh/Prophets/Haggai/Hebrew/merged.json"
+        },
+        {
+          "title": "Hosea Hebrew",
+          "book": "Hosea",
+          "language": "Hebrew",
+          "path": "sefaria_full/Tanakh/Tanakh/Prophets/Hosea/Hebrew/merged.json"
+        },
+        {
+          "title": "I Chronicles Hebrew",
+          "book": "I Chronicles",
+          "language": "Hebrew",
+          "path": "sefaria_full/Tanakh/Tanakh/Writings/I Chronicles/Hebrew/merged.json"
+        },
+        {
+          "title": "I Kings Hebrew",
+          "book": "I Kings",
+          "language": "Hebrew",
+          "path": "sefaria_full/Tanakh/Tanakh/Prophets/I Kings/Hebrew/merged.json"
+        },
+        {
+          "title": "I Samuel Hebrew",
+          "book": "I Samuel",
+          "language": "Hebrew",
+          "path": "sefaria_full/Tanakh/Tanakh/Prophets/I Samuel/Hebrew/merged.json"
+        },
+        {
+          "title": "II Chronicles Hebrew",
+          "book": "II Chronicles",
+          "language": "Hebrew",
+          "path": "sefaria_full/Tanakh/Tanakh/Writings/II Chronicles/Hebrew/merged.json"
+        },
+        {
+          "title": "II Kings Hebrew",
+          "book": "II Kings",
+          "language": "Hebrew",
+          "path": "sefaria_full/Tanakh/Tanakh/Prophets/II Kings/Hebrew/merged.json"
+        },
+        {
+          "title": "II Samuel Hebrew",
+          "book": "II Samuel",
+          "language": "Hebrew",
+          "path": "sefaria_full/Tanakh/Tanakh/Prophets/II Samuel/Hebrew/merged.json"
+        },
+        {
+          "title": "Isaiah Hebrew",
+          "book": "Isaiah",
+          "language": "Hebrew",
+          "path": "sefaria_full/Tanakh/Tanakh/Prophets/Isaiah/Hebrew/merged.json"
+        },
+        {
+          "title": "Jeremiah Hebrew",
+          "book": "Jeremiah",
+          "language": "Hebrew",
+          "path": "sefaria_full/Tanakh/Tanakh/Prophets/Jeremiah/Hebrew/merged.json"
+        },
+        {
+          "title": "Job Hebrew",
+          "book": "Job",
+          "language": "Hebrew",
+          "path": "sefaria_full/Tanakh/Tanakh/Writings/Job/Hebrew/merged.json"
+        },
+        {
+          "title": "Joel Hebrew",
+          "book": "Joel",
+          "language": "Hebrew",
+          "path": "sefaria_full/Tanakh/Tanakh/Prophets/Joel/Hebrew/merged.json"
+        },
+        {
+          "title": "Jonah Hebrew",
+          "book": "Jonah",
+          "language": "Hebrew",
+          "path": "sefaria_full/Tanakh/Tanakh/Prophets/Jonah/Hebrew/merged.json"
+        },
+        {
+          "title": "Joshua Hebrew",
+          "book": "Joshua",
+          "language": "Hebrew",
+          "path": "sefaria_full/Tanakh/Tanakh/Prophets/Joshua/Hebrew/merged.json"
+        },
+        {
+          "title": "Judges Hebrew",
+          "book": "Judges",
+          "language": "Hebrew",
+          "path": "sefaria_full/Tanakh/Tanakh/Prophets/Judges/Hebrew/merged.json"
+        },
+        {
+          "title": "Lamentations Hebrew",
+          "book": "Lamentations",
+          "language": "Hebrew",
+          "path": "sefaria_full/Tanakh/Tanakh/Writings/Lamentations/Hebrew/merged.json"
+        },
+        {
+          "title": "Leviticus Hebrew",
+          "book": "Leviticus",
+          "language": "Hebrew",
+          "path": "sefaria_full/Tanakh/Tanakh/Torah/Leviticus/Hebrew/merged.json"
+        },
+        {
+          "title": "Malachi Hebrew",
+          "book": "Malachi",
+          "language": "Hebrew",
+          "path": "sefaria_full/Tanakh/Tanakh/Prophets/Malachi/Hebrew/merged.json"
+        },
+        {
+          "title": "Micah Hebrew",
+          "book": "Micah",
+          "language": "Hebrew",
+          "path": "sefaria_full/Tanakh/Tanakh/Prophets/Micah/Hebrew/merged.json"
+        },
+        {
+          "title": "Nahum Hebrew",
+          "book": "Nahum",
+          "language": "Hebrew",
+          "path": "sefaria_full/Tanakh/Tanakh/Prophets/Nahum/Hebrew/merged.json"
+        },
+        {
+          "title": "Nehemiah Hebrew",
+          "book": "Nehemiah",
+          "language": "Hebrew",
+          "path": "sefaria_full/Tanakh/Tanakh/Writings/Nehemiah/Hebrew/merged.json"
+        },
+        {
+          "title": "Numbers Hebrew",
+          "book": "Numbers",
+          "language": "Hebrew",
+          "path": "sefaria_full/Tanakh/Tanakh/Torah/Numbers/Hebrew/merged.json"
+        },
+        {
+          "title": "Obadiah Hebrew",
+          "book": "Obadiah",
+          "language": "Hebrew",
+          "path": "sefaria_full/Tanakh/Tanakh/Prophets/Obadiah/Hebrew/merged.json"
+        },
+        {
+          "title": "Proverbs Hebrew",
+          "book": "Proverbs",
+          "language": "Hebrew",
+          "path": "sefaria_full/Tanakh/Tanakh/Writings/Proverbs/Hebrew/merged.json"
+        },
+        {
+          "title": "Psalms Hebrew",
+          "book": "Psalms",
+          "language": "Hebrew",
+          "path": "sefaria_full/Tanakh/Tanakh/Writings/Psalms/Hebrew/merged.json"
+        },
+        {
+          "title": "Ruth Hebrew",
+          "book": "Ruth",
+          "language": "Hebrew",
+          "path": "sefaria_full/Tanakh/Tanakh/Writings/Ruth/Hebrew/merged.json"
+        },
+        {
+          "title": "Song of Songs Hebrew",
+          "book": "Song of Songs",
+          "language": "Hebrew",
+          "path": "sefaria_full/Tanakh/Tanakh/Writings/Song of Songs/Hebrew/merged.json"
+        },
+        {
+          "title": "Zechariah Hebrew",
+          "book": "Zechariah",
+          "language": "Hebrew",
+          "path": "sefaria_full/Tanakh/Tanakh/Prophets/Zechariah/Hebrew/merged.json"
+        },
+        {
+          "title": "Zephaniah Hebrew",
+          "book": "Zephaniah",
+          "language": "Hebrew",
+          "path": "sefaria_full/Tanakh/Tanakh/Prophets/Zephaniah/Hebrew/merged.json"
+        }
+      ]
+    },
+    "Mishnah": {
+      "description": "Mishnah - Hebrew text",
+      "count": 63,
+      "books": [
+        {
+          "title": "Arakhin Mishnah Hebrew",
+          "book": "Arakhin",
+          "language": "Hebrew",
+          "path": "sefaria_full/Mishnah/Mishnah/Seder Kodashim/Mishnah Arakhin/Hebrew/merged.json"
+        },
+        {
+          "title": "Avodah Zarah Mishnah Hebrew",
+          "book": "Avodah Zarah",
+          "language": "Hebrew",
+          "path": "sefaria_full/Mishnah/Mishnah/Seder Nezikin/Mishnah Avodah Zarah/Hebrew/merged.json"
+        },
+        {
+          "title": "Bava Batra Mishnah Hebrew",
+          "book": "Bava Batra",
+          "language": "Hebrew",
+          "path": "sefaria_full/Mishnah/Mishnah/Seder Nezikin/Mishnah Bava Batra/Hebrew/merged.json"
+        },
+        {
+          "title": "Bava Kamma Mishnah Hebrew",
+          "book": "Bava Kamma",
+          "language": "Hebrew",
+          "path": "sefaria_full/Mishnah/Mishnah/Seder Nezikin/Mishnah Bava Kamma/Hebrew/merged.json"
+        },
+        {
+          "title": "Bava Metzia Mishnah Hebrew",
+          "book": "Bava Metzia",
+          "language": "Hebrew",
+          "path": "sefaria_full/Mishnah/Mishnah/Seder Nezikin/Mishnah Bava Metzia/Hebrew/merged.json"
+        },
+        {
+          "title": "Beitzah Mishnah Hebrew",
+          "book": "Beitzah",
+          "language": "Hebrew",
+          "path": "sefaria_full/Mishnah/Mishnah/Seder Moed/Mishnah Beitzah/Hebrew/merged.json"
+        },
+        {
+          "title": "Bekhorot Mishnah Hebrew",
+          "book": "Bekhorot",
+          "language": "Hebrew",
+          "path": "sefaria_full/Mishnah/Mishnah/Seder Kodashim/Mishnah Bekhorot/Hebrew/merged.json"
+        },
+        {
+          "title": "Berakhot Mishnah Hebrew",
+          "book": "Berakhot",
+          "language": "Hebrew",
+          "path": "sefaria_full/Mishnah/Mishnah/Seder Zeraim/Mishnah Berakhot/Hebrew/merged.json"
+        },
+        {
+          "title": "Bikkurim Mishnah Hebrew",
+          "book": "Bikkurim",
+          "language": "Hebrew",
+          "path": "sefaria_full/Mishnah/Mishnah/Seder Zeraim/Mishnah Bikkurim/Hebrew/merged.json"
+        },
+        {
+          "title": "Chagigah Mishnah Hebrew",
+          "book": "Chagigah",
+          "language": "Hebrew",
+          "path": "sefaria_full/Mishnah/Mishnah/Seder Moed/Mishnah Chagigah/Hebrew/merged.json"
+        },
+        {
+          "title": "Challah Mishnah Hebrew",
+          "book": "Challah",
+          "language": "Hebrew",
+          "path": "sefaria_full/Mishnah/Mishnah/Seder Zeraim/Mishnah Challah/Hebrew/merged.json"
+        },
+        {
+          "title": "Chullin Mishnah Hebrew",
+          "book": "Chullin",
+          "language": "Hebrew",
+          "path": "sefaria_full/Mishnah/Mishnah/Seder Kodashim/Mishnah Chullin/Hebrew/merged.json"
+        },
+        {
+          "title": "Demai Mishnah Hebrew",
+          "book": "Demai",
+          "language": "Hebrew",
+          "path": "sefaria_full/Mishnah/Mishnah/Seder Zeraim/Mishnah Demai/Hebrew/merged.json"
+        },
+        {
+          "title": "Eduyot Mishnah Hebrew",
+          "book": "Eduyot",
+          "language": "Hebrew",
+          "path": "sefaria_full/Mishnah/Mishnah/Seder Nezikin/Mishnah Eduyot/Hebrew/merged.json"
+        },
+        {
+          "title": "Eruvin Mishnah Hebrew",
+          "book": "Eruvin",
+          "language": "Hebrew",
+          "path": "sefaria_full/Mishnah/Mishnah/Seder Moed/Mishnah Eruvin/Hebrew/merged.json"
+        },
+        {
+          "title": "Gittin Mishnah Hebrew",
+          "book": "Gittin",
+          "language": "Hebrew",
+          "path": "sefaria_full/Mishnah/Mishnah/Seder Nashim/Mishnah Gittin/Hebrew/merged.json"
+        },
+        {
+          "title": "Horayot Mishnah Hebrew",
+          "book": "Horayot",
+          "language": "Hebrew",
+          "path": "sefaria_full/Mishnah/Mishnah/Seder Nezikin/Mishnah Horayot/Hebrew/merged.json"
+        },
+        {
+          "title": "Kelim Mishnah Hebrew",
+          "book": "Kelim",
+          "language": "Hebrew",
+          "path": "sefaria_full/Mishnah/Mishnah/Seder Tahorot/Mishnah Kelim/Hebrew/merged.json"
+        },
+        {
+          "title": "Keritot Mishnah Hebrew",
+          "book": "Keritot",
+          "language": "Hebrew",
+          "path": "sefaria_full/Mishnah/Mishnah/Seder Kodashim/Mishnah Keritot/Hebrew/merged.json"
+        },
+        {
+          "title": "Ketubot Mishnah Hebrew",
+          "book": "Ketubot",
+          "language": "Hebrew",
+          "path": "sefaria_full/Mishnah/Mishnah/Seder Nashim/Mishnah Ketubot/Hebrew/merged.json"
+        },
+        {
+          "title": "Kiddushin Mishnah Hebrew",
+          "book": "Kiddushin",
+          "language": "Hebrew",
+          "path": "sefaria_full/Mishnah/Mishnah/Seder Nashim/Mishnah Kiddushin/Hebrew/merged.json"
+        },
+        {
+          "title": "Kilayim Mishnah Hebrew",
+          "book": "Kilayim",
+          "language": "Hebrew",
+          "path": "sefaria_full/Mishnah/Mishnah/Seder Zeraim/Mishnah Kilayim/Hebrew/merged.json"
+        },
+        {
+          "title": "Kinnim Mishnah Hebrew",
+          "book": "Kinnim",
+          "language": "Hebrew",
+          "path": "sefaria_full/Mishnah/Mishnah/Seder Kodashim/Mishnah Kinnim/Hebrew/merged.json"
+        },
+        {
+          "title": "Maaser Sheni Mishnah Hebrew",
+          "book": "Maaser Sheni",
+          "language": "Hebrew",
+          "path": "sefaria_full/Mishnah/Mishnah/Seder Zeraim/Mishnah Maaser Sheni/Hebrew/merged.json"
+        },
+        {
+          "title": "Maasrot Mishnah Hebrew",
+          "book": "Maasrot",
+          "language": "Hebrew",
+          "path": "sefaria_full/Mishnah/Mishnah/Seder Zeraim/Mishnah Maasrot/Hebrew/merged.json"
+        },
+        {
+          "title": "Makhshirin Mishnah Hebrew",
+          "book": "Makhshirin",
+          "language": "Hebrew",
+          "path": "sefaria_full/Mishnah/Mishnah/Seder Tahorot/Mishnah Makhshirin/Hebrew/merged.json"
+        },
+        {
+          "title": "Makkot Mishnah Hebrew",
+          "book": "Makkot",
+          "language": "Hebrew",
+          "path": "sefaria_full/Mishnah/Mishnah/Seder Nezikin/Mishnah Makkot/Hebrew/merged.json"
+        },
+        {
+          "title": "Megillah Mishnah Hebrew",
+          "book": "Megillah",
+          "language": "Hebrew",
+          "path": "sefaria_full/Mishnah/Mishnah/Seder Moed/Mishnah Megillah/Hebrew/merged.json"
+        },
+        {
+          "title": "Meilah Mishnah Hebrew",
+          "book": "Meilah",
+          "language": "Hebrew",
+          "path": "sefaria_full/Mishnah/Mishnah/Seder Kodashim/Mishnah Meilah/Hebrew/merged.json"
+        },
+        {
+          "title": "Menachot Mishnah Hebrew",
+          "book": "Menachot",
+          "language": "Hebrew",
+          "path": "sefaria_full/Mishnah/Mishnah/Seder Kodashim/Mishnah Menachot/Hebrew/merged.json"
+        },
+        {
+          "title": "Middot Mishnah Hebrew",
+          "book": "Middot",
+          "language": "Hebrew",
+          "path": "sefaria_full/Mishnah/Mishnah/Seder Kodashim/Mishnah Middot/Hebrew/merged.json"
+        },
+        {
+          "title": "Mikvaot Mishnah Hebrew",
+          "book": "Mikvaot",
+          "language": "Hebrew",
+          "path": "sefaria_full/Mishnah/Mishnah/Seder Tahorot/Mishnah Mikvaot/Hebrew/merged.json"
+        },
+        {
+          "title": "Moed Katan Mishnah Hebrew",
+          "book": "Moed Katan",
+          "language": "Hebrew",
+          "path": "sefaria_full/Mishnah/Mishnah/Seder Moed/Mishnah Moed Katan/Hebrew/merged.json"
+        },
+        {
+          "title": "Nazir Mishnah Hebrew",
+          "book": "Nazir",
+          "language": "Hebrew",
+          "path": "sefaria_full/Mishnah/Mishnah/Seder Nashim/Mishnah Nazir/Hebrew/merged.json"
+        },
+        {
+          "title": "Nedarim Mishnah Hebrew",
+          "book": "Nedarim",
+          "language": "Hebrew",
+          "path": "sefaria_full/Mishnah/Mishnah/Seder Nashim/Mishnah Nedarim/Hebrew/merged.json"
+        },
+        {
+          "title": "Negaim Mishnah Hebrew",
+          "book": "Negaim",
+          "language": "Hebrew",
+          "path": "sefaria_full/Mishnah/Mishnah/Seder Tahorot/Mishnah Negaim/Hebrew/merged.json"
+        },
+        {
+          "title": "Niddah Mishnah Hebrew",
+          "book": "Niddah",
+          "language": "Hebrew",
+          "path": "sefaria_full/Mishnah/Mishnah/Seder Tahorot/Mishnah Niddah/Hebrew/merged.json"
+        },
+        {
+          "title": "Oholot Mishnah Hebrew",
+          "book": "Oholot",
+          "language": "Hebrew",
+          "path": "sefaria_full/Mishnah/Mishnah/Seder Tahorot/Mishnah Oholot/Hebrew/merged.json"
+        },
+        {
+          "title": "Oktzin Mishnah Hebrew",
+          "book": "Oktzin",
+          "language": "Hebrew",
+          "path": "sefaria_full/Mishnah/Mishnah/Seder Tahorot/Mishnah Oktzin/Hebrew/merged.json"
+        },
+        {
+          "title": "Orlah Mishnah Hebrew",
+          "book": "Orlah",
+          "language": "Hebrew",
+          "path": "sefaria_full/Mishnah/Mishnah/Seder Zeraim/Mishnah Orlah/Hebrew/merged.json"
+        },
+        {
+          "title": "Parah Mishnah Hebrew",
+          "book": "Parah",
+          "language": "Hebrew",
+          "path": "sefaria_full/Mishnah/Mishnah/Seder Tahorot/Mishnah Parah/Hebrew/merged.json"
+        },
+        {
+          "title": "Peah Mishnah Hebrew",
+          "book": "Peah",
+          "language": "Hebrew",
+          "path": "sefaria_full/Mishnah/Mishnah/Seder Zeraim/Mishnah Peah/Hebrew/merged.json"
+        },
+        {
+          "title": "Pesachim Mishnah Hebrew",
+          "book": "Pesachim",
+          "language": "Hebrew",
+          "path": "sefaria_full/Mishnah/Mishnah/Seder Moed/Mishnah Pesachim/Hebrew/merged.json"
+        },
+        {
+          "title": "Pirkei Avot Mishnah Hebrew",
+          "book": "Pirkei Avot",
+          "language": "Hebrew",
+          "path": "sefaria_full/Mishnah/Mishnah/Seder Nezikin/Pirkei Avot/Hebrew/merged.json"
+        },
+        {
+          "title": "Rosh Hashanah Mishnah Hebrew",
+          "book": "Rosh Hashanah",
+          "language": "Hebrew",
+          "path": "sefaria_full/Mishnah/Mishnah/Seder Moed/Mishnah Rosh Hashanah/Hebrew/merged.json"
+        },
+        {
+          "title": "Sanhedrin Mishnah Hebrew",
+          "book": "Sanhedrin",
+          "language": "Hebrew",
+          "path": "sefaria_full/Mishnah/Mishnah/Seder Nezikin/Mishnah Sanhedrin/Hebrew/merged.json"
+        },
+        {
+          "title": "Shabbat Mishnah Hebrew",
+          "book": "Shabbat",
+          "language": "Hebrew",
+          "path": "sefaria_full/Mishnah/Mishnah/Seder Moed/Mishnah Shabbat/Hebrew/merged.json"
+        },
+        {
+          "title": "Shekalim Mishnah Hebrew",
+          "book": "Shekalim",
+          "language": "Hebrew",
+          "path": "sefaria_full/Mishnah/Mishnah/Seder Moed/Mishnah Shekalim/Hebrew/merged.json"
+        },
+        {
+          "title": "Sheviit Mishnah Hebrew",
+          "book": "Sheviit",
+          "language": "Hebrew",
+          "path": "sefaria_full/Mishnah/Mishnah/Seder Zeraim/Mishnah Sheviit/Hebrew/merged.json"
+        },
+        {
+          "title": "Shevuot Mishnah Hebrew",
+          "book": "Shevuot",
+          "language": "Hebrew",
+          "path": "sefaria_full/Mishnah/Mishnah/Seder Nezikin/Mishnah Shevuot/Hebrew/merged.json"
+        },
+        {
+          "title": "Sotah Mishnah Hebrew",
+          "book": "Sotah",
+          "language": "Hebrew",
+          "path": "sefaria_full/Mishnah/Mishnah/Seder Nashim/Mishnah Sotah/Hebrew/merged.json"
+        },
+        {
+          "title": "Sukkah Mishnah Hebrew",
+          "book": "Sukkah",
+          "language": "Hebrew",
+          "path": "sefaria_full/Mishnah/Mishnah/Seder Moed/Mishnah Sukkah/Hebrew/merged.json"
+        },
+        {
+          "title": "Ta'anit Mishnah Hebrew",
+          "book": "Ta'anit",
+          "language": "Hebrew",
+          "path": "sefaria_full/Mishnah/Mishnah/Seder Moed/Mishnah Ta'anit/Hebrew/merged.json"
+        },
+        {
+          "title": "Tahorot Mishnah Hebrew",
+          "book": "Tahorot",
+          "language": "Hebrew",
+          "path": "sefaria_full/Mishnah/Mishnah/Seder Tahorot/Mishnah Tahorot/Hebrew/merged.json"
+        },
+        {
+          "title": "Tamid Mishnah Hebrew",
+          "book": "Tamid",
+          "language": "Hebrew",
+          "path": "sefaria_full/Mishnah/Mishnah/Seder Kodashim/Mishnah Tamid/Hebrew/merged.json"
+        },
+        {
+          "title": "Temurah Mishnah Hebrew",
+          "book": "Temurah",
+          "language": "Hebrew",
+          "path": "sefaria_full/Mishnah/Mishnah/Seder Kodashim/Mishnah Temurah/Hebrew/merged.json"
+        },
+        {
+          "title": "Terumot Mishnah Hebrew",
+          "book": "Terumot",
+          "language": "Hebrew",
+          "path": "sefaria_full/Mishnah/Mishnah/Seder Zeraim/Mishnah Terumot/Hebrew/merged.json"
+        },
+        {
+          "title": "Tevul Yom Mishnah Hebrew",
+          "book": "Tevul Yom",
+          "language": "Hebrew",
+          "path": "sefaria_full/Mishnah/Mishnah/Seder Tahorot/Mishnah Tevul Yom/Hebrew/merged.json"
+        },
+        {
+          "title": "Yadayim Mishnah Hebrew",
+          "book": "Yadayim",
+          "language": "Hebrew",
+          "path": "sefaria_full/Mishnah/Mishnah/Seder Tahorot/Mishnah Yadayim/Hebrew/merged.json"
+        },
+        {
+          "title": "Yevamot Mishnah Hebrew",
+          "book": "Yevamot",
+          "language": "Hebrew",
+          "path": "sefaria_full/Mishnah/Mishnah/Seder Nashim/Mishnah Yevamot/Hebrew/merged.json"
+        },
+        {
+          "title": "Yoma Mishnah Hebrew",
+          "book": "Yoma",
+          "language": "Hebrew",
+          "path": "sefaria_full/Mishnah/Mishnah/Seder Moed/Mishnah Yoma/Hebrew/merged.json"
+        },
+        {
+          "title": "Zavim Mishnah Hebrew",
+          "book": "Zavim",
+          "language": "Hebrew",
+          "path": "sefaria_full/Mishnah/Mishnah/Seder Tahorot/Mishnah Zavim/Hebrew/merged.json"
+        },
+        {
+          "title": "Zevachim Mishnah Hebrew",
+          "book": "Zevachim",
+          "language": "Hebrew",
+          "path": "sefaria_full/Mishnah/Mishnah/Seder Kodashim/Mishnah Zevachim/Hebrew/merged.json"
+        }
+      ]
+    },
+    "Gemara": {
+      "description": "Babylonian Talmud (Bavli) - Hebrew text",
+      "count": 37,
+      "books": [
+        {
+          "title": "Arakhin Gemara Hebrew",
+          "book": "Arakhin",
+          "language": "Hebrew",
+          "path": "sefaria_full/Bavli/Talmud/Bavli/Seder Kodashim/Arakhin/Hebrew/merged.json"
+        },
+        {
+          "title": "Avodah Zarah Gemara Hebrew",
+          "book": "Avodah Zarah",
+          "language": "Hebrew",
+          "path": "sefaria_full/Bavli/Talmud/Bavli/Seder Nezikin/Avodah Zarah/Hebrew/merged.json"
+        },
+        {
+          "title": "Bava Batra Gemara Hebrew",
+          "book": "Bava Batra",
+          "language": "Hebrew",
+          "path": "sefaria_full/Bavli/Talmud/Bavli/Seder Nezikin/Bava Batra/Hebrew/merged.json"
+        },
+        {
+          "title": "Bava Kamma Gemara Hebrew",
+          "book": "Bava Kamma",
+          "language": "Hebrew",
+          "path": "sefaria_full/Bavli/Talmud/Bavli/Seder Nezikin/Bava Kamma/Hebrew/merged.json"
+        },
+        {
+          "title": "Bava Metzia Gemara Hebrew",
+          "book": "Bava Metzia",
+          "language": "Hebrew",
+          "path": "sefaria_full/Bavli/Talmud/Bavli/Seder Nezikin/Bava Metzia/Hebrew/merged.json"
+        },
+        {
+          "title": "Beitzah Gemara Hebrew",
+          "book": "Beitzah",
+          "language": "Hebrew",
+          "path": "sefaria_full/Bavli/Talmud/Bavli/Seder Moed/Beitzah/Hebrew/merged.json"
+        },
+        {
+          "title": "Bekhorot Gemara Hebrew",
+          "book": "Bekhorot",
+          "language": "Hebrew",
+          "path": "sefaria_full/Bavli/Talmud/Bavli/Seder Kodashim/Bekhorot/Hebrew/merged.json"
+        },
+        {
+          "title": "Berakhot Gemara Hebrew",
+          "book": "Berakhot",
+          "language": "Hebrew",
+          "path": "sefaria_full/Bavli/Talmud/Bavli/Seder Zeraim/Berakhot/Hebrew/merged.json"
+        },
+        {
+          "title": "Chagigah Gemara Hebrew",
+          "book": "Chagigah",
+          "language": "Hebrew",
+          "path": "sefaria_full/Bavli/Talmud/Bavli/Seder Moed/Chagigah/Hebrew/merged.json"
+        },
+        {
+          "title": "Chullin Gemara Hebrew",
+          "book": "Chullin",
+          "language": "Hebrew",
+          "path": "sefaria_full/Bavli/Talmud/Bavli/Seder Kodashim/Chullin/Hebrew/merged.json"
+        },
+        {
+          "title": "Eruvin Gemara Hebrew",
+          "book": "Eruvin",
+          "language": "Hebrew",
+          "path": "sefaria_full/Bavli/Talmud/Bavli/Seder Moed/Eruvin/Hebrew/merged.json"
+        },
+        {
+          "title": "Gittin Gemara Hebrew",
+          "book": "Gittin",
+          "language": "Hebrew",
+          "path": "sefaria_full/Bavli/Talmud/Bavli/Seder Nashim/Gittin/Hebrew/merged.json"
+        },
+        {
+          "title": "Horayot Gemara Hebrew",
+          "book": "Horayot",
+          "language": "Hebrew",
+          "path": "sefaria_full/Bavli/Talmud/Bavli/Seder Nezikin/Horayot/Hebrew/merged.json"
+        },
+        {
+          "title": "Keritot Gemara Hebrew",
+          "book": "Keritot",
+          "language": "Hebrew",
+          "path": "sefaria_full/Bavli/Talmud/Bavli/Seder Kodashim/Keritot/Hebrew/merged.json"
+        },
+        {
+          "title": "Ketubot Gemara Hebrew",
+          "book": "Ketubot",
+          "language": "Hebrew",
+          "path": "sefaria_full/Bavli/Talmud/Bavli/Seder Nashim/Ketubot/Hebrew/merged.json"
+        },
+        {
+          "title": "Kiddushin Gemara Hebrew",
+          "book": "Kiddushin",
+          "language": "Hebrew",
+          "path": "sefaria_full/Bavli/Talmud/Bavli/Seder Nashim/Kiddushin/Hebrew/merged.json"
+        },
+        {
+          "title": "Makkot Gemara Hebrew",
+          "book": "Makkot",
+          "language": "Hebrew",
+          "path": "sefaria_full/Bavli/Talmud/Bavli/Seder Nezikin/Makkot/Hebrew/merged.json"
+        },
+        {
+          "title": "Megillah Gemara Hebrew",
+          "book": "Megillah",
+          "language": "Hebrew",
+          "path": "sefaria_full/Bavli/Talmud/Bavli/Seder Moed/Megillah/Hebrew/merged.json"
+        },
+        {
+          "title": "Meilah Gemara Hebrew",
+          "book": "Meilah",
+          "language": "Hebrew",
+          "path": "sefaria_full/Bavli/Talmud/Bavli/Seder Kodashim/Meilah/Hebrew/merged.json"
+        },
+        {
+          "title": "Menachot Gemara Hebrew",
+          "book": "Menachot",
+          "language": "Hebrew",
+          "path": "sefaria_full/Bavli/Talmud/Bavli/Seder Kodashim/Menachot/Hebrew/merged.json"
+        },
+        {
+          "title": "Moed Katan Gemara Hebrew",
+          "book": "Moed Katan",
+          "language": "Hebrew",
+          "path": "sefaria_full/Bavli/Talmud/Bavli/Seder Moed/Moed Katan/Hebrew/merged.json"
+        },
+        {
+          "title": "Nazir Gemara Hebrew",
+          "book": "Nazir",
+          "language": "Hebrew",
+          "path": "sefaria_full/Bavli/Talmud/Bavli/Seder Nashim/Nazir/Hebrew/merged.json"
+        },
+        {
+          "title": "Nedarim Gemara Hebrew",
+          "book": "Nedarim",
+          "language": "Hebrew",
+          "path": "sefaria_full/Bavli/Talmud/Bavli/Seder Nashim/Nedarim/Hebrew/merged.json"
+        },
+        {
+          "title": "Niddah Gemara Hebrew",
+          "book": "Niddah",
+          "language": "Hebrew",
+          "path": "sefaria_full/Bavli/Talmud/Bavli/Seder Tahorot/Niddah/Hebrew/merged.json"
+        },
+        {
+          "title": "Pesachim Gemara Hebrew",
+          "book": "Pesachim",
+          "language": "Hebrew",
+          "path": "sefaria_full/Bavli/Talmud/Bavli/Seder Moed/Pesachim/Hebrew/merged.json"
+        },
+        {
+          "title": "Rosh Hashanah Gemara Hebrew",
+          "book": "Rosh Hashanah",
+          "language": "Hebrew",
+          "path": "sefaria_full/Bavli/Talmud/Bavli/Seder Moed/Rosh Hashanah/Hebrew/merged.json"
+        },
+        {
+          "title": "Sanhedrin Gemara Hebrew",
+          "book": "Sanhedrin",
+          "language": "Hebrew",
+          "path": "sefaria_full/Bavli/Talmud/Bavli/Seder Nezikin/Sanhedrin/Hebrew/merged.json"
+        },
+        {
+          "title": "Shabbat Gemara Hebrew",
+          "book": "Shabbat",
+          "language": "Hebrew",
+          "path": "sefaria_full/Bavli/Talmud/Bavli/Seder Moed/Shabbat/Hebrew/merged.json"
+        },
+        {
+          "title": "Shevuot Gemara Hebrew",
+          "book": "Shevuot",
+          "language": "Hebrew",
+          "path": "sefaria_full/Bavli/Talmud/Bavli/Seder Nezikin/Shevuot/Hebrew/merged.json"
+        },
+        {
+          "title": "Sotah Gemara Hebrew",
+          "book": "Sotah",
+          "language": "Hebrew",
+          "path": "sefaria_full/Bavli/Talmud/Bavli/Seder Nashim/Sotah/Hebrew/merged.json"
+        },
+        {
+          "title": "Sukkah Gemara Hebrew",
+          "book": "Sukkah",
+          "language": "Hebrew",
+          "path": "sefaria_full/Bavli/Talmud/Bavli/Seder Moed/Sukkah/Hebrew/merged.json"
+        },
+        {
+          "title": "Taanit Gemara Hebrew",
+          "book": "Taanit",
+          "language": "Hebrew",
+          "path": "sefaria_full/Bavli/Talmud/Bavli/Seder Moed/Taanit/Hebrew/merged.json"
+        },
+        {
+          "title": "Tamid Gemara Hebrew",
+          "book": "Tamid",
+          "language": "Hebrew",
+          "path": "sefaria_full/Bavli/Talmud/Bavli/Seder Kodashim/Tamid/Hebrew/merged.json"
+        },
+        {
+          "title": "Temurah Gemara Hebrew",
+          "book": "Temurah",
+          "language": "Hebrew",
+          "path": "sefaria_full/Bavli/Talmud/Bavli/Seder Kodashim/Temurah/Hebrew/merged.json"
+        },
+        {
+          "title": "Yevamot Gemara Hebrew",
+          "book": "Yevamot",
+          "language": "Hebrew",
+          "path": "sefaria_full/Bavli/Talmud/Bavli/Seder Nashim/Yevamot/Hebrew/merged.json"
+        },
+        {
+          "title": "Yoma Gemara Hebrew",
+          "book": "Yoma",
+          "language": "Hebrew",
+          "path": "sefaria_full/Bavli/Talmud/Bavli/Seder Moed/Yoma/Hebrew/merged.json"
+        },
+        {
+          "title": "Zevachim Gemara Hebrew",
+          "book": "Zevachim",
+          "language": "Hebrew",
+          "path": "sefaria_full/Bavli/Talmud/Bavli/Seder Kodashim/Zevachim/Hebrew/merged.json"
+        }
+      ]
+    },
+    "Siddur": {
+      "description": "Siddurim (prayer books) - Hebrew text",
+      "count": 3,
+      "books": [
+        {
+          "title": "Siddur Ashkenaz Hebrew",
+          "book": "Siddur Ashkenaz",
+          "language": "Hebrew",
+          "path": "sefaria_full/Siddur/Liturgy/Siddur/Siddur Ashkenaz/Hebrew/merged.json"
+        },
+        {
+          "title": "Siddur Edot HaMizrach Hebrew",
+          "book": "Siddur Edot HaMizrach",
+          "language": "Hebrew",
+          "path": "sefaria_full/Siddur/Liturgy/Siddur/Siddur Edot HaMizrach/Hebrew/merged.json"
+        },
+        {
+          "title": "Siddur Sefard Hebrew",
+          "book": "Siddur Sefard",
+          "language": "Hebrew",
+          "path": "sefaria_full/Siddur/Liturgy/Siddur/Siddur Sefard/Hebrew/merged.json"
+        }
+      ]
+    },
+    "Commentaries": {
+      "description": "Rashi on Tanakh (English & Hebrew), Rashi on Bavli (Hebrew), Tosafot on Bavli (Hebrew)",
+      "count": 150,
+      "books": [
+        {
+          "title": "Amos Rashi English",
+          "book": "Amos",
+          "type": "Rashi",
+          "language": "English",
+          "path": "sefaria_full/Rashi on Tanakh/Tanakh/Rishonim on Tanakh/Rashi/Prophets/Rashi on Amos/English/merged.json",
+          "base": "Tanakh"
+        },
+        {
+          "title": "Amos Rashi Hebrew",
+          "book": "Amos",
+          "type": "Rashi",
+          "language": "Hebrew",
+          "path": "sefaria_full/Rashi on Tanakh/Tanakh/Rishonim on Tanakh/Rashi/Prophets/Rashi on Amos/Hebrew/merged.json",
+          "base": "Tanakh"
+        },
+        {
+          "title": "Arakhin Rashi Hebrew",
+          "book": "Arakhin",
+          "type": "Rashi",
+          "language": "Hebrew",
+          "path": "sefaria_full/Rashi on Bavli/Talmud/Bavli/Rishonim on Talmud/Rashi/Seder Kodashim/Rashi on Arakhin/Hebrew/merged.json",
+          "base": "Bavli"
+        },
+        {
+          "title": "Arakhin Tosafot Hebrew",
+          "book": "Arakhin",
+          "type": "Tosafot",
+          "language": "Hebrew",
+          "path": "sefaria_full/Tosafot on Bavli/Talmud/Bavli/Rishonim on Talmud/Tosafot/Seder Kodashim/Tosafot on Arakhin/Hebrew/merged.json",
+          "base": "Bavli"
+        },
+        {
+          "title": "Avodah Zarah Rashi Hebrew",
+          "book": "Avodah Zarah",
+          "type": "Rashi",
+          "language": "Hebrew",
+          "path": "sefaria_full/Rashi on Bavli/Talmud/Bavli/Rishonim on Talmud/Rashi/Seder Nezikin/Rashi on Avodah Zarah/Hebrew/merged.json",
+          "base": "Bavli"
+        },
+        {
+          "title": "Avodah Zarah Tosafot Hebrew",
+          "book": "Avodah Zarah",
+          "type": "Tosafot",
+          "language": "Hebrew",
+          "path": "sefaria_full/Tosafot on Bavli/Talmud/Bavli/Rishonim on Talmud/Tosafot/Seder Nezikin/Tosafot on Avodah Zarah/Hebrew/merged.json",
+          "base": "Bavli"
+        },
+        {
+          "title": "Bava Batra Rashi Hebrew",
+          "book": "Bava Batra",
+          "type": "Rashi",
+          "language": "Hebrew",
+          "path": "sefaria_full/Rashi on Bavli/Talmud/Bavli/Rishonim on Talmud/Rashi/Seder Nezikin/Rashi on Bava Batra/Hebrew/merged.json",
+          "base": "Bavli"
+        },
+        {
+          "title": "Bava Batra Tosafot Hebrew",
+          "book": "Bava Batra",
+          "type": "Tosafot",
+          "language": "Hebrew",
+          "path": "sefaria_full/Tosafot on Bavli/Talmud/Bavli/Rishonim on Talmud/Tosafot/Seder Nezikin/Tosafot on Bava Batra/Hebrew/merged.json",
+          "base": "Bavli"
+        },
+        {
+          "title": "Bava Kamma Rashi Hebrew",
+          "book": "Bava Kamma",
+          "type": "Rashi",
+          "language": "Hebrew",
+          "path": "sefaria_full/Rashi on Bavli/Talmud/Bavli/Rishonim on Talmud/Rashi/Seder Nezikin/Rashi on Bava Kamma/Hebrew/merged.json",
+          "base": "Bavli"
+        },
+        {
+          "title": "Bava Kamma Tosafot Hebrew",
+          "book": "Bava Kamma",
+          "type": "Tosafot",
+          "language": "Hebrew",
+          "path": "sefaria_full/Tosafot on Bavli/Talmud/Bavli/Rishonim on Talmud/Tosafot/Seder Nezikin/Tosafot on Bava Kamma/Hebrew/merged.json",
+          "base": "Bavli"
+        },
+        {
+          "title": "Bava Metzia Rashi Hebrew",
+          "book": "Bava Metzia",
+          "type": "Rashi",
+          "language": "Hebrew",
+          "path": "sefaria_full/Rashi on Bavli/Talmud/Bavli/Rishonim on Talmud/Rashi/Seder Nezikin/Rashi on Bava Metzia/Hebrew/merged.json",
+          "base": "Bavli"
+        },
+        {
+          "title": "Bava Metzia Tosafot Hebrew",
+          "book": "Bava Metzia",
+          "type": "Tosafot",
+          "language": "Hebrew",
+          "path": "sefaria_full/Tosafot on Bavli/Talmud/Bavli/Rishonim on Talmud/Tosafot/Seder Nezikin/Tosafot on Bava Metzia/Hebrew/merged.json",
+          "base": "Bavli"
+        },
+        {
+          "title": "Beitzah Rashi Hebrew",
+          "book": "Beitzah",
+          "type": "Rashi",
+          "language": "Hebrew",
+          "path": "sefaria_full/Rashi on Bavli/Talmud/Bavli/Rishonim on Talmud/Rashi/Seder Moed/Rashi on Beitzah/Hebrew/merged.json",
+          "base": "Bavli"
+        },
+        {
+          "title": "Beitzah Tosafot Hebrew",
+          "book": "Beitzah",
+          "type": "Tosafot",
+          "language": "Hebrew",
+          "path": "sefaria_full/Tosafot on Bavli/Talmud/Bavli/Rishonim on Talmud/Tosafot/Seder Moed/Tosafot on Beitzah/Hebrew/merged.json",
+          "base": "Bavli"
+        },
+        {
+          "title": "Bekhorot Rashi Hebrew",
+          "book": "Bekhorot",
+          "type": "Rashi",
+          "language": "Hebrew",
+          "path": "sefaria_full/Rashi on Bavli/Talmud/Bavli/Rishonim on Talmud/Rashi/Seder Kodashim/Rashi on Bekhorot/Hebrew/merged.json",
+          "base": "Bavli"
+        },
+        {
+          "title": "Bekhorot Tosafot Hebrew",
+          "book": "Bekhorot",
+          "type": "Tosafot",
+          "language": "Hebrew",
+          "path": "sefaria_full/Tosafot on Bavli/Talmud/Bavli/Rishonim on Talmud/Tosafot/Seder Kodashim/Tosafot on Bekhorot/Hebrew/merged.json",
+          "base": "Bavli"
+        },
+        {
+          "title": "Berakhot Rashi Hebrew",
+          "book": "Berakhot",
+          "type": "Rashi",
+          "language": "Hebrew",
+          "path": "sefaria_full/Rashi on Bavli/Talmud/Bavli/Rishonim on Talmud/Rashi/Seder Zeraim/Rashi on Berakhot/Hebrew/merged.json",
+          "base": "Bavli"
+        },
+        {
+          "title": "Berakhot Tosafot Hebrew",
+          "book": "Berakhot",
+          "type": "Tosafot",
+          "language": "Hebrew",
+          "path": "sefaria_full/Tosafot on Bavli/Talmud/Bavli/Rishonim on Talmud/Tosafot/Seder Zeraim/Tosafot on Berakhot/Hebrew/merged.json",
+          "base": "Bavli"
+        },
+        {
+          "title": "Chagigah Rashi Hebrew",
+          "book": "Chagigah",
+          "type": "Rashi",
+          "language": "Hebrew",
+          "path": "sefaria_full/Rashi on Bavli/Talmud/Bavli/Rishonim on Talmud/Rashi/Seder Moed/Rashi on Chagigah/Hebrew/merged.json",
+          "base": "Bavli"
+        },
+        {
+          "title": "Chagigah Tosafot Hebrew",
+          "book": "Chagigah",
+          "type": "Tosafot",
+          "language": "Hebrew",
+          "path": "sefaria_full/Tosafot on Bavli/Talmud/Bavli/Rishonim on Talmud/Tosafot/Seder Moed/Tosafot on Chagigah/Hebrew/merged.json",
+          "base": "Bavli"
+        },
+        {
+          "title": "Chullin Rashi Hebrew",
+          "book": "Chullin",
+          "type": "Rashi",
+          "language": "Hebrew",
+          "path": "sefaria_full/Rashi on Bavli/Talmud/Bavli/Rishonim on Talmud/Rashi/Seder Kodashim/Rashi on Chullin/Hebrew/merged.json",
+          "base": "Bavli"
+        },
+        {
+          "title": "Chullin Tosafot Hebrew",
+          "book": "Chullin",
+          "type": "Tosafot",
+          "language": "Hebrew",
+          "path": "sefaria_full/Tosafot on Bavli/Talmud/Bavli/Rishonim on Talmud/Tosafot/Seder Kodashim/Tosafot on Chullin/Hebrew/merged.json",
+          "base": "Bavli"
+        },
+        {
+          "title": "Daniel Rashi English",
+          "book": "Daniel",
+          "type": "Rashi",
+          "language": "English",
+          "path": "sefaria_full/Rashi on Tanakh/Tanakh/Rishonim on Tanakh/Rashi/Writings/Rashi on Daniel/English/merged.json",
+          "base": "Tanakh"
+        },
+        {
+          "title": "Daniel Rashi Hebrew",
+          "book": "Daniel",
+          "type": "Rashi",
+          "language": "Hebrew",
+          "path": "sefaria_full/Rashi on Tanakh/Tanakh/Rishonim on Tanakh/Rashi/Writings/Rashi on Daniel/Hebrew/merged.json",
+          "base": "Tanakh"
+        },
+        {
+          "title": "Deuteronomy Rashi English",
+          "book": "Deuteronomy",
+          "type": "Rashi",
+          "language": "English",
+          "path": "sefaria_full/Rashi on Tanakh/Tanakh/Rishonim on Tanakh/Rashi/Torah/Rashi on Deuteronomy/English/merged.json",
+          "base": "Tanakh"
+        },
+        {
+          "title": "Deuteronomy Rashi Hebrew",
+          "book": "Deuteronomy",
+          "type": "Rashi",
+          "language": "Hebrew",
+          "path": "sefaria_full/Rashi on Tanakh/Tanakh/Rishonim on Tanakh/Rashi/Torah/Rashi on Deuteronomy/Hebrew/merged.json",
+          "base": "Tanakh"
+        },
+        {
+          "title": "Ecclesiastes Rashi English",
+          "book": "Ecclesiastes",
+          "type": "Rashi",
+          "language": "English",
+          "path": "sefaria_full/Rashi on Tanakh/Tanakh/Rishonim on Tanakh/Rashi/Writings/Rashi on Ecclesiastes/English/merged.json",
+          "base": "Tanakh"
+        },
+        {
+          "title": "Ecclesiastes Rashi Hebrew",
+          "book": "Ecclesiastes",
+          "type": "Rashi",
+          "language": "Hebrew",
+          "path": "sefaria_full/Rashi on Tanakh/Tanakh/Rishonim on Tanakh/Rashi/Writings/Rashi on Ecclesiastes/Hebrew/merged.json",
+          "base": "Tanakh"
+        },
+        {
+          "title": "Eruvin Rashi Hebrew",
+          "book": "Eruvin",
+          "type": "Rashi",
+          "language": "Hebrew",
+          "path": "sefaria_full/Rashi on Bavli/Talmud/Bavli/Rishonim on Talmud/Rashi/Seder Moed/Rashi on Eruvin/Hebrew/merged.json",
+          "base": "Bavli"
+        },
+        {
+          "title": "Eruvin Tosafot Hebrew",
+          "book": "Eruvin",
+          "type": "Tosafot",
+          "language": "Hebrew",
+          "path": "sefaria_full/Tosafot on Bavli/Talmud/Bavli/Rishonim on Talmud/Tosafot/Seder Moed/Tosafot on Eruvin/Hebrew/merged.json",
+          "base": "Bavli"
+        },
+        {
+          "title": "Esther Rashi English",
+          "book": "Esther",
+          "type": "Rashi",
+          "language": "English",
+          "path": "sefaria_full/Rashi on Tanakh/Tanakh/Rishonim on Tanakh/Rashi/Writings/Rashi on Esther/English/merged.json",
+          "base": "Tanakh"
+        },
+        {
+          "title": "Esther Rashi Hebrew",
+          "book": "Esther",
+          "type": "Rashi",
+          "language": "Hebrew",
+          "path": "sefaria_full/Rashi on Tanakh/Tanakh/Rishonim on Tanakh/Rashi/Writings/Rashi on Esther/Hebrew/merged.json",
+          "base": "Tanakh"
+        },
+        {
+          "title": "Exodus Rashi English",
+          "book": "Exodus",
+          "type": "Rashi",
+          "language": "English",
+          "path": "sefaria_full/Rashi on Tanakh/Tanakh/Rishonim on Tanakh/Rashi/Torah/Rashi on Exodus/English/merged.json",
+          "base": "Tanakh"
+        },
+        {
+          "title": "Exodus Rashi Hebrew",
+          "book": "Exodus",
+          "type": "Rashi",
+          "language": "Hebrew",
+          "path": "sefaria_full/Rashi on Tanakh/Tanakh/Rishonim on Tanakh/Rashi/Torah/Rashi on Exodus/Hebrew/merged.json",
+          "base": "Tanakh"
+        },
+        {
+          "title": "Ezekiel Rashi English",
+          "book": "Ezekiel",
+          "type": "Rashi",
+          "language": "English",
+          "path": "sefaria_full/Rashi on Tanakh/Tanakh/Rishonim on Tanakh/Rashi/Prophets/Rashi on Ezekiel/English/merged.json",
+          "base": "Tanakh"
+        },
+        {
+          "title": "Ezekiel Rashi Hebrew",
+          "book": "Ezekiel",
+          "type": "Rashi",
+          "language": "Hebrew",
+          "path": "sefaria_full/Rashi on Tanakh/Tanakh/Rishonim on Tanakh/Rashi/Prophets/Rashi on Ezekiel/Hebrew/merged.json",
+          "base": "Tanakh"
+        },
+        {
+          "title": "Ezra Rashi English",
+          "book": "Ezra",
+          "type": "Rashi",
+          "language": "English",
+          "path": "sefaria_full/Rashi on Tanakh/Tanakh/Rishonim on Tanakh/Rashi/Writings/Rashi on Ezra/English/merged.json",
+          "base": "Tanakh"
+        },
+        {
+          "title": "Ezra Rashi Hebrew",
+          "book": "Ezra",
+          "type": "Rashi",
+          "language": "Hebrew",
+          "path": "sefaria_full/Rashi on Tanakh/Tanakh/Rishonim on Tanakh/Rashi/Writings/Rashi on Ezra/Hebrew/merged.json",
+          "base": "Tanakh"
+        },
+        {
+          "title": "Genesis Rashi English",
+          "book": "Genesis",
+          "type": "Rashi",
+          "language": "English",
+          "path": "sefaria_full/Rashi on Tanakh/Tanakh/Rishonim on Tanakh/Rashi/Torah/Rashi on Genesis/English/merged.json",
+          "base": "Tanakh"
+        },
+        {
+          "title": "Genesis Rashi Hebrew",
+          "book": "Genesis",
+          "type": "Rashi",
+          "language": "Hebrew",
+          "path": "sefaria_full/Rashi on Tanakh/Tanakh/Rishonim on Tanakh/Rashi/Torah/Rashi on Genesis/Hebrew/merged.json",
+          "base": "Tanakh"
+        },
+        {
+          "title": "Gittin Rashi Hebrew",
+          "book": "Gittin",
+          "type": "Rashi",
+          "language": "Hebrew",
+          "path": "sefaria_full/Rashi on Bavli/Talmud/Bavli/Rishonim on Talmud/Rashi/Seder Nashim/Rashi on Gittin/Hebrew/merged.json",
+          "base": "Bavli"
+        },
+        {
+          "title": "Gittin Tosafot Hebrew",
+          "book": "Gittin",
+          "type": "Tosafot",
+          "language": "Hebrew",
+          "path": "sefaria_full/Tosafot on Bavli/Talmud/Bavli/Rishonim on Talmud/Tosafot/Seder Nashim/Tosafot on Gittin/Hebrew/merged.json",
+          "base": "Bavli"
+        },
+        {
+          "title": "Habakkuk Rashi English",
+          "book": "Habakkuk",
+          "type": "Rashi",
+          "language": "English",
+          "path": "sefaria_full/Rashi on Tanakh/Tanakh/Rishonim on Tanakh/Rashi/Prophets/Rashi on Habakkuk/English/merged.json",
+          "base": "Tanakh"
+        },
+        {
+          "title": "Habakkuk Rashi Hebrew",
+          "book": "Habakkuk",
+          "type": "Rashi",
+          "language": "Hebrew",
+          "path": "sefaria_full/Rashi on Tanakh/Tanakh/Rishonim on Tanakh/Rashi/Prophets/Rashi on Habakkuk/Hebrew/merged.json",
+          "base": "Tanakh"
+        },
+        {
+          "title": "Haggai Rashi English",
+          "book": "Haggai",
+          "type": "Rashi",
+          "language": "English",
+          "path": "sefaria_full/Rashi on Tanakh/Tanakh/Rishonim on Tanakh/Rashi/Prophets/Rashi on Haggai/English/merged.json",
+          "base": "Tanakh"
+        },
+        {
+          "title": "Haggai Rashi Hebrew",
+          "book": "Haggai",
+          "type": "Rashi",
+          "language": "Hebrew",
+          "path": "sefaria_full/Rashi on Tanakh/Tanakh/Rishonim on Tanakh/Rashi/Prophets/Rashi on Haggai/Hebrew/merged.json",
+          "base": "Tanakh"
+        },
+        {
+          "title": "Horayot Rashi Hebrew",
+          "book": "Horayot",
+          "type": "Rashi",
+          "language": "Hebrew",
+          "path": "sefaria_full/Rashi on Bavli/Talmud/Bavli/Rishonim on Talmud/Rashi/Seder Nezikin/Rashi on Horayot/Hebrew/merged.json",
+          "base": "Bavli"
+        },
+        {
+          "title": "Horayot Tosafot Hebrew",
+          "book": "Horayot",
+          "type": "Tosafot",
+          "language": "Hebrew",
+          "path": "sefaria_full/Tosafot on Bavli/Talmud/Bavli/Rishonim on Talmud/Tosafot/Seder Nezikin/Tosafot on Horayot/Hebrew/merged.json",
+          "base": "Bavli"
+        },
+        {
+          "title": "Hosea Rashi English",
+          "book": "Hosea",
+          "type": "Rashi",
+          "language": "English",
+          "path": "sefaria_full/Rashi on Tanakh/Tanakh/Rishonim on Tanakh/Rashi/Prophets/Rashi on Hosea/English/merged.json",
+          "base": "Tanakh"
+        },
+        {
+          "title": "Hosea Rashi Hebrew",
+          "book": "Hosea",
+          "type": "Rashi",
+          "language": "Hebrew",
+          "path": "sefaria_full/Rashi on Tanakh/Tanakh/Rishonim on Tanakh/Rashi/Prophets/Rashi on Hosea/Hebrew/merged.json",
+          "base": "Tanakh"
+        },
+        {
+          "title": "I Chronicles Rashi English",
+          "book": "I Chronicles",
+          "type": "Rashi",
+          "language": "English",
+          "path": "sefaria_full/Rashi on Tanakh/Tanakh/Rishonim on Tanakh/Rashi/Writings/Rashi on I Chronicles/English/merged.json",
+          "base": "Tanakh"
+        },
+        {
+          "title": "I Chronicles Rashi Hebrew",
+          "book": "I Chronicles",
+          "type": "Rashi",
+          "language": "Hebrew",
+          "path": "sefaria_full/Rashi on Tanakh/Tanakh/Rishonim on Tanakh/Rashi/Writings/Rashi on I Chronicles/Hebrew/merged.json",
+          "base": "Tanakh"
+        },
+        {
+          "title": "I Kings Rashi English",
+          "book": "I Kings",
+          "type": "Rashi",
+          "language": "English",
+          "path": "sefaria_full/Rashi on Tanakh/Tanakh/Rishonim on Tanakh/Rashi/Prophets/Rashi on I Kings/English/merged.json",
+          "base": "Tanakh"
+        },
+        {
+          "title": "I Kings Rashi Hebrew",
+          "book": "I Kings",
+          "type": "Rashi",
+          "language": "Hebrew",
+          "path": "sefaria_full/Rashi on Tanakh/Tanakh/Rishonim on Tanakh/Rashi/Prophets/Rashi on I Kings/Hebrew/merged.json",
+          "base": "Tanakh"
+        },
+        {
+          "title": "I Samuel Rashi English",
+          "book": "I Samuel",
+          "type": "Rashi",
+          "language": "English",
+          "path": "sefaria_full/Rashi on Tanakh/Tanakh/Rishonim on Tanakh/Rashi/Prophets/Rashi on I Samuel/English/merged.json",
+          "base": "Tanakh"
+        },
+        {
+          "title": "I Samuel Rashi Hebrew",
+          "book": "I Samuel",
+          "type": "Rashi",
+          "language": "Hebrew",
+          "path": "sefaria_full/Rashi on Tanakh/Tanakh/Rishonim on Tanakh/Rashi/Prophets/Rashi on I Samuel/Hebrew/merged.json",
+          "base": "Tanakh"
+        },
+        {
+          "title": "II Chronicles Rashi English",
+          "book": "II Chronicles",
+          "type": "Rashi",
+          "language": "English",
+          "path": "sefaria_full/Rashi on Tanakh/Tanakh/Rishonim on Tanakh/Rashi/Writings/Rashi on II Chronicles/English/merged.json",
+          "base": "Tanakh"
+        },
+        {
+          "title": "II Chronicles Rashi Hebrew",
+          "book": "II Chronicles",
+          "type": "Rashi",
+          "language": "Hebrew",
+          "path": "sefaria_full/Rashi on Tanakh/Tanakh/Rishonim on Tanakh/Rashi/Writings/Rashi on II Chronicles/Hebrew/merged.json",
+          "base": "Tanakh"
+        },
+        {
+          "title": "II Kings Rashi English",
+          "book": "II Kings",
+          "type": "Rashi",
+          "language": "English",
+          "path": "sefaria_full/Rashi on Tanakh/Tanakh/Rishonim on Tanakh/Rashi/Prophets/Rashi on II Kings/English/merged.json",
+          "base": "Tanakh"
+        },
+        {
+          "title": "II Kings Rashi Hebrew",
+          "book": "II Kings",
+          "type": "Rashi",
+          "language": "Hebrew",
+          "path": "sefaria_full/Rashi on Tanakh/Tanakh/Rishonim on Tanakh/Rashi/Prophets/Rashi on II Kings/Hebrew/merged.json",
+          "base": "Tanakh"
+        },
+        {
+          "title": "II Samuel Rashi English",
+          "book": "II Samuel",
+          "type": "Rashi",
+          "language": "English",
+          "path": "sefaria_full/Rashi on Tanakh/Tanakh/Rishonim on Tanakh/Rashi/Prophets/Rashi on II Samuel/English/merged.json",
+          "base": "Tanakh"
+        },
+        {
+          "title": "II Samuel Rashi Hebrew",
+          "book": "II Samuel",
+          "type": "Rashi",
+          "language": "Hebrew",
+          "path": "sefaria_full/Rashi on Tanakh/Tanakh/Rishonim on Tanakh/Rashi/Prophets/Rashi on II Samuel/Hebrew/merged.json",
+          "base": "Tanakh"
+        },
+        {
+          "title": "Isaiah Rashi English",
+          "book": "Isaiah",
+          "type": "Rashi",
+          "language": "English",
+          "path": "sefaria_full/Rashi on Tanakh/Tanakh/Rishonim on Tanakh/Rashi/Prophets/Rashi on Isaiah/English/merged.json",
+          "base": "Tanakh"
+        },
+        {
+          "title": "Isaiah Rashi Hebrew",
+          "book": "Isaiah",
+          "type": "Rashi",
+          "language": "Hebrew",
+          "path": "sefaria_full/Rashi on Tanakh/Tanakh/Rishonim on Tanakh/Rashi/Prophets/Rashi on Isaiah/Hebrew/merged.json",
+          "base": "Tanakh"
+        },
+        {
+          "title": "Jeremiah Rashi English",
+          "book": "Jeremiah",
+          "type": "Rashi",
+          "language": "English",
+          "path": "sefaria_full/Rashi on Tanakh/Tanakh/Rishonim on Tanakh/Rashi/Prophets/Rashi on Jeremiah/English/merged.json",
+          "base": "Tanakh"
+        },
+        {
+          "title": "Jeremiah Rashi Hebrew",
+          "book": "Jeremiah",
+          "type": "Rashi",
+          "language": "Hebrew",
+          "path": "sefaria_full/Rashi on Tanakh/Tanakh/Rishonim on Tanakh/Rashi/Prophets/Rashi on Jeremiah/Hebrew/merged.json",
+          "base": "Tanakh"
+        },
+        {
+          "title": "Job Rashi English",
+          "book": "Job",
+          "type": "Rashi",
+          "language": "English",
+          "path": "sefaria_full/Rashi on Tanakh/Tanakh/Rishonim on Tanakh/Rashi/Writings/Rashi on Job/English/merged.json",
+          "base": "Tanakh"
+        },
+        {
+          "title": "Job Rashi Hebrew",
+          "book": "Job",
+          "type": "Rashi",
+          "language": "Hebrew",
+          "path": "sefaria_full/Rashi on Tanakh/Tanakh/Rishonim on Tanakh/Rashi/Writings/Rashi on Job/Hebrew/merged.json",
+          "base": "Tanakh"
+        },
+        {
+          "title": "Joel Rashi English",
+          "book": "Joel",
+          "type": "Rashi",
+          "language": "English",
+          "path": "sefaria_full/Rashi on Tanakh/Tanakh/Rishonim on Tanakh/Rashi/Prophets/Rashi on Joel/English/merged.json",
+          "base": "Tanakh"
+        },
+        {
+          "title": "Joel Rashi Hebrew",
+          "book": "Joel",
+          "type": "Rashi",
+          "language": "Hebrew",
+          "path": "sefaria_full/Rashi on Tanakh/Tanakh/Rishonim on Tanakh/Rashi/Prophets/Rashi on Joel/Hebrew/merged.json",
+          "base": "Tanakh"
+        },
+        {
+          "title": "Jonah Rashi English",
+          "book": "Jonah",
+          "type": "Rashi",
+          "language": "English",
+          "path": "sefaria_full/Rashi on Tanakh/Tanakh/Rishonim on Tanakh/Rashi/Prophets/Rashi on Jonah/English/merged.json",
+          "base": "Tanakh"
+        },
+        {
+          "title": "Jonah Rashi Hebrew",
+          "book": "Jonah",
+          "type": "Rashi",
+          "language": "Hebrew",
+          "path": "sefaria_full/Rashi on Tanakh/Tanakh/Rishonim on Tanakh/Rashi/Prophets/Rashi on Jonah/Hebrew/merged.json",
+          "base": "Tanakh"
+        },
+        {
+          "title": "Joshua Rashi English",
+          "book": "Joshua",
+          "type": "Rashi",
+          "language": "English",
+          "path": "sefaria_full/Rashi on Tanakh/Tanakh/Rishonim on Tanakh/Rashi/Prophets/Rashi on Joshua/English/merged.json",
+          "base": "Tanakh"
+        },
+        {
+          "title": "Joshua Rashi Hebrew",
+          "book": "Joshua",
+          "type": "Rashi",
+          "language": "Hebrew",
+          "path": "sefaria_full/Rashi on Tanakh/Tanakh/Rishonim on Tanakh/Rashi/Prophets/Rashi on Joshua/Hebrew/merged.json",
+          "base": "Tanakh"
+        },
+        {
+          "title": "Judges Rashi English",
+          "book": "Judges",
+          "type": "Rashi",
+          "language": "English",
+          "path": "sefaria_full/Rashi on Tanakh/Tanakh/Rishonim on Tanakh/Rashi/Prophets/Rashi on Judges/English/merged.json",
+          "base": "Tanakh"
+        },
+        {
+          "title": "Judges Rashi Hebrew",
+          "book": "Judges",
+          "type": "Rashi",
+          "language": "Hebrew",
+          "path": "sefaria_full/Rashi on Tanakh/Tanakh/Rishonim on Tanakh/Rashi/Prophets/Rashi on Judges/Hebrew/merged.json",
+          "base": "Tanakh"
+        },
+        {
+          "title": "Keritot Rashi Hebrew",
+          "book": "Keritot",
+          "type": "Rashi",
+          "language": "Hebrew",
+          "path": "sefaria_full/Rashi on Bavli/Talmud/Bavli/Rishonim on Talmud/Rashi/Seder Kodashim/Rashi on Keritot/Hebrew/merged.json",
+          "base": "Bavli"
+        },
+        {
+          "title": "Keritot Tosafot Hebrew",
+          "book": "Keritot",
+          "type": "Tosafot",
+          "language": "Hebrew",
+          "path": "sefaria_full/Tosafot on Bavli/Talmud/Bavli/Rishonim on Talmud/Tosafot/Seder Kodashim/Tosafot on Keritot/Hebrew/merged.json",
+          "base": "Bavli"
+        },
+        {
+          "title": "Ketubot Rashi Hebrew",
+          "book": "Ketubot",
+          "type": "Rashi",
+          "language": "Hebrew",
+          "path": "sefaria_full/Rashi on Bavli/Talmud/Bavli/Rishonim on Talmud/Rashi/Seder Nashim/Rashi on Ketubot/Hebrew/merged.json",
+          "base": "Bavli"
+        },
+        {
+          "title": "Ketubot Tosafot Hebrew",
+          "book": "Ketubot",
+          "type": "Tosafot",
+          "language": "Hebrew",
+          "path": "sefaria_full/Tosafot on Bavli/Talmud/Bavli/Rishonim on Talmud/Tosafot/Seder Nashim/Tosafot on Ketubot/Hebrew/merged.json",
+          "base": "Bavli"
+        },
+        {
+          "title": "Kiddushin Rashi Hebrew",
+          "book": "Kiddushin",
+          "type": "Rashi",
+          "language": "Hebrew",
+          "path": "sefaria_full/Rashi on Bavli/Talmud/Bavli/Rishonim on Talmud/Rashi/Seder Nashim/Rashi on Kiddushin/Hebrew/merged.json",
+          "base": "Bavli"
+        },
+        {
+          "title": "Kiddushin Tosafot Hebrew",
+          "book": "Kiddushin",
+          "type": "Tosafot",
+          "language": "Hebrew",
+          "path": "sefaria_full/Tosafot on Bavli/Talmud/Bavli/Rishonim on Talmud/Tosafot/Seder Nashim/Tosafot on Kiddushin/Hebrew/merged.json",
+          "base": "Bavli"
+        },
+        {
+          "title": "Lamentations Rashi English",
+          "book": "Lamentations",
+          "type": "Rashi",
+          "language": "English",
+          "path": "sefaria_full/Rashi on Tanakh/Tanakh/Rishonim on Tanakh/Rashi/Writings/Rashi on Lamentations/English/merged.json",
+          "base": "Tanakh"
+        },
+        {
+          "title": "Lamentations Rashi Hebrew",
+          "book": "Lamentations",
+          "type": "Rashi",
+          "language": "Hebrew",
+          "path": "sefaria_full/Rashi on Tanakh/Tanakh/Rishonim on Tanakh/Rashi/Writings/Rashi on Lamentations/Hebrew/merged.json",
+          "base": "Tanakh"
+        },
+        {
+          "title": "Leviticus Rashi English",
+          "book": "Leviticus",
+          "type": "Rashi",
+          "language": "English",
+          "path": "sefaria_full/Rashi on Tanakh/Tanakh/Rishonim on Tanakh/Rashi/Torah/Rashi on Leviticus/English/merged.json",
+          "base": "Tanakh"
+        },
+        {
+          "title": "Leviticus Rashi Hebrew",
+          "book": "Leviticus",
+          "type": "Rashi",
+          "language": "Hebrew",
+          "path": "sefaria_full/Rashi on Tanakh/Tanakh/Rishonim on Tanakh/Rashi/Torah/Rashi on Leviticus/Hebrew/merged.json",
+          "base": "Tanakh"
+        },
+        {
+          "title": "Makkot Rashi Hebrew",
+          "book": "Makkot",
+          "type": "Rashi",
+          "language": "Hebrew",
+          "path": "sefaria_full/Rashi on Bavli/Talmud/Bavli/Rishonim on Talmud/Rashi/Seder Nezikin/Rashi on Makkot/Hebrew/merged.json",
+          "base": "Bavli"
+        },
+        {
+          "title": "Makkot Tosafot Hebrew",
+          "book": "Makkot",
+          "type": "Tosafot",
+          "language": "Hebrew",
+          "path": "sefaria_full/Tosafot on Bavli/Talmud/Bavli/Rishonim on Talmud/Tosafot/Seder Nezikin/Tosafot on Makkot/Hebrew/merged.json",
+          "base": "Bavli"
+        },
+        {
+          "title": "Malachi Rashi English",
+          "book": "Malachi",
+          "type": "Rashi",
+          "language": "English",
+          "path": "sefaria_full/Rashi on Tanakh/Tanakh/Rishonim on Tanakh/Rashi/Prophets/Rashi on Malachi/English/merged.json",
+          "base": "Tanakh"
+        },
+        {
+          "title": "Malachi Rashi Hebrew",
+          "book": "Malachi",
+          "type": "Rashi",
+          "language": "Hebrew",
+          "path": "sefaria_full/Rashi on Tanakh/Tanakh/Rishonim on Tanakh/Rashi/Prophets/Rashi on Malachi/Hebrew/merged.json",
+          "base": "Tanakh"
+        },
+        {
+          "title": "Megillah Rashi Hebrew",
+          "book": "Megillah",
+          "type": "Rashi",
+          "language": "Hebrew",
+          "path": "sefaria_full/Rashi on Bavli/Talmud/Bavli/Rishonim on Talmud/Rashi/Seder Moed/Rashi on Megillah/Hebrew/merged.json",
+          "base": "Bavli"
+        },
+        {
+          "title": "Megillah Tosafot Hebrew",
+          "book": "Megillah",
+          "type": "Tosafot",
+          "language": "Hebrew",
+          "path": "sefaria_full/Tosafot on Bavli/Talmud/Bavli/Rishonim on Talmud/Tosafot/Seder Moed/Tosafot on Megillah/Hebrew/merged.json",
+          "base": "Bavli"
+        },
+        {
+          "title": "Meilah Rashi Hebrew",
+          "book": "Meilah",
+          "type": "Rashi",
+          "language": "Hebrew",
+          "path": "sefaria_full/Rashi on Bavli/Talmud/Bavli/Rishonim on Talmud/Rashi/Seder Kodashim/Rashi on Meilah/Hebrew/merged.json",
+          "base": "Bavli"
+        },
+        {
+          "title": "Meilah Tosafot Hebrew",
+          "book": "Meilah",
+          "type": "Tosafot",
+          "language": "Hebrew",
+          "path": "sefaria_full/Tosafot on Bavli/Talmud/Bavli/Rishonim on Talmud/Tosafot/Seder Kodashim/Tosafot on Meilah/Hebrew/merged.json",
+          "base": "Bavli"
+        },
+        {
+          "title": "Menachot Rashi Hebrew",
+          "book": "Menachot",
+          "type": "Rashi",
+          "language": "Hebrew",
+          "path": "sefaria_full/Rashi on Bavli/Talmud/Bavli/Rishonim on Talmud/Rashi/Seder Kodashim/Rashi on Menachot/Hebrew/merged.json",
+          "base": "Bavli"
+        },
+        {
+          "title": "Menachot Tosafot Hebrew",
+          "book": "Menachot",
+          "type": "Tosafot",
+          "language": "Hebrew",
+          "path": "sefaria_full/Tosafot on Bavli/Talmud/Bavli/Rishonim on Talmud/Tosafot/Seder Kodashim/Tosafot on Menachot/Hebrew/merged.json",
+          "base": "Bavli"
+        },
+        {
+          "title": "Micah Rashi English",
+          "book": "Micah",
+          "type": "Rashi",
+          "language": "English",
+          "path": "sefaria_full/Rashi on Tanakh/Tanakh/Rishonim on Tanakh/Rashi/Prophets/Rashi on Micah/English/merged.json",
+          "base": "Tanakh"
+        },
+        {
+          "title": "Micah Rashi Hebrew",
+          "book": "Micah",
+          "type": "Rashi",
+          "language": "Hebrew",
+          "path": "sefaria_full/Rashi on Tanakh/Tanakh/Rishonim on Tanakh/Rashi/Prophets/Rashi on Micah/Hebrew/merged.json",
+          "base": "Tanakh"
+        },
+        {
+          "title": "Moed Katan Rashi Hebrew",
+          "book": "Moed Katan",
+          "type": "Rashi",
+          "language": "Hebrew",
+          "path": "sefaria_full/Rashi on Bavli/Talmud/Bavli/Rishonim on Talmud/Rashi/Seder Moed/Rashi on Moed Katan/Hebrew/merged.json",
+          "base": "Bavli"
+        },
+        {
+          "title": "Moed Katan Tosafot Hebrew",
+          "book": "Moed Katan",
+          "type": "Tosafot",
+          "language": "Hebrew",
+          "path": "sefaria_full/Tosafot on Bavli/Talmud/Bavli/Rishonim on Talmud/Tosafot/Seder Moed/Tosafot on Moed Katan/Hebrew/merged.json",
+          "base": "Bavli"
+        },
+        {
+          "title": "Nahum Rashi English",
+          "book": "Nahum",
+          "type": "Rashi",
+          "language": "English",
+          "path": "sefaria_full/Rashi on Tanakh/Tanakh/Rishonim on Tanakh/Rashi/Prophets/Rashi on Nahum/English/merged.json",
+          "base": "Tanakh"
+        },
+        {
+          "title": "Nahum Rashi Hebrew",
+          "book": "Nahum",
+          "type": "Rashi",
+          "language": "Hebrew",
+          "path": "sefaria_full/Rashi on Tanakh/Tanakh/Rishonim on Tanakh/Rashi/Prophets/Rashi on Nahum/Hebrew/merged.json",
+          "base": "Tanakh"
+        },
+        {
+          "title": "Nazir Rashi Hebrew",
+          "book": "Nazir",
+          "type": "Rashi",
+          "language": "Hebrew",
+          "path": "sefaria_full/Rashi on Bavli/Talmud/Bavli/Rishonim on Talmud/Rashi/Seder Nashim/Rashi on Nazir/Hebrew/merged.json",
+          "base": "Bavli"
+        },
+        {
+          "title": "Nazir Tosafot Hebrew",
+          "book": "Nazir",
+          "type": "Tosafot",
+          "language": "Hebrew",
+          "path": "sefaria_full/Tosafot on Bavli/Talmud/Bavli/Rishonim on Talmud/Tosafot/Seder Nashim/Tosafot on Nazir/Hebrew/merged.json",
+          "base": "Bavli"
+        },
+        {
+          "title": "Nedarim Rashi Hebrew",
+          "book": "Nedarim",
+          "type": "Rashi",
+          "language": "Hebrew",
+          "path": "sefaria_full/Rashi on Bavli/Talmud/Bavli/Rishonim on Talmud/Rashi/Seder Nashim/Rashi on Nedarim/Hebrew/merged.json",
+          "base": "Bavli"
+        },
+        {
+          "title": "Nedarim Tosafot Hebrew",
+          "book": "Nedarim",
+          "type": "Tosafot",
+          "language": "Hebrew",
+          "path": "sefaria_full/Tosafot on Bavli/Talmud/Bavli/Rishonim on Talmud/Tosafot/Seder Nashim/Tosafot on Nedarim/Hebrew/merged.json",
+          "base": "Bavli"
+        },
+        {
+          "title": "Nehemiah Rashi English",
+          "book": "Nehemiah",
+          "type": "Rashi",
+          "language": "English",
+          "path": "sefaria_full/Rashi on Tanakh/Tanakh/Rishonim on Tanakh/Rashi/Writings/Rashi on Nehemiah/English/merged.json",
+          "base": "Tanakh"
+        },
+        {
+          "title": "Nehemiah Rashi Hebrew",
+          "book": "Nehemiah",
+          "type": "Rashi",
+          "language": "Hebrew",
+          "path": "sefaria_full/Rashi on Tanakh/Tanakh/Rishonim on Tanakh/Rashi/Writings/Rashi on Nehemiah/Hebrew/merged.json",
+          "base": "Tanakh"
+        },
+        {
+          "title": "Niddah Rashi Hebrew",
+          "book": "Niddah",
+          "type": "Rashi",
+          "language": "Hebrew",
+          "path": "sefaria_full/Rashi on Bavli/Talmud/Bavli/Rishonim on Talmud/Rashi/Seder Tahorot/Rashi on Niddah/Hebrew/merged.json",
+          "base": "Bavli"
+        },
+        {
+          "title": "Niddah Tosafot Hebrew",
+          "book": "Niddah",
+          "type": "Tosafot",
+          "language": "Hebrew",
+          "path": "sefaria_full/Tosafot on Bavli/Talmud/Bavli/Rishonim on Talmud/Tosafot/Seder Tahorot/Tosafot on Niddah/Hebrew/merged.json",
+          "base": "Bavli"
+        },
+        {
+          "title": "Numbers Rashi English",
+          "book": "Numbers",
+          "type": "Rashi",
+          "language": "English",
+          "path": "sefaria_full/Rashi on Tanakh/Tanakh/Rishonim on Tanakh/Rashi/Torah/Rashi on Numbers/English/merged.json",
+          "base": "Tanakh"
+        },
+        {
+          "title": "Numbers Rashi Hebrew",
+          "book": "Numbers",
+          "type": "Rashi",
+          "language": "Hebrew",
+          "path": "sefaria_full/Rashi on Tanakh/Tanakh/Rishonim on Tanakh/Rashi/Torah/Rashi on Numbers/Hebrew/merged.json",
+          "base": "Tanakh"
+        },
+        {
+          "title": "Obadiah Rashi English",
+          "book": "Obadiah",
+          "type": "Rashi",
+          "language": "English",
+          "path": "sefaria_full/Rashi on Tanakh/Tanakh/Rishonim on Tanakh/Rashi/Prophets/Rashi on Obadiah/English/merged.json",
+          "base": "Tanakh"
+        },
+        {
+          "title": "Obadiah Rashi Hebrew",
+          "book": "Obadiah",
+          "type": "Rashi",
+          "language": "Hebrew",
+          "path": "sefaria_full/Rashi on Tanakh/Tanakh/Rishonim on Tanakh/Rashi/Prophets/Rashi on Obadiah/Hebrew/merged.json",
+          "base": "Tanakh"
+        },
+        {
+          "title": "Pesachim Rashi Hebrew",
+          "book": "Pesachim",
+          "type": "Rashi",
+          "language": "Hebrew",
+          "path": "sefaria_full/Rashi on Bavli/Talmud/Bavli/Rishonim on Talmud/Rashi/Seder Moed/Rashi on Pesachim/Hebrew/merged.json",
+          "base": "Bavli"
+        },
+        {
+          "title": "Pesachim Tosafot Hebrew",
+          "book": "Pesachim",
+          "type": "Tosafot",
+          "language": "Hebrew",
+          "path": "sefaria_full/Tosafot on Bavli/Talmud/Bavli/Rishonim on Talmud/Tosafot/Seder Moed/Tosafot on Pesachim/Hebrew/merged.json",
+          "base": "Bavli"
+        },
+        {
+          "title": "Proverbs Rashi English",
+          "book": "Proverbs",
+          "type": "Rashi",
+          "language": "English",
+          "path": "sefaria_full/Rashi on Tanakh/Tanakh/Rishonim on Tanakh/Rashi/Writings/Rashi on Proverbs/English/merged.json",
+          "base": "Tanakh"
+        },
+        {
+          "title": "Proverbs Rashi Hebrew",
+          "book": "Proverbs",
+          "type": "Rashi",
+          "language": "Hebrew",
+          "path": "sefaria_full/Rashi on Tanakh/Tanakh/Rishonim on Tanakh/Rashi/Writings/Rashi on Proverbs/Hebrew/merged.json",
+          "base": "Tanakh"
+        },
+        {
+          "title": "Psalms Rashi English",
+          "book": "Psalms",
+          "type": "Rashi",
+          "language": "English",
+          "path": "sefaria_full/Rashi on Tanakh/Tanakh/Rishonim on Tanakh/Rashi/Writings/Rashi on Psalms/English/merged.json",
+          "base": "Tanakh"
+        },
+        {
+          "title": "Psalms Rashi Hebrew",
+          "book": "Psalms",
+          "type": "Rashi",
+          "language": "Hebrew",
+          "path": "sefaria_full/Rashi on Tanakh/Tanakh/Rishonim on Tanakh/Rashi/Writings/Rashi on Psalms/Hebrew/merged.json",
+          "base": "Tanakh"
+        },
+        {
+          "title": "Rosh Hashanah Rashi Hebrew",
+          "book": "Rosh Hashanah",
+          "type": "Rashi",
+          "language": "Hebrew",
+          "path": "sefaria_full/Rashi on Bavli/Talmud/Bavli/Rishonim on Talmud/Rashi/Seder Moed/Rashi on Rosh Hashanah/Hebrew/merged.json",
+          "base": "Bavli"
+        },
+        {
+          "title": "Rosh Hashanah Tosafot Hebrew",
+          "book": "Rosh Hashanah",
+          "type": "Tosafot",
+          "language": "Hebrew",
+          "path": "sefaria_full/Tosafot on Bavli/Talmud/Bavli/Rishonim on Talmud/Tosafot/Seder Moed/Tosafot on Rosh Hashanah/Hebrew/merged.json",
+          "base": "Bavli"
+        },
+        {
+          "title": "Ruth Rashi English",
+          "book": "Ruth",
+          "type": "Rashi",
+          "language": "English",
+          "path": "sefaria_full/Rashi on Tanakh/Tanakh/Rishonim on Tanakh/Rashi/Writings/Rashi on Ruth/English/merged.json",
+          "base": "Tanakh"
+        },
+        {
+          "title": "Ruth Rashi Hebrew",
+          "book": "Ruth",
+          "type": "Rashi",
+          "language": "Hebrew",
+          "path": "sefaria_full/Rashi on Tanakh/Tanakh/Rishonim on Tanakh/Rashi/Writings/Rashi on Ruth/Hebrew/merged.json",
+          "base": "Tanakh"
+        },
+        {
+          "title": "Sanhedrin Rashi Hebrew",
+          "book": "Sanhedrin",
+          "type": "Rashi",
+          "language": "Hebrew",
+          "path": "sefaria_full/Rashi on Bavli/Talmud/Bavli/Rishonim on Talmud/Rashi/Seder Nezikin/Rashi on Sanhedrin/Hebrew/merged.json",
+          "base": "Bavli"
+        },
+        {
+          "title": "Sanhedrin Tosafot Hebrew",
+          "book": "Sanhedrin",
+          "type": "Tosafot",
+          "language": "Hebrew",
+          "path": "sefaria_full/Tosafot on Bavli/Talmud/Bavli/Rishonim on Talmud/Tosafot/Seder Nezikin/Tosafot on Sanhedrin/Hebrew/merged.json",
+          "base": "Bavli"
+        },
+        {
+          "title": "Shabbat Rashi Hebrew",
+          "book": "Shabbat",
+          "type": "Rashi",
+          "language": "Hebrew",
+          "path": "sefaria_full/Rashi on Bavli/Talmud/Bavli/Rishonim on Talmud/Rashi/Seder Moed/Rashi on Shabbat/Hebrew/merged.json",
+          "base": "Bavli"
+        },
+        {
+          "title": "Shabbat Tosafot Hebrew",
+          "book": "Shabbat",
+          "type": "Tosafot",
+          "language": "Hebrew",
+          "path": "sefaria_full/Tosafot on Bavli/Talmud/Bavli/Rishonim on Talmud/Tosafot/Seder Moed/Tosafot on Shabbat/Hebrew/merged.json",
+          "base": "Bavli"
+        },
+        {
+          "title": "Shevuot Rashi Hebrew",
+          "book": "Shevuot",
+          "type": "Rashi",
+          "language": "Hebrew",
+          "path": "sefaria_full/Rashi on Bavli/Talmud/Bavli/Rishonim on Talmud/Rashi/Seder Nezikin/Rashi on Shevuot/Hebrew/merged.json",
+          "base": "Bavli"
+        },
+        {
+          "title": "Shevuot Tosafot Hebrew",
+          "book": "Shevuot",
+          "type": "Tosafot",
+          "language": "Hebrew",
+          "path": "sefaria_full/Tosafot on Bavli/Talmud/Bavli/Rishonim on Talmud/Tosafot/Seder Nezikin/Tosafot on Shevuot/Hebrew/merged.json",
+          "base": "Bavli"
+        },
+        {
+          "title": "Song of Songs Rashi English",
+          "book": "Song of Songs",
+          "type": "Rashi",
+          "language": "English",
+          "path": "sefaria_full/Rashi on Tanakh/Tanakh/Rishonim on Tanakh/Rashi/Writings/Rashi on Song of Songs/English/merged.json",
+          "base": "Tanakh"
+        },
+        {
+          "title": "Song of Songs Rashi Hebrew",
+          "book": "Song of Songs",
+          "type": "Rashi",
+          "language": "Hebrew",
+          "path": "sefaria_full/Rashi on Tanakh/Tanakh/Rishonim on Tanakh/Rashi/Writings/Rashi on Song of Songs/Hebrew/merged.json",
+          "base": "Tanakh"
+        },
+        {
+          "title": "Sotah Rashi Hebrew",
+          "book": "Sotah",
+          "type": "Rashi",
+          "language": "Hebrew",
+          "path": "sefaria_full/Rashi on Bavli/Talmud/Bavli/Rishonim on Talmud/Rashi/Seder Nashim/Rashi on Sotah/Hebrew/merged.json",
+          "base": "Bavli"
+        },
+        {
+          "title": "Sotah Tosafot Hebrew",
+          "book": "Sotah",
+          "type": "Tosafot",
+          "language": "Hebrew",
+          "path": "sefaria_full/Tosafot on Bavli/Talmud/Bavli/Rishonim on Talmud/Tosafot/Seder Nashim/Tosafot on Sotah/Hebrew/merged.json",
+          "base": "Bavli"
+        },
+        {
+          "title": "Sukkah Rashi Hebrew",
+          "book": "Sukkah",
+          "type": "Rashi",
+          "language": "Hebrew",
+          "path": "sefaria_full/Rashi on Bavli/Talmud/Bavli/Rishonim on Talmud/Rashi/Seder Moed/Rashi on Sukkah/Hebrew/merged.json",
+          "base": "Bavli"
+        },
+        {
+          "title": "Sukkah Tosafot Hebrew",
+          "book": "Sukkah",
+          "type": "Tosafot",
+          "language": "Hebrew",
+          "path": "sefaria_full/Tosafot on Bavli/Talmud/Bavli/Rishonim on Talmud/Tosafot/Seder Moed/Tosafot on Sukkah/Hebrew/merged.json",
+          "base": "Bavli"
+        },
+        {
+          "title": "Taanit Rashi Hebrew",
+          "book": "Taanit",
+          "type": "Rashi",
+          "language": "Hebrew",
+          "path": "sefaria_full/Rashi on Bavli/Talmud/Bavli/Rishonim on Talmud/Rashi/Seder Moed/Rashi on Taanit/Hebrew/merged.json",
+          "base": "Bavli"
+        },
+        {
+          "title": "Taanit Tosafot Hebrew",
+          "book": "Taanit",
+          "type": "Tosafot",
+          "language": "Hebrew",
+          "path": "sefaria_full/Tosafot on Bavli/Talmud/Bavli/Rishonim on Talmud/Tosafot/Seder Moed/Tosafot on Taanit/Hebrew/merged.json",
+          "base": "Bavli"
+        },
+        {
+          "title": "Temurah Rashi Hebrew",
+          "book": "Temurah",
+          "type": "Rashi",
+          "language": "Hebrew",
+          "path": "sefaria_full/Rashi on Bavli/Talmud/Bavli/Rishonim on Talmud/Rashi/Seder Kodashim/Rashi on Temurah/Hebrew/merged.json",
+          "base": "Bavli"
+        },
+        {
+          "title": "Temurah Tosafot Hebrew",
+          "book": "Temurah",
+          "type": "Tosafot",
+          "language": "Hebrew",
+          "path": "sefaria_full/Tosafot on Bavli/Talmud/Bavli/Rishonim on Talmud/Tosafot/Seder Kodashim/Tosafot on Temurah/Hebrew/merged.json",
+          "base": "Bavli"
+        },
+        {
+          "title": "Yevamot Rashi Hebrew",
+          "book": "Yevamot",
+          "type": "Rashi",
+          "language": "Hebrew",
+          "path": "sefaria_full/Rashi on Bavli/Talmud/Bavli/Rishonim on Talmud/Rashi/Seder Nashim/Rashi on Yevamot/Hebrew/merged.json",
+          "base": "Bavli"
+        },
+        {
+          "title": "Yevamot Tosafot Hebrew",
+          "book": "Yevamot",
+          "type": "Tosafot",
+          "language": "Hebrew",
+          "path": "sefaria_full/Tosafot on Bavli/Talmud/Bavli/Rishonim on Talmud/Tosafot/Seder Nashim/Tosafot on Yevamot/Hebrew/merged.json",
+          "base": "Bavli"
+        },
+        {
+          "title": "Yoma Rashi Hebrew",
+          "book": "Yoma",
+          "type": "Rashi",
+          "language": "Hebrew",
+          "path": "sefaria_full/Rashi on Bavli/Talmud/Bavli/Rishonim on Talmud/Rashi/Seder Moed/Rashi on Yoma/Hebrew/merged.json",
+          "base": "Bavli"
+        },
+        {
+          "title": "Yoma Tosafot Hebrew",
+          "book": "Yoma",
+          "type": "Tosafot",
+          "language": "Hebrew",
+          "path": "sefaria_full/Tosafot on Bavli/Talmud/Bavli/Rishonim on Talmud/Tosafot/Seder Moed/Tosafot on Yoma/Hebrew/merged.json",
+          "base": "Bavli"
+        },
+        {
+          "title": "Zechariah Rashi English",
+          "book": "Zechariah",
+          "type": "Rashi",
+          "language": "English",
+          "path": "sefaria_full/Rashi on Tanakh/Tanakh/Rishonim on Tanakh/Rashi/Prophets/Rashi on Zechariah/English/merged.json",
+          "base": "Tanakh"
+        },
+        {
+          "title": "Zechariah Rashi Hebrew",
+          "book": "Zechariah",
+          "type": "Rashi",
+          "language": "Hebrew",
+          "path": "sefaria_full/Rashi on Tanakh/Tanakh/Rishonim on Tanakh/Rashi/Prophets/Rashi on Zechariah/Hebrew/merged.json",
+          "base": "Tanakh"
+        },
+        {
+          "title": "Zephaniah Rashi English",
+          "book": "Zephaniah",
+          "type": "Rashi",
+          "language": "English",
+          "path": "sefaria_full/Rashi on Tanakh/Tanakh/Rishonim on Tanakh/Rashi/Prophets/Rashi on Zephaniah/English/merged.json",
+          "base": "Tanakh"
+        },
+        {
+          "title": "Zephaniah Rashi Hebrew",
+          "book": "Zephaniah",
+          "type": "Rashi",
+          "language": "Hebrew",
+          "path": "sefaria_full/Rashi on Tanakh/Tanakh/Rishonim on Tanakh/Rashi/Prophets/Rashi on Zephaniah/Hebrew/merged.json",
+          "base": "Tanakh"
+        },
+        {
+          "title": "Zevachim Rashi Hebrew",
+          "book": "Zevachim",
+          "type": "Rashi",
+          "language": "Hebrew",
+          "path": "sefaria_full/Rashi on Bavli/Talmud/Bavli/Rishonim on Talmud/Rashi/Seder Kodashim/Rashi on Zevachim/Hebrew/merged.json",
+          "base": "Bavli"
+        },
+        {
+          "title": "Zevachim Tosafot Hebrew",
+          "book": "Zevachim",
+          "type": "Tosafot",
+          "language": "Hebrew",
+          "path": "sefaria_full/Tosafot on Bavli/Talmud/Bavli/Rishonim on Talmud/Tosafot/Seder Kodashim/Tosafot on Zevachim/Hebrew/merged.json",
+          "base": "Bavli"
+        }
+      ]
+    }
+  }
+}
