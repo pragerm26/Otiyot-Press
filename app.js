@@ -21,19 +21,28 @@ const TROPES = [
   { k: 'zaqef_g',    n: 'Zaqef Gadol', c: '#cccc00', m: '\u0595' },
   { k: 'tipcha',     n: 'Tipcha',      c: '#00cc00', m: '\u0596' },
   { k: 'revia',      n: 'Revia',       c: '#29abe2', m: '\u0597' },
+  { k: 'ole',        n: 'Ole',         c: '#c45c26', m: '\u0598' },
   { k: 'pashta',     n: 'Pashta',      c: '#6fa8dc', m: '\u0599' },
   { k: 'yetiv',      n: 'Yetiv',       c: '#6aa84f', m: '\u059A' },
   { k: 'tevir',      n: 'Tevir',       c: '#9900ff', m: '\u059B' },
   { k: 'geresh',     n: 'Geresh',      c: '#ff00ff', m: '\u059C' },
+  { k: 'geresh_m',   n: 'Geresh M.',   c: '#d500f9', m: '\u059D' },
   { k: 'gershayim',  n: 'Gershayim',   c: '#e8b840', m: '\u059E' },
+  { k: 'qarney',     n: 'Qarney Para', c: '#795548', m: '\u059F' },
   { k: 'telisha_g',  n: 'Telisha G.',  c: '#6f42c1', m: '\u05A0' },
   { k: 'pazer',      n: 'Pazer',       c: '#00bcd4', m: '\u05A1' },
+  { k: 'atnah_h',    n: 'Atnah Haf.',  c: '#e91e63', m: '\u05A2' },
   { k: 'munach',     n: 'Munach',      c: '#a3d977', m: '\u05A3' },
   { k: 'mahpach',    n: 'Mahpach',     c: '#ff88aa', m: '\u05A4' },
   { k: 'mercha',     n: 'Mercha',      c: '#cc0000', m: '\u05A5' },
+  { k: 'mercha_k',   n: 'Mercha Kef.', c: '#b71c1c', m: '\u05A6' },
   { k: 'darga',      n: 'Darga',       c: '#555555', m: '\u05A7' },
   { k: 'qadma',      n: 'Qadma',       c: '#0000ff', m: '\u05A8' },
   { k: 'telisha_q',  n: 'Telisha Q.',  c: '#999999', m: '\u05A9' },
+  { k: 'yerach',     n: 'Yerach',      c: '#607d8b', m: '\u05AA' },
+  { k: 'ole_v',      n: 'Ole veYored', c: '#ff5722', m: '\u05AB' },
+  { k: 'iluy',       n: 'Iluy',        c: '#009688', m: '\u05AC' },
+  { k: 'dehi',       n: 'Dehi',        c: '#3f51b5', m: '\u05AD' },
   { k: 'zarqa',      n: 'Zarqa',       c: '#0d2340', m: '\u05AE' }
 ];
 const MARK_KEY = {
@@ -58,9 +67,14 @@ function shvaKey(cl, i) {
   const sv = j => cl[j] && cl[j].marks.includes('\u05B0');
   if (i === 0) return 'shva_na';
   if (i === cl.length - 1 || sv(i + 1)) return 'shva_nach';
+  // Two consecutive identical letters: shva under the first is na (e.g. הִלְּלוּ)
+  if (cl[i + 1] && cl[i].b === cl[i + 1].b) return 'shva_na';
   if (sv(i - 1)) return 'shva_na';
   const p = cl[i - 1];
   const pk = p.marks.map(m => MARK_KEY[m]).find(k => k && k !== 'dagesh');
+  // Vav + patach/kamatz + yod + shva (וַיְהִי, וַיְדַבֵּר): the shva is na
+  if (p.b === 'ו' && (p.marks.includes('\u05B7') || p.marks.includes('\u05B8')) &&
+      cl[i].b === 'י') return 'shva_na';
   const shuruk = !pk && p.b === 'ו' && p.marks.includes('\u05BC');
   return (LONG.has(pk) || shuruk) ? 'shva_na' : 'shva_nach';
 }
@@ -69,7 +83,10 @@ function clusterKeys(cl) {
     let key = null;
     for (const m of c.marks) { const k = MARK_KEY[m]; if (k && k !== 'dagesh') { key = k; break; } }
     if (!key && c.marks.includes('\u05B0')) key = shvaKey(cl, i);
-    if (!key && c.marks.includes('\u05BC')) key = 'dagesh';
+    // Shuruk: וּ (vav + dagesh, no other vowel) → kubutz color, not dagesh
+    if (!key && c.marks.includes('\u05BC')) {
+      key = (c.b === 'ו') ? 'kubutz' : 'dagesh';
+    }
     c.key = key;
   });
 }
@@ -82,7 +99,7 @@ const PRE = new Set([...'ושהבכלמ']);
 const SUF = new Set(['', 'ה', 'ו', 'י', 'כ', 'ם', 'ן', 'ת', 'ים', 'ות', 'הו', 'הם', 'הן', 'ני', 'נו', 'כם', 'כן',
   'תי', 'תם', 'תן', 'יו', 'יה', 'ינו', 'יהם', 'יהן', 'תיו']);
 const WEAK = new Set([...'אהוינתמי']);
-const MAX_EXTRA = 5; // was 2 — derived nouns often carry more than two added letters
+const MAX_EXTRA = 3; // tightened from 5 — 2-letter roots were matching almost anything
 function combos(n, L, cb) {
   const idx = [];
   (function go(s) {
@@ -156,17 +173,33 @@ function wordHTMLRaw(word) {
   const letterSpans = cl.map(c => {
     const tropKeys = c.marks.filter(m => TROPE_RE.test(m)).map(m => TROPE_KEY[m]).filter(Boolean);
     tropKeys.forEach(k => wordTropes.add(k));
-    const inner = c.b + c.marks.map(m => {
-      if (TROPE_RE.test(m)) {
-        const tk = TROPE_KEY[m];
-        return tk ? `<span class="tr k-${tk}">${m}</span>` : `<span class="tr">${m}</span>`;
-      }
-      const k = m === '\u05B0' ? (c.key && c.key.startsWith('shva') ? c.key : null) : MARK_KEY[m];
-      return k ? `<span class="nk k-${k}">${m}</span>` : m;
-    }).join('');
-    // Keep per-letter tp- classes for the old "letter" look if ever needed; main highlight now lives on .w
+    // Full slice = base + all marks as ONE text node (font anchors marks correctly).
+    // Otiyot+ overlay technique — Chrome paints combining marks with the base letter's
+    // colour, so marks cannot be coloured by wrapping them alone:
+    //   .nk-full  letter+all marks (coloured bottom layer)
+    //   .top-nv   letter + tropes + shin/sin (no vowels) — ink top for Niqqud-only
+    //   .top-nt   letter + vowels + shin/sin (no tropes) — ink top for Trope marks-only
+    // CSS picks which top layer is visible; block/word modes hide both.
+    const slice = c.b + c.marks.join('');
+    let topNv = c.b; // no vowels
+    let topNt = c.b; // no tropes
+    for (const m of c.marks) {
+      if (TROPE_RE.test(m) || m === '\u05C1' || m === '\u05C2' || m === '\u05BF') topNv += m;
+      if (!TROPE_RE.test(m)) topNt += m;
+    }
     const tpClass = tropKeys.length ? ' tp' + tropKeys.map(k => ' tp-' + k).join('') : '';
-    return `<span class="c${c.key ? ' k-' + c.key : ''}${tpClass}">${inner}</span>`;
+    const keyClass = c.key ? ' k-' + c.key : '';
+    // Holam / shuruk on ו: colour the whole letter (Otiyot+ isColoredVav) — no niqqud overlay
+    const colorWhole = c.b === 'ו' && (c.key === 'holam' || c.key === 'kubutz');
+    const needOb = (c.key && !colorWhole) || tropKeys.length;
+    if (!needOb) {
+      return `<span class="c${keyClass}${tpClass}">${slice}</span>`;
+    }
+    return `<span class="c ob${keyClass}${tpClass}">` +
+      `<span class="nk-full">${slice}</span>` +
+      `<span class="top top-nv" aria-hidden="true">${topNv}</span>` +
+      `<span class="top top-nt" aria-hidden="true">${topNt}</span>` +
+      `</span>`;
   }).join('');
   const wordTpClass = wordTropes.size ? ' tp' + [...wordTropes].map(k => ' tp-' + k).join('') : '';
   return `<span class="w${wordTpClass}" data-c="${cons}">` + letterSpans + '</span>';
@@ -386,13 +419,24 @@ function toSiddurChapters(node, path = [], depth = 0) {
 }
 
 const cleanVerse = s => s
+  .replace(/<br\s*\/?>/gi, ' ')          // preserve word separation across <br>
+  .replace(/<sup[^>]*>[\s\S]*?<\/sup>/gi, '') // drop footnote markers/text
+  // Ketiv/qere: keep qere (reading) and drop ketiv when both are present
+  .replace(/<span[^>]*class="[^"]*mam-kq[^"]*"[^>]*>[\s\S]*?<span[^>]*class="[^"]*ketiv[^"]*"[^>]*>[\s\S]*?<\/span>[\s\S]*?<span[^>]*class="[^"]*qere[^"]*"[^>]*>([\s\S]*?)<\/span>[\s\S]*?<\/span>/gi, '$1')
+  .replace(/<span[^>]*class="[^"]*qere[^"]*"[^>]*>([\s\S]*?)<\/span>/gi, '$1')
+  .replace(/<span[^>]*class="[^"]*ketiv[^"]*"[^>]*>[\s\S]*?<\/span>/gi, '')
   .replace(/<[^>]*>/g, '')
   .replace(/&nbsp;|&thinsp;/g, ' ')
   .replace(/&amp;/g, '&')
+  .replace(/&quot;/g, '"')
+  .replace(/&#39;|&apos;/g, "'")
+  .replace(/&lt;/g, '<')
+  .replace(/&gt;/g, '>')
   // Parasha markers: placeholders survive textHTML escaping, then become gap spans
   // {פ} = petucha (open) → four-finger-sized gap; {ס} = setuma (closed) → smaller gap
   .replace(/\{פ\}/g, '§PETUCHA§')
   .replace(/\{ס\}/g, '§SETUMA§')
+  .replace(/\s+/g, ' ')
   .trim();
 
 /**
@@ -428,9 +472,20 @@ function splitDibbur(plain) {
 function commentaryHTML(raw, opts = {}) {
   const pieces = Array.isArray(raw) ? raw.filter(Boolean) : [raw];
   return pieces.map(p => {
-    const plain = cleanVerse(String(p));
+    const src = String(p || '');
+    // Prefer explicit <b>…</b> as dibbur when present in the source
+    const boldMatch = src.match(/^[\s\S]{0,20}?<b[^>]*>([\s\S]+?)<\/b>\s*([\s\S]*)$/i);
+    let plain, dh, rest;
+    if (boldMatch && boldMatch[1].trim()) {
+      dh = cleanVerse(boldMatch[1]);
+      rest = cleanVerse(boldMatch[2] || '');
+      plain = dh + (rest ? ' ' + rest : '');
+    } else {
+      plain = cleanVerse(src);
+      if (!plain) return '';
+      ({ dh, rest } = splitDibbur(plain));
+    }
     if (!plain) return '';
-    const { dh, rest } = splitDibbur(plain);
     if (!dh) {
       // No clear dibbur — still enlarge first word for Tosafot
       let body = textHTML(plain);
@@ -509,9 +564,11 @@ const $ = id => document.getElementById(id);
 const DYSLEX_FONT = 'UserFont_Dyslex_Kriyah';
 const newProfile = () => ({
   content: 'full', font: DYSLEX_FONT, ls: 0, fs: 12,
-  nk: { on: true, mode: 'block', op: 60, keys: Object.fromEntries(NIKUD.map(n => [n.k, { on: true, color: n.c }])) },
-  sh: { on: false, mode: 'bar', op: 100, color: '#e8b840', root: '' },
-  tp: { on: false, mode: 'mark', op: 100, keys: Object.fromEntries(TROPES.map(t => [t.k, { on: true, color: t.c }])) }
+  // Default: block highlight at 50% opacity (Otiyot+ extension approach)
+  nk: { on: true, mode: 'block', op: 50, keys: Object.fromEntries(NIKUD.map(n => [n.k, { on: true, color: n.c }])) },
+  sh: { on: false, mode: 'word', op: 100, color: '#e8b840', root: '' },
+  // Trope: whole-word highlight at 50% (marks-only uses the same overlay as niqqud-only)
+  tp: { on: false, mode: 'char', op: 50, keys: Object.fromEntries(TROPES.map(t => [t.k, { on: true, color: t.c }])) }
 });
 const profiles = { R: newProfile(), L: newProfile() };
 let side = 'R', tikkun = false;
@@ -552,6 +609,13 @@ function toast(msg, kind = '') {
 }
 const showFolderFallback = () => { /* folder picker removed — library is always ./texts */ };
 const mix = (c, op) => `color-mix(in srgb, ${c} ${op}%, transparent)`;
+/** Hex + 0–100 opacity → rgba() (Otiyot+ style; more reliable on marks than color-mix alone). */
+function hexToRgba(hex, op) {
+  const h = String(hex || '').replace('#', '');
+  if (h.length < 6) return hex;
+  const r = parseInt(h.slice(0, 2), 16), g = parseInt(h.slice(2, 4), 16), b = parseInt(h.slice(4, 6), 16);
+  return `rgba(${r},${g},${b},${(Math.max(0, Math.min(100, op)) / 100).toFixed(2)})`;
+}
 const setSeg = (id, m) => [...$(id).children].forEach(x => x.classList.toggle('active', x.dataset.m === m));
 const setSwatch = (id, c) => { $(id).dataset.v = c; $(id).style.background = c; };
 function seg(id, cb) {
@@ -565,9 +629,35 @@ function panel(strip, pnl, chev) {
 function sideCSS(id, p) {
   const pre = `#pane-${id} `;
   let css = '';
+  // Shared overlay layer metrics (niqqud-only + trope marks-only)
+  const obLayer = `display:block!important;grid-area:1/1;` +
+    `font-family:var(--hf,'Rubik'),'Arial Hebrew',David,sans-serif!important;` +
+    `font-size:inherit;font-weight:inherit;font-style:inherit;line-height:inherit;` +
+    `letter-spacing:inherit;font-kerning:none;font-feature-settings:normal;` +
+    `font-variant-ligatures:none;font-synthesis:none;text-rendering:geometricPrecision`;
+  const inkTop = `color:var(--ink,#1a2f4a);-webkit-text-stroke:.03em var(--ink,#1a2f4a);paint-order:stroke fill;pointer-events:none;-webkit-user-select:none;user-select:none`;
+
   if (p.nk.on && p.content === 'full') NIKUD.forEach(n => {
     const k = p.nk.keys[n.k]; if (!k.on) return;
-    css += p.nk.mode === 'block' ? `${pre}.c.k-${n.k}{background-color:${mix(k.color, p.nk.op)}}` : `${pre}.nk.k-${n.k}{color:${mix(k.color, p.nk.op)}}`;
+    const rgba = hexToRgba(k.color, p.nk.op);
+    if (p.nk.mode === 'block') {
+      // Block: tinted background on the whole letter (Otiyot+ default)
+      css += `${pre}.c.k-${n.k}{background-color:${rgba}}`;
+      css += `${pre}.c.k-${n.k}.ob{display:inline}`;
+      css += `${pre}.c.k-${n.k}.ob>.top{display:none!important}`;
+      css += `${pre}.c.k-${n.k}.ob>.nk-full{display:inline;color:inherit;background:transparent}`;
+    } else {
+      // Niqqud only: colour bottom layer; show top-nv (no vowels) in ink
+      css += `${pre}.c.k-${n.k}.ob{display:inline-grid;justify-items:start;white-space:nowrap;background:transparent}`;
+      css += `${pre}.c.k-${n.k}.ob>.nk-full,${pre}.c.k-${n.k}.ob>.top-nv{${obLayer}}`;
+      css += `${pre}.c.k-${n.k}.ob>.top-nt{display:none!important}`;
+      css += `${pre}.c.k-${n.k}.ob>.nk-full{color:${rgba}}`;
+      css += `${pre}.c.k-${n.k}.ob>.top-nv{${inkTop}}`;
+      css += `${pre}.c.k-${n.k}:not(.ob){color:${rgba}}`;
+      css += `${pre}.c.k-${n.k}.ob-bad{display:inline}`;
+      css += `${pre}.c.k-${n.k}.ob-bad>.top{display:none!important}`;
+      css += `${pre}.c.k-${n.k}.ob-bad>.nk-full{display:inline;color:${rgba}}`;
+    }
   });
   if (p.sh.on && p.sh.root) {
     const c = mix(p.sh.color, p.sh.op);
@@ -577,14 +667,22 @@ function sideCSS(id, p) {
   if (p.tp.on && p.content === 'full') {
     TROPES.forEach(t => {
       const k = p.tp.keys[t.k]; if (!k || !k.on) return;
-      const c = mix(k.color, p.tp.op);
+      const rgba = hexToRgba(k.color, p.tp.op);
       if (p.tp.mode === 'mark') {
-        // Color only the trope mark itself
-        css += `${pre}.tr.k-${t.k}{color:${c};font-weight:600}`;
+        // Marks only: same overlay as niqqud-only, but top-nt hides tropes
+        css += `${pre}.c.tp-${t.k}.ob{display:inline-grid;justify-items:start;white-space:nowrap;background:transparent}`;
+        css += `${pre}.c.tp-${t.k}.ob>.nk-full,${pre}.c.tp-${t.k}.ob>.top-nt{${obLayer}}`;
+        css += `${pre}.c.tp-${t.k}.ob>.top-nv{display:none!important}`;
+        css += `${pre}.c.tp-${t.k}.ob>.nk-full{color:${rgba}}`;
+        css += `${pre}.c.tp-${t.k}.ob>.top-nt{${inkTop}}`;
+        // Clusters with a trope but no overlay wrapper
+        css += `${pre}.c.tp-${t.k}:not(.ob){color:${rgba}}`;
+        css += `${pre}.c.tp-${t.k}.ob-bad{display:inline}`;
+        css += `${pre}.c.tp-${t.k}.ob-bad>.top{display:none!important}`;
+        css += `${pre}.c.tp-${t.k}.ob-bad>.nk-full{display:inline;color:${rgba}}`;
       } else {
-        // Whole-word highlight (background tint + bold the actual mark)
-        css += `${pre}.w.tp-${t.k}{background-color:${c};border-radius:4px}`;
-        css += `${pre}.w.tp-${t.k} .tr.k-${t.k}{font-weight:600}`;
+        // Whole word
+        css += `${pre}.w.tp-${t.k}{background-color:${rgba};border-radius:4px}`;
       }
     });
   }
@@ -606,6 +704,45 @@ function applyStyles() {
     d.style.background = k ? k.color : '#ccc';
     d.classList.toggle('off', !k || !k.on || !p.tp.on);
   });
+  // After CSS is applied, check overlay alignment (font-dependent) on next frame
+  requestAnimationFrame(verifyOverlays);
+}
+
+/**
+ * Otiyot+ overlay safety net: some fonts swap glyphs when marks attach (or lack
+ * niqqud entirely, so the mark falls back to another face). If the two layers
+ * don't line up, mark the cluster .ob-bad so CSS hides the top layer and the
+ * whole letter takes the highlight colour — no fringe, no guessing.
+ * Non-destructive (class only) so switching fonts/modes can recover.
+ */
+function verifyOverlays() {
+  const v = $('text-viewer');
+  if (!v) return;
+  const obs = v.querySelectorAll('.c.ob');
+  for (const ob of obs) {
+    const pane = ob.closest('.pane');
+    const id = pane && pane.id === 'pane-L' ? 'L' : 'R';
+    const p = profiles[id];
+    // Active mark-only overlay: niqqud-only uses .top-nv, trope marks-only uses .top-nt
+    const nkChar = p && p.nk.on && p.nk.mode === 'char' && p.content === 'full';
+    const tpMark = p && p.tp.on && p.tp.mode === 'mark' && p.content === 'full';
+    if (!nkChar && !tpMark) {
+      ob.classList.remove('ob-bad');
+      continue;
+    }
+    const nk = ob.querySelector(':scope > .nk-full');
+    const top = ob.querySelector(nkChar ? ':scope > .top-nv' : ':scope > .top-nt');
+    if (!nk || !top) continue;
+    const prev = top.style.display;
+    top.style.display = 'block';
+    const a = nk.getBoundingClientRect();
+    const b = top.getBoundingClientRect();
+    top.style.display = prev;
+    const bad = Math.abs(a.width - b.width) > 0.6 ||
+                Math.abs(a.left - b.left) > 0.6 ||
+                Math.abs(a.top - b.top) > 0.6;
+    ob.classList.toggle('ob-bad', bad);
+  }
 }
 
 /* ───────── Reading area ───────── */
@@ -718,17 +855,18 @@ function toRashiChapters(root) {
   });
 }
 
-/** Remap commentary chapters to match current chapter labels by order (Gemara daf, etc.). */
+/** Remap commentary chapters to match current chapter labels by order (Gemara daf, etc.).
+ *  Do NOT filter empty commentary — an amud with no Tosafot must keep its slot so later
+ *  amudim stay aligned. Zip by the same array index as the primary text. */
 function alignCommentaryLabels(commentary) {
   if (!commentary || !chapters.length) return commentary;
   // If labels already match, keep as-is
   const labels = new Set(chapters.map(c => String(c.label)));
   if (commentary.some(c => labels.has(String(c.label)))) return commentary;
-  // Otherwise zip by index (skip empty commentary sections)
-  const filled = commentary.filter(c => c.verses && c.verses.some(v => v && String(v).trim()));
+  // Zip by index without dropping empty slots
   return chapters.map((ch, i) => ({
     label: ch.label,
-    verses: (filled[i] && filled[i].verses) || []
+    verses: (commentary[i] && commentary[i].verses) || []
   }));
 }
 
@@ -822,11 +960,14 @@ async function loadSideText(bookTitle, kind, origTitle, preUrl, rashiHandle) {
 const trCache = new Map();
 /** Map our clean book title → Sefaria API path for English. */
 function sefariaRef(bookTitle, label, idx) {
-  const t = (bookTitle || '').trim();
+  let t = (bookTitle || '').trim();
+  // Sefaria uses plain Pirkei_Avot (not Mishnah_Pirkei_Avot) and Taanit (not Ta'anit)
   if (corpus === 'mishna') {
+    if (/^Pirkei\s*Avot$/i.test(t) || /^Avot$/i.test(t)) t = 'Pirkei_Avot';
+    else if (/^Ta['']?anit$/i.test(t)) t = 'Taanit';
+    else t = 'Mishnah_' + t.replace(/\s+/g, '_');
     const ch = label || String(idx + 1);
-    // "Berakhot" → Mishnah_Berakhot.1
-    return `Mishnah_${t.replace(/\s+/g, '_')}.${ch}`;
+    return `${t}.${ch}`;
   }
   if (corpus === 'gemara') {
     // label is already "2a" / "3b"
@@ -841,6 +982,7 @@ async function loadEnglishTranslation(bookTitle, chaps) {
   try {
     const out = new Array(chaps.length);
     let next = 0;
+    let failed = 0;
     // At most 4 Sefaria requests in flight, instead of one per chapter all at once.
     const worker = async () => {
       while (next < chaps.length) {
@@ -850,8 +992,10 @@ async function loadEnglishTranslation(bookTitle, chaps) {
         if (!trCache.has(key)) {
           const api = `https://www.sefaria.org/api/texts/${encodeURIComponent(ref)}?context=0`;
           const res = await fetch(api);
-          if (!res.ok) { trCache.set(key, []); }
-          else {
+          if (!res.ok) {
+            trCache.set(key, []);
+            failed++;
+          } else {
             const data = await res.json();
             const eng = data.text || data.en || [];
             trCache.set(key, Array.isArray(eng) ? eng.map(v => (Array.isArray(v) ? v.join(' ') : String(v))) : []);
@@ -861,9 +1005,13 @@ async function loadEnglishTranslation(bookTitle, chaps) {
       }
     };
     await Promise.all(Array.from({ length: Math.min(4, chaps.length) }, worker));
+    if (failed > 0 && failed === chaps.length) {
+      toast('Translation unavailable for this book (Sefaria)', 'warn');
+    }
     return out;
   } catch (e) {
     console.warn('English translation unavailable (offline?)', e);
+    toast('Translation needs internet (Sefaria)', 'warn');
     return null;
   }
 }
@@ -955,12 +1103,20 @@ function updateTanachToolsVisibility() {
     }
   }
 
+  // Per-book: some masechtot (Tamid, etc.) have no Rashi/Tosafot in the catalog
+  const titleSel = $('select-title');
+  const item = (library[corpus] || [])[titleSel && titleSel.value !== '' ? +titleSel.value : -1];
+  const bookTitle = item ? item.title : '';
+  const noRashiBooks = /^(Tamid|Middot|Kinnim)$/i;
+  const hasRashi = (isTanach || isGemara) && !noRashiBooks.test(bookTitle);
+  const hasTosafot = isGemara && !noRashiBooks.test(bookTitle);
+
   // Lock controls that don't apply to the current tab (grayed out + disabled)
   setToolAvail($('range-tools'), isText, 'Range is for Tanach / Mishna / Gemara');
   setToolAvail($('lab-translation') || ($('opt-translation') && $('opt-translation').closest('label')), isText && !showVilna, isSiddur ? 'Not on Siddur' : 'Not available here');
-  setToolAvail($('lab-rashi'), isText && !showVilna, isSiddur ? 'Not on Siddur' : 'Not available here');
+  setToolAvail($('lab-rashi'), hasRashi && !showVilna, isMishna ? 'No Rashi on Mishnah' : (noRashiBooks.test(bookTitle) ? 'No Rashi for this masechta' : 'Not available here'));
   setToolAvail($('lab-rashi-en'), isTanach && !showVilna, 'Rashi EN is only for Tanach');
-  setToolAvail($('lab-tosafot'), isGemara && !showVilna, 'Tosafot is only for Gemara');
+  setToolAvail($('lab-tosafot'), hasTosafot && !showVilna, noRashiBooks.test(bookTitle) ? 'No Tosafot for this masechta' : 'Tosafot is only for Gemara');
   setToolAvail($('lab-vilna'), isGemara, 'Vilna layout is only for Gemara');
   setToolAvail($('lab-pdf-breaks') || ($('opt-pdf-breaks') && $('opt-pdf-breaks').closest('label')), true);
   setToolAvail($('lab-line-break') || ($('opt-line-break') && $('opt-line-break').closest('label')), isText || isSiddur, 'Not available on this tab');
@@ -1073,7 +1229,8 @@ function getVisibleChapters() {
 function getSource() {
   if (!chapters.length) return [{ label: '', verses: SAMPLE, num: false, verseNums: null }];
   if (corpus === 'siddur') {
-    return chapters.filter((c, i) => siddurSel.has(i)).map(c => ({ ...c, num: true }));
+    // Siddur sections are not numbered verses — suppress the "1" badge
+    return chapters.filter((c, i) => siddurSel.has(i)).map(c => ({ ...c, num: false }));
   }
   let src = getVisibleChapters();
   const sel = $('select-chapter') ? $('select-chapter').value : 'all';
@@ -1349,6 +1506,7 @@ function render() {
     src.forEach((c, ci) => {
       if (c.label) pieces.push(() => `<div class="ch">${esc(String(c.label))}</div>`);
       const verseNums = c.verseNums || null;
+      const isGemara = corpus === 'gemara';
       (c.verses || []).forEach((txt, i) => pieces.push(() => {
         const vnRaw = verseNums ? verseNums[i] : (i + 1);
         const vn = (corpus === 'tanach' || corpus === 'mishna') ? toGimatria(vnRaw) : vnRaw;
@@ -1369,8 +1527,10 @@ function render() {
           }
         }
 
+        // For non-Gemara (Tanach/Mishnah): pair Rashi by verse index.
+        // For Gemara: Rashi/Tosafot are comment lists, not per-segment — dump after the daf.
         let rhHtml = '';
-        if (showRashi && rashiChapters) {
+        if (!isGemara && showRashi && rashiChapters) {
           const rc = rashiChapters.find(x => x.label === c.label) || rashiChapters[ci];
           if (rc && rc.verses) {
             const rh = rc.verses[idx];
@@ -1391,18 +1551,39 @@ function render() {
             }
           }
         }
-        if (showTosafot && tosafotChapters) {
-          const tc = tosafotChapters.find(x => x.label === c.label) || tosafotChapters[ci];
-          if (tc && tc.verses) {
-            const th = tc.verses[idx];
-            const hasTh = Array.isArray(th) ? th.some(Boolean) : !!th;
-            if (hasTh) {
-              rhHtml += `<div class="pasuk-tosafot"><span class="layer-label">תוספות</span><div class="rashi-body">${commentaryHTML(th, { tosafot: true })}</div></div>`;
-            }
-          }
-        }
         return main + trHtml + rhHtml;
       }));
+      // Gemara: append all Rashi + Tosafot for this amud after its segments
+      if (isGemara && (showRashi || showTosafot)) {
+        pieces.push(() => {
+          let html = '';
+          if (showRashi && rashiChapters) {
+            const rc = rashiChapters.find(x => x.label === c.label) || rashiChapters[ci];
+            if (rc && rc.verses) {
+              const allRh = (rc.verses || []).filter(v => {
+                if (Array.isArray(v)) return v.some(Boolean);
+                return !!v && String(v).trim();
+              });
+              if (allRh.length) {
+                html += `<div class="pasuk-rashi"><span class="layer-label">רש״י</span><div class="rashi-body">${allRh.map(rh => commentaryHTML(rh)).join('')}</div></div>`;
+              }
+            }
+          }
+          if (showTosafot && tosafotChapters) {
+            const tc = tosafotChapters.find(x => x.label === c.label) || tosafotChapters[ci];
+            if (tc && tc.verses) {
+              const allTh = (tc.verses || []).filter(v => {
+                if (Array.isArray(v)) return v.some(Boolean);
+                return !!v && String(v).trim();
+              });
+              if (allTh.length) {
+                html += `<div class="pasuk-tosafot"><span class="layer-label">תוספות</span><div class="rashi-body">${allTh.map(th => commentaryHTML(th, { tosafot: true })).join('')}</div></div>`;
+              }
+            }
+          }
+          return html;
+        });
+      }
     });
     return { id, pieces, pos: 0 };
   });
@@ -1440,7 +1621,7 @@ function render() {
       if (isPreview) {
         const b = document.createElement('div');
         b.className = 'preview-banner';
-        b.innerHTML = `<span class="preview-badge">Preview</span> Only the first portion is shown on screen. <strong>Load Full Preview</strong> / Print opens the full text in the print dialog.`;
+        b.innerHTML = `<span class="preview-badge">Preview</span> Only the first portion is shown on screen (word/root search cover this slice). <strong>Print Full Text</strong> opens the complete text in the print dialog.`;
         firstPane.insertBefore(b, firstPane.firstChild);
       }
     }
@@ -1882,6 +2063,7 @@ function fillBooks() {
   chapters = [];
   siddurSel = new Set();
   buildSiddurPicker(); updateChapterUI();
+  render(); // clear stale text from previous book/section
 }
 
 const CH_WORD = { tanach: 'Chapter ', mishna: 'Chapter ', gemara: 'Daf ', siddur: '' };
@@ -2030,6 +2212,7 @@ async function applyTanachOptions() {
   const titleSel = $('select-title');
   const item = (library[corpus] || [])[titleSel && titleSel.value !== '' ? +titleSel.value : -1];
   const bookTitle = item ? item.title : null;
+  const loadToken = ++_renderToken; // cancel if user switches book while we await
 
   pasukRange = parseRangeFromBoxes();
   if (($('range-from') && $('range-from').value.trim() || $('range-to') && $('range-to').value.trim()) && !pasukRange) {
@@ -2039,12 +2222,14 @@ async function applyTanachOptions() {
   // Only fetch what is newly needed; layers already loaded stay in memory so toggling is instant.
   if (showRashi && bookTitle && !rashiChapters) {
     toast('Loading Rashi…');
-    rashiChapters = await loadSideText(
+    const loaded = await loadSideText(
       bookTitle, 'rashi-he',
       item && item.origTitle,
       item && item.rashiUrl,
       item && item.rashiHandle
     );
+    if (loadToken !== _renderToken) return; // user switched sefer
+    rashiChapters = loaded;
     if (!rashiChapters) {
       const viaFile = location.protocol === 'file:';
       toast(viaFile
@@ -2060,12 +2245,16 @@ async function applyTanachOptions() {
     const enUrl = item && item.rashiUrl
       ? item.rashiUrl.replace('Rashi%20Hebrew', 'Rashi%20English').replace('Rashi Hebrew', 'Rashi English')
       : null;
-    rashiEnChapters = await loadSideText(bookTitle, 'rashi-en', item && item.origTitle, enUrl, null);
+    const loadedEn = await loadSideText(bookTitle, 'rashi-en', item && item.origTitle, enUrl, null);
+    if (loadToken !== _renderToken) return;
+    rashiEnChapters = loadedEn;
     if (!rashiEnChapters) toast('No English Rashi for ' + bookTitle, 'warn');
   }
   if (showTosafot && bookTitle && corpus === 'gemara' && !tosafotChapters) {
     toast('Loading Tosafot…');
-    tosafotChapters = await loadSideText(bookTitle, 'tosafot-he', item && item.origTitle, null, null);
+    const loadedTos = await loadSideText(bookTitle, 'tosafot-he', item && item.origTitle, null, null);
+    if (loadToken !== _renderToken) return;
+    tosafotChapters = loadedTos;
     if (!tosafotChapters) toast('No Tosafot for ' + bookTitle, 'warn');
     else {
       tosafotChapters = alignCommentaryLabels(tosafotChapters);
@@ -2073,9 +2262,11 @@ async function applyTanachOptions() {
     }
   }
 
+  if (loadToken !== _renderToken) return;
   // Rebuild chapter list from the active range (one section shown at a time)
   fillChapterSelect();
   if (showTranslation && bookTitle) { toast('Loading translation…'); await ensureTranslation(); }
+  if (loadToken !== _renderToken) return;
   render();
 
   if (pasukRange) {
@@ -2115,7 +2306,7 @@ const openBook = guard(async () => {
       if (typeof VilnaGemara !== 'undefined' && VilnaGemara.listDafim) {
         labels = await VilnaGemara.listDafim(item.title);
       } else {
-        // Fallback: derive labels from local Gemara file length
+        // Fallback: derive labels from local Gemara file using real array indexes
         const res = await fetch('./texts/03_Gemara/' + encodeURIComponent(item.title + ' Gemara Hebrew.json'));
         if (!res.ok) throw new Error('Missing local Gemara for ' + item.title);
         const j = await res.json();
@@ -2160,14 +2351,14 @@ const openBook = guard(async () => {
 
   const root = j.text ?? (j.versions && j.versions[0] && j.versions[0].text) ?? j.he ?? j;
   if (corpus === 'gemara' && Array.isArray(root) && root.some(Array.isArray)) {
-    let dafIdx = 0;
+    // Use real array index so gaps and non-2a starts (e.g. Tamid 25b) label correctly
     chapters = [];
-    root.forEach(seg => {
+    root.forEach((seg, i) => {
       const verses = toChapters(seg).flatMap(c => c.verses).filter(Boolean);
       if (!verses.length) return;
-      const label = `${Math.floor(dafIdx / 2) + 2}${dafIdx % 2 ? 'b' : 'a'}`;
+      const x = i + 2;
+      const label = Math.floor(x / 2) + (x % 2 === 0 ? 'a' : 'b');
       chapters.push({ label, verses });
-      dafIdx++;
     });
   } else if (corpus === 'siddur') {
     chapters = toSiddurChapters(root).filter(c => c.verses && c.verses.length);
@@ -2187,12 +2378,26 @@ const openBook = guard(async () => {
 });
 
 const onChapterChange = guard(async () => {
+  // Choosing a specific chapter clears any active range so the dropdown works
+  if (pasukRange) {
+    pasukRange = null;
+    if ($('range-from')) $('range-from').value = '';
+    if ($('range-to')) $('range-to').value = '';
+    if ($('pasuk-range')) $('pasuk-range').value = '';
+  }
   render();
   if (showTranslation && await ensureTranslation()) render();
 });
 function stepChapter(d) {
   const s = $('select-chapter');
   if (!s || !s.options.length) return;
+  // Clear range so arrows navigate chapters instead of being overridden
+  if (pasukRange) {
+    pasukRange = null;
+    if ($('range-from')) $('range-from').value = '';
+    if ($('range-to')) $('range-to').value = '';
+    if ($('pasuk-range')) $('pasuk-range').value = '';
+  }
   const i = s.selectedIndex + d;
   if (i >= 0 && i < s.options.length) {
     s.selectedIndex = i;
@@ -2452,7 +2657,15 @@ function init() {
   };
 
   $('ls').oninput = e => { P().ls = +e.target.value; $('ls-val').textContent = e.target.value + 'px'; applyStylesSoon(); };
-  $('font-picker').onchange = e => { P().font = e.target.value; applyStyles(); };
+  $('font-picker').onchange = e => {
+    P().font = e.target.value;
+    // Rebuild HTML so overlay layers are fresh for the new face (verifyOverlays
+    // may have stripped .top on the previous font).
+    _wordCache.clear();
+    _textHtmlCache.clear();
+    applyStyles();
+    render();
+  };
   const setSize = v => {
     let n = parseFloat(String(v).replace(',', '.'));
     if (!isFinite(n)) n = P().fs;
@@ -2496,6 +2709,18 @@ function init() {
       render();
     }
   });
+  // Re-fit Vilna dafim when the window is resized
+  let _vilnaResizeTimer = null;
+  window.addEventListener('resize', () => {
+    if (!showVilna || corpus !== 'gemara') return;
+    clearTimeout(_vilnaResizeTimer);
+    _vilnaResizeTimer = setTimeout(() => {
+      const v = $('text-viewer');
+      if (v && typeof VilnaGemara !== 'undefined' && typeof VilnaGemara.fitToWidth === 'function') {
+        v.querySelectorAll('.vilna-daf').forEach(VilnaGemara.fitToWidth);
+      }
+    }, 120);
+  });
   $('btn-print').onclick = () => window.print();
   // Load Full Preview = same as Print / Ctrl+P (no separate "load into preview" step)
   const fullPrev = $('btn-full-preview');
@@ -2530,6 +2755,7 @@ function init() {
     if (chapSel) chapSel.innerHTML = '<option value="">Chapter</option>';
     updateTanachToolsVisibility();
     fillSections();
+    // fillBooks (via fillSections) calls render() to clear stale text
   };
   $('select-category').onchange = fillBooks; $('select-title').onchange = openBook;
   $('select-chapter').onchange = onChapterChange;
@@ -2626,7 +2852,11 @@ function init() {
   if ($('opt-vilna')) $('opt-vilna').onchange = e => {
     showVilna = e.target.checked;
     updateTanachToolsVisibility();
-    render();
+    // Chapters may have been built as placeholders (verses: ['']) for Vilna;
+    // re-open the book so non-Vilna gets real text (or Vilna gets labels).
+    const titleSel = $('select-title');
+    if (titleSel && titleSel.value !== '') openBook();
+    else render();
   };
   if ($('opt-pdf-breaks')) $('opt-pdf-breaks').onchange = e => {
     showPdfBreaks = e.target.checked;
@@ -2635,6 +2865,10 @@ function init() {
   if ($('opt-line-break')) $('opt-line-break').onchange = e => {
     lineBreakPostPasuk = e.target.checked;
     render();
+  };
+  if ($('opt-edit')) $('opt-edit').onchange = e => {
+    const v = $('text-viewer');
+    if (v) v.contentEditable = e.target.checked ? 'true' : 'false';
   };
 
   $('ch-prev').onclick = () => stepChapter(-1); $('ch-next').onclick = () => stepChapter(1);
