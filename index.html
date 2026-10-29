@@ -563,6 +563,15 @@ select:focus, input[type=text]:focus { border-color: var(--sky); }
   font-size: var(--fs, 12pt);
   letter-spacing: var(--ls, 0);
 }
+/* Letter cluster. Niqqud-only mode stacks .nk-full under .top (Otiyot+ overlay). */
+.viewer .c { unicode-bidi: isolate; }
+/* Overlay layer is only shown by Niqqud-only mode (dyn CSS); otherwise it must never double the letter */
+.viewer .c.ob > .top { display: none; }
+.viewer .c.ob > .nk-full,
+.viewer .c.ob > .top {
+  font-synthesis: none !important;
+  text-shadow: none !important;
+}
 .viewer p, .viewer span.pasuk-unit { margin-bottom: .35em; break-inside: avoid; }
 .viewer span.pasuk-unit { display: inline; margin-bottom: 0; }
 .viewer span.pasuk-unit + span.pasuk-unit::before { content: ' '; }
@@ -1283,7 +1292,7 @@ select:disabled, .btn:disabled { opacity: .5; cursor: not-allowed; }
 }
 @font-face {
   font-family: 'VilnaRashi';
-  src: url('./fonts/Noto%20Rashi.otf') format('opentype');
+  src: url('./fonts/Rashi.otf') format('opentype');
   font-display: swap;
 }
 
@@ -1527,8 +1536,8 @@ select:disabled, .btn:disabled { opacity: .5; cursor: not-allowed; }
               <button data-m="char">Niqqud only</button>
             </div>
             <div>
-              <div class="op-top"><span>Opacity</span><span id="nk-op-val">60%</span></div>
-              <input type="range" id="nk-op" min="10" max="100" value="60">
+              <div class="op-top"><span>Opacity</span><span id="nk-op-val">50%</span></div>
+              <input type="range" id="nk-op" min="10" max="100" value="50">
             </div>
           </div>
           <div id="nk-rows"></div>
@@ -1540,7 +1549,7 @@ select:disabled, .btn:disabled { opacity: .5; cursor: not-allowed; }
           <div class="row-icon i-purple">🌱</div>
           <div class="row-body">
             <div class="row-title">Shoresh Highlight</div>
-            <div class="row-sub">Search a root, see it in the text</div>
+            <div class="row-sub">Approximate root match (heuristic)</div>
           </div>
           <div class="switch">
             <input type="checkbox" id="sh-on">
@@ -1565,9 +1574,9 @@ select:disabled, .btn:disabled { opacity: .5; cursor: not-allowed; }
               <span>Shoresh colour</span>
             </div>
             <div class="seg" id="sh-mode">
-              <button class="active" data-m="bar">Underline</button>
+              <button data-m="bar">Underline</button>
               <button data-m="char">Letters</button>
-              <button data-m="word">Whole word</button>
+              <button class="active" data-m="word">Whole word</button>
             </div>
             <div>
               <div class="op-top"><span>Opacity</span><span id="sh-op-val">100%</span></div>
@@ -1604,12 +1613,12 @@ select:disabled, .btn:disabled { opacity: .5; cursor: not-allowed; }
               <button class="btn off" id="tp-all-off">✕ All off</button>
             </div>
             <div class="seg" id="tp-mode">
-              <button class="active" data-m="mark">Marks only</button>
-              <button data-m="char">Whole word</button>
+              <button data-m="mark">Marks only</button>
+              <button class="active" data-m="char">Whole word</button>
             </div>
             <div>
-              <div class="op-top"><span>Opacity</span><span id="tp-op-val">100%</span></div>
-              <input type="range" id="tp-op" min="10" max="100" value="100">
+              <div class="op-top"><span>Opacity</span><span id="tp-op-val">50%</span></div>
+              <input type="range" id="tp-op" min="10" max="100" value="50">
             </div>
           </div>
           <div id="tp-rows"></div>
@@ -1664,7 +1673,6 @@ select:disabled, .btn:disabled { opacity: .5; cursor: not-allowed; }
       </details>
       <button class="btn" id="ch-prev" title="Previous chapter" aria-label="Previous">◀</button>
       <button class="btn" id="ch-next" title="Next chapter" aria-label="Next">▶</button>
-      <button class="btn" id="btn-tools" title="Word &amp; root search" aria-label="Search">🔍</button>
       <div class="sp"></div>
       <div id="corpus-tools" class="tanach-tools">
         <span id="range-tools" class="range-tools" data-why="">
@@ -1699,7 +1707,7 @@ select:disabled, .btn:disabled { opacity: .5; cursor: not-allowed; }
           </div>
         </div>
         <div class="preview-load-bar" id="preview-load-bar" hidden>
-          <button type="button" class="btn btn-full-preview" id="btn-full-preview">📖 Load Full Preview</button>
+          <button type="button" class="btn btn-full-preview" id="btn-full-preview">🖨 Print Full Text</button>
         </div>
       </main>
 
