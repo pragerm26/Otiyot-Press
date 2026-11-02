@@ -302,6 +302,26 @@ select:focus, input[type=text]:focus { border-color: var(--sky); }
 .nk-row:last-child { border-bottom: none; }
 .nk-char { font-size: 16px; width: 28px; text-align: center; direction: rtl; }
 .nk-label { flex: 1; font-size: 11px; }
+/* Advanced niqqud switch + dropdown rows */
+.nk-adv-footer {
+  border-top: 1px solid var(--border);
+  background: rgba(13,35,64,.025);
+}
+.nk-adv-switch-row {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 11px; cursor: pointer; margin: 0;
+}
+.nk-adv-switch-row .row-body { flex: 1; min-width: 0; }
+.nk-adv-switch-row .row-title { font-size: 12.5px; font-weight: 500; line-height: 1.2; }
+.nk-adv-switch-row .row-sub { font-size: 10px; color: var(--muted); font-weight: 300; margin-top: 2px; }
+.nk-adv-rows { border-top: 1px solid var(--border); }
+.nk-adv-rows[hidden] { display: none !important; }
+.nk-adv-rows .nk-row { background: transparent; }
+/* When advanced is ON, give the footer a slight accent so it feels live */
+.nk-adv-footer.is-on {
+  background: linear-gradient(135deg, #fff 55%, rgba(41,171,226,.07));
+  border-top-color: rgba(41,171,226,.35);
+}
 .sh-color { display: flex; align-items: center; gap: 9px; font-size: 11px; }
 .note {
   font-size: 9.5px; color: var(--muted); font-weight: 300; line-height: 1.4;
@@ -1541,6 +1561,20 @@ select:disabled, .btn:disabled { opacity: .5; cursor: not-allowed; }
             </div>
           </div>
           <div id="nk-rows"></div>
+          <!-- Advanced switch at the bottom — turns on the 4 extra options -->
+          <div class="nk-adv-footer">
+            <label class="nk-adv-switch-row" for="nk-advanced">
+              <div class="row-body">
+                <div class="row-title">Advanced distinctions</div>
+                <div class="row-sub">Kamatz katan · ḥatafim</div>
+              </div>
+              <div class="switch">
+                <input type="checkbox" id="nk-advanced">
+                <span class="track"></span>
+              </div>
+            </label>
+            <div id="nk-adv-rows" class="nk-adv-rows" hidden></div>
+          </div>
         </div>
       </div>
 <!-- Shoresh Highlight -->
@@ -1579,8 +1613,8 @@ select:disabled, .btn:disabled { opacity: .5; cursor: not-allowed; }
               <button class="active" data-m="word">Whole word</button>
             </div>
             <div>
-              <div class="op-top"><span>Opacity</span><span id="sh-op-val">100%</span></div>
-              <input type="range" id="sh-op" min="10" max="100" value="100">
+              <div class="op-top"><span>Opacity</span><span id="sh-op-val">50%</span></div>
+              <input type="range" id="sh-op" min="10" max="100" value="50">
             </div>
             <div class="note">Matches words built on that root (prefixes, suffixes, weak letters allowed).</div>
           </div>
