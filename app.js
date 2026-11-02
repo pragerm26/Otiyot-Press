@@ -1,7 +1,8 @@
 // Otiyot+ Press — app logic. Plain JS, runs from file:// in Chrome/Edge.
 
 /* ───────── Pure logic (no DOM) ───────── */
-const NIKUD = [
+// Base niqqud always shown in the main panel
+const NIKUD_BASE = [
   { k: 'shva_na',   n: 'Shva Na',   c: '#cc0000', m: '\u05B0' },
   { k: 'shva_nach', n: 'Shva Nach', c: '#ff88aa', m: '\u05B0' },
   { k: 'hiriq',     n: 'Hiriq',     c: '#ff9900', m: '\u05B4' },
@@ -13,6 +14,14 @@ const NIKUD = [
   { k: 'kubutz',    n: 'Kubutz',    c: '#9900ff', m: '\u05BB' },
   { k: 'dagesh',    n: 'Dagesh',    c: '#ff00ff', m: '\u05BC' }
 ];
+// Advanced distinctions — only appear in the Advanced dropdown
+const NIKUD_ADV = [
+  { k: 'kamatz_katan', n: 'Kamatz Katan', c: '#1a5276', m: '\u05B8' }, // same mark; split by heuristic
+  { k: 'hataf_patach', n: 'Ḥataf Patach', c: '#4caf50', m: '\u05B2' },
+  { k: 'hataf_segol',  n: 'Ḥataf Segol',  c: '#8bc34a', m: '\u05B1' },
+  { k: 'hataf_kamatz', n: 'Ḥataf Kamatz', c: '#009688', m: '\u05B3' }
+];
+const NIKUD = [...NIKUD_BASE, ...NIKUD_ADV];
 const TROPES = [
   { k: 'etnachta',   n: 'Etnachta',    c: '#e5484d', m: '\u0591' },
   { k: 'segol_t',    n: 'Segol',       c: '#ff6d00', m: '\u0592' },
@@ -46,13 +55,16 @@ const TROPES = [
   { k: 'zarqa',      n: 'Zarqa',       c: '#0d2340', m: '\u05AE' }
 ];
 const MARK_KEY = {
-  '\u05B1': 'segol', '\u05B2': 'patach', '\u05B3': 'kamatz', '\u05B4': 'hiriq', '\u05B5': 'tsere',
+  '\u05B1': 'hataf_segol', '\u05B2': 'hataf_patach', '\u05B3': 'hataf_kamatz',
+  '\u05B4': 'hiriq', '\u05B5': 'tsere',
   '\u05B6': 'segol', '\u05B7': 'patach', '\u05B8': 'kamatz', '\u05C7': 'kamatz',
   '\u05B9': 'holam', '\u05BA': 'holam', '\u05BB': 'kubutz', '\u05BC': 'dagesh'
 };
 const TROPE_KEY = Object.fromEntries(TROPES.map(t => [t.m, t.k]));
-const LONG = new Set(['tsere', 'kamatz', 'holam']);
+const LONG = new Set(['tsere', 'kamatz', 'holam']); // kamatz_katan is short, so deliberately excluded
 const FINAL = { 'ך': 'כ', 'ם': 'מ', 'ן': 'נ', 'ף': 'פ', 'ץ': 'צ' };
+/** When true, clusterKeys splits kamatz → kamatz / kamatz_katan via the closed-syllable heuristic. */
+let useAdvancedNikud = false;
 const normRoot = s => [...s].map(c => FINAL[c] || c).join('');
 const WORD_RE = /(?:[\u05D0-\u05EA][\u0591-\u05BD\u05BF\u05C1\u05C2\u05C4\u05C5\u05C7]*)+/g;
 const CL_RE = /([\u05D0-\u05EA])([\u0591-\u05BD\u05BF\u05C1\u05C2\u05C4\u05C5\u05C7]*)/g;
@@ -63,43 +75,101 @@ const stripMarks = s => s.replace(/[\u0591-\u05C7]/g, '');
 
 function clusters(word) { return [...word.matchAll(CL_RE)].map(m => ({ b: m[1], marks: [...m[2]] })); }
 
+/**
+ * Classic 5 rules for sheva na (mobile), plus one high-frequency Tanakh special case.
+ * 1. Beginning of the word.
+ * 2. First of two consecutive shevas → nach; second of two consecutive shevas → na.
+ * 3. Under the first of two consecutive identical letters (e.g. הִלְּלוּ).
+ * 4. After a long vowel (tsere / kamatz gadol / holam) or shuruk.
+ * 5. (covered by 2) + the special וַיְ / וַיְ pattern which is extremely common.
+ * Final sheva is always nach.
+ */
 function shvaKey(cl, i) {
   const sv = j => cl[j] && cl[j].marks.includes('\u05B0');
+  // Rule 1: beginning of word
   if (i === 0) return 'shva_na';
+  // Final sheva, or first of two consecutive shevas → nach
   if (i === cl.length - 1 || sv(i + 1)) return 'shva_nach';
-  // Two consecutive identical letters: shva under the first is na (e.g. הִלְּלוּ)
+  // Rule 3: two consecutive identical letters → sheva under the first is na
   if (cl[i + 1] && cl[i].b === cl[i + 1].b) return 'shva_na';
+  // Rule 2 (second half): previous letter also has sheva → this one is na
   if (sv(i - 1)) return 'shva_na';
   const p = cl[i - 1];
-  const pk = p.marks.map(m => MARK_KEY[m]).find(k => k && k !== 'dagesh');
-  // Vav + patach/kamatz + yod + shva (וַיְהִי, וַיְדַבֵּר): the shva is na
+  const pk = p.marks.map(m => MARK_KEY[m]).find(k => k && k !== 'dagesh' && k !== 'kamatz_katan');
+  // Special high-frequency case: וַיְהִי / וַיְדַבֵּר etc. — the yod sheva is na
   if (p.b === 'ו' && (p.marks.includes('\u05B7') || p.marks.includes('\u05B8')) &&
       cl[i].b === 'י') return 'shva_na';
+  // Rule 4: after long vowel or shuruk → na
   const shuruk = !pk && p.b === 'ו' && p.marks.includes('\u05BC');
   return (LONG.has(pk) || shuruk) ? 'shva_na' : 'shva_nach';
 }
+
+/**
+ * Approximate kamatz-katan detection (closed syllable heuristic).
+ * A kamatz is treated as katan when the syllable is closed (next letter has no
+ * full vowel of its own). This is the main pedagogical rule; stress is ignored
+ * because reliable stress detection needs full trope analysis. When advanced
+ * mode is off the distinction is never made.
+ */
+function kamatzKey(cl, i) {
+  if (i >= cl.length - 1) return 'kamatz'; // final kamatz stays gadol in this approximation
+  const next = cl[i + 1];
+  // If the next cluster has a full vowel (not just sheva/dagesh), this syllable is open → gadol.
+  // If next has only sheva / dagesh / nothing, the syllable is closed → katan.
+  const nextFull = next.marks.some(m => {
+    const k = MARK_KEY[m];
+    return k && k !== 'dagesh' && k !== 'shva_na' && k !== 'shva_nach';
+  });
+  return nextFull ? 'kamatz' : 'kamatz_katan';
+}
+
 function clusterKeys(cl) {
   cl.forEach((c, i) => {
     let key = null;
-    for (const m of c.marks) { const k = MARK_KEY[m]; if (k && k !== 'dagesh') { key = k; break; } }
+    for (const m of c.marks) {
+      const k = MARK_KEY[m];
+      if (k && k !== 'dagesh') { key = k; break; }
+    }
     if (!key && c.marks.includes('\u05B0')) key = shvaKey(cl, i);
     // Shuruk: וּ (vav + dagesh, no other vowel) → kubutz color, not dagesh
     if (!key && c.marks.includes('\u05BC')) {
       key = (c.b === 'ו') ? 'kubutz' : 'dagesh';
     }
+    if (useAdvancedNikud) {
+      // Advanced: split kamatz → kamatz / kamatz_katan
+      if (key === 'kamatz') key = kamatzKey(cl, i);
+      // ḥatafim keep their own keys (already set via MARK_KEY)
+    } else {
+      // Advanced off: collapse ḥatafim back to their parent vowels
+      if (key === 'hataf_patach') key = 'patach';
+      else if (key === 'hataf_segol') key = 'segol';
+      else if (key === 'hataf_kamatz') key = 'kamatz';
+      // kamatz_katan is never emitted when advanced is off
+    }
     c.key = key;
   });
 }
 
-// Shoresh search: does this consonant string contain `target` as a root? Returns letter indexes or null.
-// Allows prefixes (ו ש ה ב כ ל מ), common suffixes, and extra letters inside the stem.
-// Weak letters (אהוינתמי) are preferred; non-weak extras are allowed but cost more so
-// tight / morphological matches still win (e.g. בראשית → ברא, כתובים → כתב).
-const PRE = new Set([...'ושהבכלמ']);
-const SUF = new Set(['', 'ה', 'ו', 'י', 'כ', 'ם', 'ן', 'ת', 'ים', 'ות', 'הו', 'הם', 'הן', 'ני', 'נו', 'כם', 'כן',
-  'תי', 'תם', 'תן', 'יו', 'יה', 'ינו', 'יהם', 'יהן', 'תיו']);
+// ── Shoresh matching ──────────────────────────────────────────────────────
+// Two layers:
+//   1. Exact form→root index built from Root-Binyan Examples CSV (primary).
+//   2. Improved heuristic subsequence matcher (fallback for unseen forms).
+//
+// The heuristic fixes the old SUF bug (finals were never normalized), tightens
+// scoring, respects prefix order, and adds weak-root patterns (missing first /
+// middle / last radical).
+
+const PRE_LETTERS = new Set([...'ושהבכלמאיתנ']); // + imperfect subject prefixes איתנ
+// Ordered prefixes: ו then ש/כש then article/prep (ה ב כ ל מ). We allow any
+// subset in that relative order, up to 3 letters.
+const SUF_RAW = ['', 'ה', 'ו', 'י', 'כ', 'ם', 'ן', 'ת', 'ים', 'ות', 'הו', 'הם', 'הן',
+  'ני', 'נו', 'כם', 'כן', 'תי', 'תם', 'תן', 'יו', 'יה', 'ינו', 'יהם', 'יהן', 'תיו',
+  'תה', 'תיך', 'תינו', 'תיכם', 'תיהם', 'ך', 'נו', 'כם', 'כן', 'הן'];
+// Normalize finals so ם/ן/ך etc. match the consonant skeleton we store in data-c
+const SUF = new Set(SUF_RAW.map(s => [...s].map(c => FINAL[c] || c).join('')));
 const WEAK = new Set([...'אהוינתמי']);
-const MAX_EXTRA = 3; // tightened from 5 — 2-letter roots were matching almost anything
+const MAX_EXTRA = 2; // tightened from 3 — fewer false positives
+const MAX_SCORE = 10; // reject matches whose best score exceeds this
 function combos(n, L, cb) {
   const idx = [];
   (function go(s) {
@@ -107,61 +177,273 @@ function combos(n, L, cb) {
     for (let i = s; i < n; i++) { idx.push(i); go(i + 1); idx.pop(); }
   })(0);
 }
-const _rootCache = new Map();
-const ROOT_CACHE_MAX = 200000;
-function rootHits(cons, t) {
-  const k = t + '|' + cons;
-  let r = _rootCache.get(k);
-  if (r !== undefined) return r;
-  r = rootHitsRaw(cons, t);
-  if (_rootCache.size >= ROOT_CACHE_MAX) _rootCache.clear();
-  _rootCache.set(k, r);
-  return r;
+
+/** Is the prefix slice a legal ordered prefix sequence? */
+function legalPrefix(pref) {
+  if (!pref) return true;
+  // Canonical order: ו → ש → {ה ב כ ל מ}. Allow כש as a unit (כ before ש is ok
+  // when they form the compound relative). Reject pure repeats (ללל) and letters
+  // outside the prefix set.
+  const order = { 'ו': 0, 'א': 0, 'י': 0, 'ת': 0, 'נ': 0, 'ש': 1, 'ה': 2, 'ב': 2, 'כ': 2, 'ל': 2, 'מ': 2 };
+  let last = -1;
+  let seen = new Set();
+  for (let i = 0; i < pref.length; i++) {
+    const c = pref[i];
+    if (!PRE_LETTERS.has(c)) return false;
+    // Special: כש compound — treat as a single unit at the ש level
+    if (c === 'כ' && i + 1 < pref.length && pref[i + 1] === 'ש') {
+      if (last > 1) return false;
+      last = 1;
+      seen.add('כ'); seen.add('ש');
+      i++; // skip the ש
+      continue;
+    }
+    const o = order[c] ?? 9;
+    if (o < last) return false;
+    // No pure repeated prefix letter (לל, ממ) except inside כש handled above
+    if (seen.has(c) && o === last) return false;
+    seen.add(c);
+    last = o;
+  }
+  return true;
 }
-function rootHitsRaw(cons, t) {
+
+/**
+ * Classify a root into traditional weak categories based on its letters.
+ * Only these categories generate dropped-radical variants — strong roots never do.
+ */
+function weakClasses(t) {
+  const cls = new Set();
+  if (t.length < 3) return cls;
+  const a = t[0], b = t[1], c = t[t.length - 1];
+  if (a === 'נ') cls.add('pn');           // פ"נ
+  if (a === 'י' || a === 'ו') cls.add('py'); // פ"י / פ"ו
+  if (t.length === 3 && (b === 'ו' || b === 'י')) cls.add('ay'); // ע"ו / ע"י
+  if (c === 'ה' || c === 'א') cls.add('lh'); // ל"ה / ל"א
+  if (t.length === 3 && b === c) cls.add('aa'); // ע"ע
+  return cls;
+}
+
+/**
+ * Weak-root patterns: ONLY for roots that actually have the relevant weak letter.
+ * Strong roots return null immediately. Returns letter indexes into `cons` or null.
+ */
+function weakRootHits(cons, t) {
+  const cls = weakClasses(t);
+  if (!cls.size) return null; // strong root — no dropped-radical variants
+
+  const variants = [];
+  // פ"נ / פ"י: drop first radical
+  if (cls.has('pn') || cls.has('py')) variants.push(t.slice(1));
+  // ע"ו / ע"י: drop middle
+  if (cls.has('ay') && t.length === 3) variants.push(t[0] + t[2]);
+  // ל"ה / ל"א: drop last
+  if (cls.has('lh')) variants.push(t.slice(0, -1));
+  // ע"ע: doubled ayin → two-letter form
+  if (cls.has('aa')) variants.push(t[0] + t[1]);
+
+  let best = null, bs = 1e9;
+  for (const raw of variants) {
+    const v = normRoot(raw); // cons is always final-normalized
+    if (v.length < 2) continue;
+    const hit = rootHitsHeuristic(cons, v, /*allowWeak*/ false);
+    if (!hit) continue;
+    // 2-letter weak stubs: require that after stripping one prefix letter,
+    // the remaining stem is exactly the stub (or stub + one weak letter).
+    // This kills פלא/אבן/פלט false positives while keeping יפל/קם/סב.
+    if (v.length === 2) {
+      const hitSet = new Set(hit);
+      // Strip the longest legal prefix that isn't part of the highlight (up to 2 letters: ו+י etc.)
+      let start = 0;
+      for (let len = Math.min(2, cons.length); len >= 1; len--) {
+        const pref = cons.slice(0, len);
+        const prefIdx = Array.from({length: len}, (_, i) => i);
+        if (prefIdx.every(i => !hitSet.has(i)) && legalPrefix(pref)) { start = len; break; }
+      }
+      // Prefer longer suffix strip first. Only strip if remaining span stays ≥ stub length.
+      let end = cons.length;
+      if (end - start > v.length && end >= 2 && SUF.has(cons.slice(end - 2)) && !hitSet.has(end - 1) && !hitSet.has(end - 2)) end -= 2;
+      else if (end - start > v.length && SUF.has(cons.slice(end - 1)) && !hitSet.has(end - 1)) end--;
+      const leftover = [];
+      for (let i = start; i < end; i++) if (!hitSet.has(i)) leftover.push(cons[i]);
+      if (leftover.length > 0) continue;
+      // Form must be short (≤4) or carry a verbal subject prefix (י ת נ ו).
+      // Blocks תפלה/נפל (ת is prefix but form has leftover radical feel via length+ה).
+      if (cons.length > 4) continue;
+      if (cons.length === 4 && start === 1 && cons[0] === 'ת' && cons[3] === 'ה') continue; // ת…ה pattern (תפלה)
+      if (cons.length === 3 && start === 1 && !'יתנו'.includes(cons[0])) continue;
+    }
+    const sc = 20 + (3 - v.length) * 2 + (v.length === 2 ? 5 : 0);
+    if (sc < bs) { bs = sc; best = hit; }
+  }
+  return best;
+}
+
+/**
+ * Core heuristic: ordered-prefix + normalized-suffix + subsequence with scoring.
+ * Returns letter indexes into `cons` or null.
+ */
+function rootHitsHeuristic(cons, t, allowWeak = true) {
+  t = normRoot(t);
   const n = cons.length, L = t.length;
-  if (L < 2 || L > 5 || n < L) return null;
-  // Quick reject: the target letters must appear in order inside the word, or no match is possible.
-  { let j = 0; for (let i = 0; i < n && j < L; i++) if (cons[i] === t[j]) j++; if (j < L) return null; }
+  if (L < 2 || L > 5 || n < 2) return null;
+
+  // Quick reject: target letters must appear in order somewhere
+  { let j = 0; for (let i = 0; i < n && j < L; i++) if (cons[i] === t[j]) j++; if (j < L) {
+    // Full subsequence impossible — try weak-root patterns
+    return allowWeak ? weakRootHits(cons, t) : null;
+  }}
+
   let best = null, bs = 1e9;
   for (let p = 0; p <= 3 && p < n; p++) {
-    if (p > 0 && !PRE.has(cons[p - 1])) break;
-    for (let s = 0; s <= 4 && n - s - p >= L; s++) {
+    const pref = cons.slice(0, p);
+    if (!legalPrefix(pref)) continue;
+    for (let s = 0; s <= 5 && n - s - p >= 2; s++) {
       if (!SUF.has(cons.slice(n - s))) continue;
       const stem = cons.slice(p, n - s);
       const extra = stem.length - L;
-      if (extra > MAX_EXTRA) continue;
-      // Fast path: exact match (no extras)
+      if (extra < 0 || extra > MAX_EXTRA) continue;
+
       if (extra === 0) {
         if (stem === t) {
-          const sc = p + s;
-          if (sc < bs) { bs = sc; best = Array.from({length: L}, (_, i) => i + p); }
+          const sc = p + s; // prefer fewer affixes
+          if (sc < bs) { bs = sc; best = Array.from({ length: L }, (_, i) => i + p); }
         }
         continue;
       }
       combos(stem.length, L, idx => {
         if (idx.some((si, j) => stem[si] !== t[j])) return;
-        // Prefer weak extras; still allow non-weak (score them higher)
         let nonWeak = 0;
+        const extras = [];
         for (let i = 0; i < stem.length; i++) {
-          if (!idx.includes(i) && !WEAK.has(stem[i])) nonWeak++;
+          if (!idx.includes(i)) {
+            extras.push(stem[i]);
+            if (!WEAK.has(stem[i])) nonWeak++;
+          }
         }
-        const sc = extra * 2 + nonWeak * 4 + p + s;
+        // No affix (p=0,s=0) + internal extras: only allow if every extra is ו/י
+        // sitting between radicals (hollow-verb pattern). Blocks בינה/בנה, כתר/כתב.
+        if (p === 0 && s === 0 && extras.length > 0) {
+          // Only a single ו between radicals is a plausible hollow-verb infix.
+          // Blocks בינה/בנה (י), כתר/כתב (ר is already nonWeak), etc.
+          if (!(extras.length === 1 && extras[0] === 'ו')) return;
+        }
+        const sc = extra * 3 + nonWeak * 6 + p + s;
         if (sc < bs) { bs = sc; best = idx.map(i => i + p); }
       });
     }
   }
-  return best;
+  if (best && bs <= MAX_SCORE) return best;
+  return allowWeak ? weakRootHits(cons, t) : null;
+}
+
+// ── Exact form→root index (from Root-Binyan Examples) ─────────────────────
+/** Map: normalized consonant skeleton → Set of root strings */
+const formRootIndex = new Map();
+/** Map: root → Set of normalized forms that realize it (for suggestions / stats) */
+const rootFormIndex = new Map();
+
+function indexForm(formCons, root) {
+  if (!formCons || formCons.length < 2 || !root || root.length < 2) return;
+  let set = formRootIndex.get(formCons);
+  if (!set) { set = new Set(); formRootIndex.set(formCons, set); }
+  set.add(root);
+  let rs = rootFormIndex.get(root);
+  if (!rs) { rs = new Set(); rootFormIndex.set(root, rs); }
+  rs.add(formCons);
+}
+
+/**
+ * Strip OSHB-style word_text (may contain / for morpheme boundaries and niqqud)
+ * down to a pure consonant skeleton compatible with data-c.
+ */
+function formToCons(wordText) {
+  if (!wordText) return '';
+  // Drop everything after the first space (verse noise), split on / (morpheme boundary)
+  const core = wordText.split(/\s+/)[0];
+  // Join morphemes, strip niqqud + cantillation + maqaf, normalize finals
+  const letters = [...core.replace(/\//g, '')]
+    .filter(c => c >= '\u05D0' && c <= '\u05EA')
+    .map(c => FINAL[c] || c);
+  return letters.join('');
+}
+
+const _rootCache = new Map();
+const ROOT_CACHE_MAX = 200000;
+
+/**
+ * Primary entry point. Returns letter indexes into `cons` for highlighting, or null.
+ * Prefers exact index hits; falls back to improved heuristic.
+ */
+function rootHits(cons, t) {
+  if (!cons || !t || t.length < 2) return null;
+  t = normRoot(t);
+  const k = t + '|' + cons;
+  let r = _rootCache.get(k);
+  if (r !== undefined) return r;
+
+  // 1. Exact index: form is known to realize this root
+  const roots = formRootIndex.get(cons);
+  if (roots && roots.has(t)) {
+    // Prefer full-root subsequence highlight; if a radical dropped (ויבן/בנה),
+    // fall through to weak/heuristic so we still light the letters that remain.
+    r = highlightIndexes(cons, t);
+    if (r) {
+      _rootCache.set(k, r);
+      return r;
+    }
+    // Index confirmed the form — try weak highlight, then heuristic
+    r = weakRootHits(cons, t) || rootHitsHeuristic(cons, t, false);
+    if (r) {
+      _rootCache.set(k, r);
+      return r;
+    }
+    // Last resort: light every letter that belongs to the root (any order subset)
+    r = highlightIndexesLoose(cons, t);
+    _rootCache.set(k, r);
+    return r;
+  }
+
+  // 2. Heuristic fallback (includes gated weak patterns)
+  r = rootHitsHeuristic(cons, t, true);
+  if (_rootCache.size >= ROOT_CACHE_MAX) _rootCache.clear();
+  _rootCache.set(k, r);
+  return r;
+}
+
+/** Pick letter indexes in `cons` that realize `t` as a subsequence (leftmost greedy). */
+function highlightIndexes(cons, t) {
+  const idx = [];
+  let j = 0;
+  for (let i = 0; i < cons.length && j < t.length; i++) {
+    if (cons[i] === t[j]) { idx.push(i); j++; }
+  }
+  return j === t.length ? idx : null;
+}
+
+/** Highlight every consonant in `cons` that appears in `t` (multiset, left-to-right).
+ *  Used only when the index confirmed the form but no ordered subsequence exists
+ *  (should be rare after weak patterns). Never invents letters. */
+function highlightIndexesLoose(cons, t) {
+  const need = new Map();
+  for (const c of t) need.set(c, (need.get(c) || 0) + 1);
+  const idx = [];
+  for (let i = 0; i < cons.length; i++) {
+    const n = need.get(cons[i]) || 0;
+    if (n > 0) { idx.push(i); need.set(cons[i], n - 1); }
+  }
+  return idx.length ? idx : null;
 }
 
 const _wordCache = new Map();
 const WORD_CACHE_MAX = 80000;
 function wordHTML(word) {
-  let h = _wordCache.get(word);
+  const cacheKey = (useAdvancedNikud ? '1|' : '0|') + word;
+  let h = _wordCache.get(cacheKey);
   if (h !== undefined) return h;
   h = wordHTMLRaw(word);
   if (_wordCache.size >= WORD_CACHE_MAX) _wordCache.clear();
-  _wordCache.set(word, h);
+  _wordCache.set(cacheKey, h);
   return h;
 }
 function wordHTMLRaw(word) {
@@ -208,7 +490,7 @@ function wordHTMLRaw(word) {
 const _textHtmlCache = new Map();
 const TEXT_HTML_CACHE_MAX = 4000;
 function textHTML(t) {
-  const key = t;
+  const key = (useAdvancedNikud ? '1|' : '0|') + t;
   let hit = _textHtmlCache.get(key);
   if (hit !== undefined) return hit;
   let out = '', last = 0;
@@ -564,15 +846,24 @@ const $ = id => document.getElementById(id);
 const DYSLEX_FONT = 'UserFont_Dyslex_Kriyah';
 const newProfile = () => ({
   content: 'full', font: DYSLEX_FONT, ls: 0, fs: 12,
-  // Default: block highlight at 50% opacity (Otiyot+ extension approach)
-  nk: { on: true, mode: 'block', op: 50, keys: Object.fromEntries(NIKUD.map(n => [n.k, { on: true, color: n.c }])) },
-  sh: { on: false, mode: 'word', op: 100, color: '#e8b840', root: '' },
-  // Trope: whole-word highlight at 50% (marks-only uses the same overlay as niqqud-only)
-  tp: { on: false, mode: 'char', op: 50, keys: Object.fromEntries(TROPES.map(t => [t.k, { on: true, color: t.c }])) }
+  // Opacity is per mode everywhere:
+  //   block / whole-word / underline  → op    (default 50%)
+  //   marks-only / letters            → *Op   (default 100%)
+  nk: { on: true, mode: 'block', op: 50, charOp: 100, advanced: false,
+        keys: Object.fromEntries(NIKUD.map(n => [n.k, { on: true, color: n.c }])) },
+  // Shoresh: underline (barOp) 100%, whole-word (op) 50%, letters (charOp) 100%
+  sh: { on: false, mode: 'word', op: 50, barOp: 100, charOp: 100, color: '#e8b840', root: '' },
+  tp: { on: false, mode: 'char', op: 50, markOp: 100, keys: Object.fromEntries(TROPES.map(t => [t.k, { on: true, color: t.c }])) }
 });
 const profiles = { R: newProfile(), L: newProfile() };
 let side = 'R', tikkun = false;
 const P = () => profiles[side];
+/** Active opacity for the current mode of each feature. */
+const nkOp = p => (p.nk.mode === 'char' ? (p.nk.charOp ?? 100) : p.nk.op);
+const shOp = p => p.sh.mode === 'char' ? (p.sh.charOp ?? 100)
+  : p.sh.mode === 'bar' ? (p.sh.barOp ?? 100)
+  : p.sh.op;
+const tpOp = p => (p.tp.mode === 'mark' ? (p.tp.markOp ?? 100) : p.tp.op);
 let library = { tanach: [], mishna: [], gemara: [], siddur: [] }, chapters = [], corpus = 'tanach', rootRows = [], rootOcc = new Map(), fonts = [];
 let libraryMode = null;
 /** Map of book title → FileSystemFileHandle for Rashi Hebrew (folder-picker / offline mode) */
@@ -639,7 +930,7 @@ function sideCSS(id, p) {
 
   if (p.nk.on && p.content === 'full') NIKUD.forEach(n => {
     const k = p.nk.keys[n.k]; if (!k.on) return;
-    const rgba = hexToRgba(k.color, p.nk.op);
+    const rgba = hexToRgba(k.color, nkOp(p));
     if (p.nk.mode === 'block') {
       // Block: tinted background on the whole letter (Otiyot+ default)
       css += `${pre}.c.k-${n.k}{background-color:${rgba}}`;
@@ -660,14 +951,14 @@ function sideCSS(id, p) {
     }
   });
   if (p.sh.on && p.sh.root) {
-    const c = mix(p.sh.color, p.sh.op);
+    const c = mix(p.sh.color, shOp(p));
     css += p.sh.mode === 'bar' ? `${pre}.c.sh{background-image:linear-gradient(to top,${c} .16em,transparent .16em)}`
       : p.sh.mode === 'char' ? `${pre}.c.sh{color:${c};font-weight:600}` : `${pre}.w.rm{background-color:${c};border-radius:4px}`;
   }
   if (p.tp.on && p.content === 'full') {
     TROPES.forEach(t => {
       const k = p.tp.keys[t.k]; if (!k || !k.on) return;
-      const rgba = hexToRgba(k.color, p.tp.op);
+      const rgba = hexToRgba(k.color, tpOp(p));
       if (p.tp.mode === 'mark') {
         // Marks only: same overlay as niqqud-only, but top-nt hides tropes
         css += `${pre}.c.tp-${t.k}.ob{display:inline-grid;justify-items:start;white-space:nowrap;background:transparent}`;
@@ -696,7 +987,12 @@ function applyStyles() {
     pane.style.setProperty('--fs', p.fs + 'pt'); pane.style.setProperty('--ls', p.ls + 'px'); pane.style.setProperty('--hf', p.font);
   });
   const p = P();
-  [...$('nk-dots').children].forEach((d, i) => { const k = p.nk.keys[NIKUD[i].k]; d.style.background = k.color; d.classList.toggle('off', !k.on || !p.nk.on); });
+  [...$('nk-dots').children].forEach((d, i) => {
+    const n = NIKUD_BASE[i]; if (!n) return;
+    const k = p.nk.keys[n.k];
+    d.style.background = k ? k.color : '#ccc';
+    d.classList.toggle('off', !k || !k.on || !p.nk.on);
+  });
   $('sh-dot').style.background = p.sh.color; $('sh-dot').classList.toggle('off', !p.sh.on);
   const tpDots = $('tp-dots');
   if (tpDots) [...tpDots.children].forEach((d, i) => {
@@ -1502,12 +1798,16 @@ function render() {
   // Each unit is a thunk, so HTML for off-screen verses is not even generated until its turn.
   const jobs = ids.map(id => {
     const stam = profiles[id].content === 'stam';
+    // Honour this column's advanced-niqqud setting while generating its HTML
+    useAdvancedNikud = !!(profiles[id].nk && profiles[id].nk.advanced);
     const pieces = [];
     src.forEach((c, ci) => {
       if (c.label) pieces.push(() => `<div class="ch">${esc(String(c.label))}</div>`);
       const verseNums = c.verseNums || null;
       const isGemara = corpus === 'gemara';
       (c.verses || []).forEach((txt, i) => pieces.push(() => {
+        // Re-assert in case another column's job ran in between (chunked)
+        useAdvancedNikud = !!(profiles[id].nk && profiles[id].nk.advanced);
         const vnRaw = verseNums ? verseNums[i] : (i + 1);
         const vn = (corpus === 'tanach' || corpus === 'mishna') ? toGimatria(vnRaw) : vnRaw;
         const body = stam ? cleanVerse(txt).replace(STAM_RE, '') : cleanVerse(txt);
@@ -1710,22 +2010,35 @@ function markPdfPageBreaks() {
 }
 
 
+function makeNikudRow(n, p) {
+  // Ensure key exists (older profiles / first run)
+  if (!p.nk.keys[n.k]) p.nk.keys[n.k] = { on: true, color: n.c };
+  const k = p.nk.keys[n.k];
+  const row = document.createElement('div');
+  row.className = 'nk-row';
+  row.innerHTML = `<button class="swatch" style="background:${k.color}" aria-label="${n.n} colour"></button><span class="nk-char">ב${n.m}</span><span class="nk-label">${n.n}</span>` +
+    `<label class="switch sm"><input type="checkbox" ${k.on ? 'checked' : ''}><span class="track"></span></label>`;
+  const col = row.children[0], sw = row.querySelector('input');
+  col.onclick = () => openPicker({ title: n.n + ' colour', preview: 'ב' + n.m, color: k.color, def: n.c, all: true,
+    onApply: c => { k.color = c; col.style.background = c; applyStyles(); } });
+  sw.onchange = () => { k.on = sw.checked; applyStyles(); };
+  row._sw = sw;
+  return row;
+}
 function buildNikud() {
   const p = P();
-  $('nk-dots').innerHTML = NIKUD.map(() => '<div class="dot"></div>').join('');
-  $('nk-rows').innerHTML = '';
-  NIKUD.forEach(n => {
-    const k = p.nk.keys[n.k], row = document.createElement('div');
-    row.className = 'nk-row';
-    row.innerHTML = `<button class="swatch" style="background:${k.color}" aria-label="${n.n} colour"></button><span class="nk-char">ב${n.m}</span><span class="nk-label">${n.n}</span>` +
-      `<label class="switch sm"><input type="checkbox" ${k.on ? 'checked' : ''}><span class="track"></span></label>`;
-    const col = row.children[0], sw = row.querySelector('input');
-    col.onclick = () => openPicker({ title: n.n + ' colour', preview: 'ב' + n.m, color: k.color, def: n.c, all: true,
-      onApply: c => { k.color = c; col.style.background = c; applyStyles(); } });
-    sw.onchange = () => { k.on = sw.checked; applyStyles(); };
-    row._sw = sw;
-    $('nk-rows').appendChild(row);
-  });
+  // Dots only for the base set (keeps the strip compact)
+  $('nk-dots').innerHTML = NIKUD_BASE.map(() => '<div class="dot"></div>').join('');
+  const baseBox = $('nk-rows');
+  const advBox = $('nk-adv-rows');
+  if (baseBox) {
+    baseBox.innerHTML = '';
+    NIKUD_BASE.forEach(n => baseBox.appendChild(makeNikudRow(n, p)));
+  }
+  if (advBox) {
+    advBox.innerHTML = '';
+    NIKUD_ADV.forEach(n => advBox.appendChild(makeNikudRow(n, p)));
+  }
 }
 function buildTropes() {
   const p = P();
@@ -1749,12 +2062,20 @@ function buildTropes() {
 }
 function loadControls() {
   const p = P();
-  $('nk-on').checked = p.nk.on; setSeg('nk-mode', p.nk.mode); $('nk-op').value = p.nk.op; $('nk-op-val').textContent = p.nk.op + '%';
+  $('nk-on').checked = p.nk.on; setSeg('nk-mode', p.nk.mode);
+  { const op = nkOp(p); $('nk-op').value = op; $('nk-op-val').textContent = op + '%'; }
+  if ($('nk-advanced')) {
+    $('nk-advanced').checked = !!p.nk.advanced;
+    const rows = $('nk-adv-rows');
+    const foot = rows && rows.closest('.nk-adv-footer');
+    if (rows) rows.hidden = !p.nk.advanced;
+    if (foot) foot.classList.toggle('is-on', !!p.nk.advanced);
+  }
   buildNikud();
   $('sh-on').checked = p.sh.on; $('sh-root').value = p.sh.root; setSeg('sh-mode', p.sh.mode); setSwatch('sh-color', p.sh.color);
-  $('sh-op').value = p.sh.op; $('sh-op-val').textContent = p.sh.op + '%';
+  { const op = shOp(p); $('sh-op').value = op; $('sh-op-val').textContent = op + '%'; }
   $('tp-on').checked = p.tp.on; setSeg('tp-mode', p.tp.mode);
-  $('tp-op').value = p.tp.op; $('tp-op-val').textContent = p.tp.op + '%';
+  { const op = tpOp(p); $('tp-op').value = op; $('tp-op-val').textContent = op + '%'; }
   buildTropes();
   p.ls = Math.round(+p.ls) || 0;
   $('font-picker').value = p.font; $('ls').value = p.ls; $('ls-val').textContent = p.ls + 'px'; $('fs').value = p.fs;
@@ -1768,7 +2089,14 @@ function setHighlight(key, on) {
   $(HL_SW[key]).checked = on;
   applyRoots(); applyStyles(); updateCount();
 }
-function setAll(on) { NIKUD.forEach(n => P().nk.keys[n.k].on = on); [...$('nk-rows').children].forEach(r => r._sw.checked = on); applyStyles(); }
+function setAll(on) {
+  NIKUD.forEach(n => { if (P().nk.keys[n.k]) P().nk.keys[n.k].on = on; });
+  const boxes = [$('nk-rows'), $('nk-adv-rows')];
+  boxes.forEach(box => {
+    if (box) [...box.children].forEach(r => { if (r._sw) r._sw.checked = on; });
+  });
+  applyStyles();
+}
 function setAllTropes(on) {
   TROPES.forEach(t => { if (P().tp.keys[t.k]) P().tp.keys[t.k].on = on; });
   const rows = $('tp-rows');
@@ -2421,12 +2749,39 @@ function parseCSV(text) {
     rootRows.push({ root, occ: row[2], ex: (row[53] || '').trim() });
   });
 }
+
+/** Parse Root-Binyan Examples CSV → form→root index for exact shoresh hits. */
+function parseExamplesCSV(text) {
+  formRootIndex.clear();
+  rootFormIndex.clear();
+  let n = 0;
+  text.replace(/^\uFEFF/, '').split('\n').slice(1).forEach(line => {
+    if (!line.trim()) return;
+    const row = []; let q = false, cur = '';
+    for (const ch of line) { if (ch === '"') q = !q; else if (ch === ',' && !q) { row.push(cur); cur = ''; } else cur += ch; }
+    row.push(cur);
+    // columns: root,binyan,osis_id,book,chapter,verse,word_id,word_text,...
+    const root = normRoot((row[0] || '').trim());
+    const wordText = (row[7] || '').trim();
+    if (!root || !wordText) return;
+    const cons = formToCons(wordText);
+    if (cons.length >= 2) { indexForm(cons, root); n++; }
+  });
+  _rootCache.clear();
+  return formRootIndex.size; // unique forms, not row count
+}
+
 async function scanRoots(dir) {
   const csvs = []; for await (const f of walkFiles(dir)) if (/\.csv$/i.test(f.name)) csvs.push(f);
   const pick = csvs.find(f => /master/i.test(f.name)) || csvs[0];
   if (!pick) throw new Error('No .csv file found in that folder.');
   parseCSV(await (await pick.getFile()).text());
-  setStatus('status-csv', `${pick.name} (${rootRows.length} roots)`);
+  const ex = csvs.find(f => /example/i.test(f.name) || /binyan/i.test(f.name));
+  let indexed = 0;
+  if (ex) indexed = parseExamplesCSV(await (await ex.getFile()).text());
+  const parts = [`${rootRows.length} roots`];
+  if (indexed) parts.push(`${indexed} indexed forms`);
+  setStatus('status-csv', `${pick.name} (${parts.join(' · ')})`);
   updateCount();
 }
 async function scanFonts(dir) {
@@ -2528,19 +2883,40 @@ async function tryAutoFonts() {
 }
 
 async function tryAutoRoots() {
-  const candidates = [
+  const masterCandidates = [
     './rootcvs/Tanakh Root Master CSV.csv',
     './rootcvs/Tanakh%20Root%20Master%20CSV.csv'
   ];
-  for (const url of candidates) {
+  const exampleCandidates = [
+    './rootcvs/Root-Binyan Examples CSV.csv',
+    './rootcvs/Root-Binyan%20Examples%20CSV.csv'
+  ];
+  let loadedMaster = false;
+  for (const url of masterCandidates) {
     try {
       const res = await fetch(url);
       if (!res.ok) continue;
       parseCSV(await res.text());
-      setStatus('status-csv', `Root CSV (${rootRows.length} roots)`, true);
-      updateCount();
-      return true;
+      loadedMaster = true;
+      break;
     } catch (e) { /* try next */ }
+  }
+  let indexed = 0;
+  for (const url of exampleCandidates) {
+    try {
+      const res = await fetch(url);
+      if (!res.ok) continue;
+      indexed = parseExamplesCSV(await res.text());
+      break;
+    } catch (e) { /* try next */ }
+  }
+  if (loadedMaster || indexed) {
+    const parts = [];
+    if (loadedMaster) parts.push(`${rootRows.length} roots`);
+    if (indexed) parts.push(`${indexed} indexed forms`);
+    setStatus('status-csv', `Root data (${parts.join(' · ')})`, true);
+    updateCount();
+    return true;
   }
   return false;
 }
@@ -2583,15 +2959,76 @@ function init() {
   $('nk-on').onchange = e => setHighlight('nk', e.target.checked);
   $('sh-on').onchange = e => setHighlight('sh', e.target.checked);
   $('tp-on').onchange = e => setHighlight('tp', e.target.checked);
+  if ($('nk-advanced')) {
+    const syncAdvUI = (on) => {
+      const rows = $('nk-adv-rows');
+      const foot = rows && rows.closest('.nk-adv-footer');
+      if (rows) rows.hidden = !on;
+      if (foot) foot.classList.toggle('is-on', !!on);
+    };
+    $('nk-advanced').onchange = e => {
+      const p = P();
+      p.nk.advanced = e.target.checked;
+      // Ensure all advanced keys exist (older profiles / first run)
+      NIKUD_ADV.forEach(n => {
+        if (!p.nk.keys[n.k]) p.nk.keys[n.k] = { on: true, color: n.c };
+      });
+      useAdvancedNikud = p.nk.advanced;
+      syncAdvUI(p.nk.advanced);
+      _wordCache.clear();
+      _textHtmlCache.clear();
+      buildNikud();
+      render();
+      applyStyles();
+    };
+    // Initial state
+    syncAdvUI(!!P().nk.advanced);
+  }
   $('nk-all-on').onclick = () => setAll(true); $('nk-all-off').onclick = () => setAll(false);
   if ($('tp-all-on')) $('tp-all-on').onclick = () => setAllTropes(true);
   if ($('tp-all-off')) $('tp-all-off').onclick = () => setAllTropes(false);
-  seg('nk-mode', m => { P().nk.mode = m; applyStyles(); });
-  seg('sh-mode', m => { P().sh.mode = m; applyStyles(); });
-  seg('tp-mode', m => { P().tp.mode = m; applyStyles(); });
-  $('nk-op').oninput = e => { P().nk.op = +e.target.value; $('nk-op-val').textContent = e.target.value + '%'; applyStylesSoon(); };
-  $('sh-op').oninput = e => { P().sh.op = +e.target.value; $('sh-op-val').textContent = e.target.value + '%'; applyStylesSoon(); };
-  $('tp-op').oninput = e => { P().tp.op = +e.target.value; $('tp-op-val').textContent = e.target.value + '%'; applyStylesSoon(); };
+  seg('nk-mode', m => {
+    P().nk.mode = m;
+    // Slider shows the opacity for the active mode (block vs niqqud-only are independent)
+    const op = nkOp(P());
+    $('nk-op').value = op;
+    $('nk-op-val').textContent = op + '%';
+    applyStyles();
+  });
+  seg('sh-mode', m => {
+    P().sh.mode = m;
+    const op = shOp(P());
+    $('sh-op').value = op;
+    $('sh-op-val').textContent = op + '%';
+    applyStyles();
+  });
+  seg('tp-mode', m => {
+    P().tp.mode = m;
+    const op = tpOp(P());
+    $('tp-op').value = op;
+    $('tp-op-val').textContent = op + '%';
+    applyStyles();
+  });
+  $('nk-op').oninput = e => {
+    const v = +e.target.value;
+    if (P().nk.mode === 'char') P().nk.charOp = v; else P().nk.op = v;
+    $('nk-op-val').textContent = v + '%';
+    applyStylesSoon();
+  };
+  $('sh-op').oninput = e => {
+    const v = +e.target.value;
+    if (P().sh.mode === 'char') P().sh.charOp = v;
+    else if (P().sh.mode === 'bar') P().sh.barOp = v;
+    else P().sh.op = v;
+    $('sh-op-val').textContent = v + '%';
+    applyStylesSoon();
+  };
+  $('tp-op').oninput = e => {
+    const v = +e.target.value;
+    if (P().tp.mode === 'mark') P().tp.markOp = v; else P().tp.op = v;
+    $('tp-op-val').textContent = v + '%';
+    applyStylesSoon();
+  };
 
   // Shoresh search: typing a root turns the highlight on and marks it in the active column only.
   // Each tikkun column has its own independent root / colour / mode.
