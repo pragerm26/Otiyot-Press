@@ -1568,8 +1568,44 @@ function applyRoots() {
   const ids = tikkun ? ['R', 'L'] : ['R'];
   ids.forEach(applyRoot);
 }
+/** Closest listed shoreshim for an unknown query (edit-distance ≤ 1, or shared 2-letter stem). */
+function nearRoots(t, limit = 3) {
+  if (!rootRows.length || t.length < 2) return [];
+  const scored = [];
+  for (const r of rootRows) {
+    if (r.root === t) continue;
+    let s = 99;
+    // 1-char substitution / insertion / deletion
+    if (Math.abs(r.root.length - t.length) <= 1) {
+      let i = 0, j = 0, diff = 0;
+      while (i < r.root.length && j < t.length) {
+        if (r.root[i] === t[j]) { i++; j++; }
+        else { diff++; if (r.root.length > t.length) i++; else if (r.root.length < t.length) j++; else { i++; j++; } if (diff > 1) break; }
+      }
+      diff += (r.root.length - i) + (t.length - j);
+      if (diff <= 1) s = Math.min(s, diff);
+    }
+    // shared first 2 letters
+    if (r.root.slice(0, 2) === t.slice(0, 2)) s = Math.min(s, 2);
+    if (s < 99) scored.push({ r, s, occ: +r.occ || 0 });
+  }
+  scored.sort((a, b) => a.s - b.s || b.occ - a.occ);
+  const seen = new Set();
+  const out = [];
+  for (const x of scored) {
+    const label = x.r.display || x.r.root;
+    if (seen.has(label)) continue;
+    seen.add(label);
+    out.push(label);
+    if (out.length >= limit) break;
+  }
+  return out;
+}
+
 function updateCount() {
-  const t = normRoot(stripMarks(P().sh.root).replace(/\s/g, '')), el = $('sh-count');
+  const raw = stripMarks(P().sh.root).replace(/\s/g, '');
+  const t = normRoot(raw);
+  const el = $('sh-count');
   // Always re-apply so clearing the root (or typing <2 letters) removes old highlights.
   // Both columns are refreshed so each keeps its own independent root highlight in tikkun mode.
   applyRoots();
@@ -1581,9 +1617,18 @@ function updateCount() {
   // Count matches in the active column only (the one whose settings are showing)
   const pane = $('pane-' + side);
   const n = pane ? pane.querySelectorAll('.w.rm').length : 0;
+  const shown = raw || t; // prefer what the user typed
+
   if (rootRows.length && !rootOcc.has(t)) {
     el.classList.add('note-warn');
-    el.textContent = `No shoresh “${t}” in the Tanakh root list` + (n ? ` · ${n} possible match${n === 1 ? '' : 'es'} in this view` : '');
+    const near = nearRoots(t);
+    const nearTxt = near.length ? ` · did you mean ${near.join(', ')}?` : '';
+    if (n) {
+      // Clear contradiction: "no shoresh" + highlights
+      el.textContent = `“${shown}” is not in the Tanakh root list · ${n} possible match${n === 1 ? '' : 'es'} (heuristic)${nearTxt}`;
+    } else {
+      el.textContent = `“${shown}” is not in the Tanakh root list${nearTxt}`;
+    }
     return;
   }
   el.textContent = `${n} word${n === 1 ? '' : 's'} in this view` + (rootOcc.has(t) ? ` · ${rootOcc.get(t)} in Tanakh (CSV)` : '');
@@ -1606,12 +1651,19 @@ function renderShSuggest(q) {
     inp.setAttribute('aria-expanded', 'true');
     return;
   }
-  // Prefer prefix matches, then contains; exact first
+  // Prefer prefix matches, then contains; exact first. Fuzzy near-matches last.
   const scored = [];
   for (const r of rootRows) {
     if (r.root === t) scored.push({ r, s: 0 });
     else if (r.root.startsWith(t)) scored.push({ r, s: 1 });
     else if (r.root.includes(t)) scored.push({ r, s: 2 });
+  }
+  // If nothing exact-ish, add near roots (e.g. דון → דין)
+  if (!scored.length) {
+    for (const label of nearRoots(t, 8)) {
+      const r = rootRows.find(x => (x.display || x.root) === label || x.root === normRoot(label));
+      if (r) scored.push({ r, s: 3 });
+    }
   }
   scored.sort((a, b) => a.s - b.s || (+b.r.occ || 0) - (+a.r.occ || 0));
   const top = scored.slice(0, 12);
@@ -1621,12 +1673,13 @@ function renderShSuggest(q) {
     inp.setAttribute('aria-expanded', 'true');
     return;
   }
-  box.innerHTML = top.map(({ r }, i) =>
-    `<div class="sh-suggest-item${i === 0 ? ' active' : ''}" role="option" data-r="${esc(r.root)}" tabindex="-1">` +
-    `<span class="root">${esc(r.root)}</span>` +
+  box.innerHTML = top.map(({ r }, i) => {
+    const label = r.display || r.root;
+    return `<div class="sh-suggest-item${i === 0 ? ' active' : ''}" role="option" data-r="${esc(label)}" tabindex="-1">` +
+    `<span class="root">${esc(label)}</span>` +
     `<span class="occ">${esc(String(r.occ || ''))}× in Tanakh</span>` +
-    `</div>`
-  ).join('');
+    `</div>`;
+  }).join('');
   box.hidden = false;
   inp.setAttribute('aria-expanded', 'true');
 }
@@ -1913,18 +1966,9 @@ function render() {
   const setPreviewUI = (isPreview) => {
     v.classList.toggle('is-preview', isPreview);
     if (loadBar) loadBar.hidden = !isPreview;
-    // Banner at the top of the first pane
+    // Notice + print action live in the floating #preview-load-bar (no in-flow banner)
     const firstPane = $('pane-' + ids[0]);
-    if (firstPane) {
-      const old = firstPane.querySelector('.preview-banner');
-      if (old) old.remove();
-      if (isPreview) {
-        const b = document.createElement('div');
-        b.className = 'preview-banner';
-        b.innerHTML = `<span class="preview-badge">Preview</span> Only the first portion is shown on screen (word/root search cover this slice). <strong>Print Full Text</strong> opens the complete text in the print dialog.`;
-        firstPane.insertBefore(b, firstPane.firstChild);
-      }
-    }
+    if (firstPane) { const old = firstPane.querySelector('.preview-banner'); if (old) old.remove(); }
   };
   const finish = () => {
     if (done || token !== _renderToken) return;
@@ -2744,9 +2788,10 @@ function parseCSV(text) {
     const row = []; let q = false, cur = '';
     for (const ch of line) { if (ch === '"') q = !q; else if (ch === ',' && !q) { row.push(cur); cur = ''; } else cur += ch; }
     row.push(cur);
-    const root = normRoot((row[0] || '').trim()); if (!root) return;
+    const display = (row[0] || '').trim();
+    const root = normRoot(display); if (!root) return;
     rootOcc.set(root, row[2]);
-    rootRows.push({ root, occ: row[2], ex: (row[53] || '').trim() });
+    rootRows.push({ root, display, occ: row[2], ex: (row[53] || '').trim() });
   });
 }
 
