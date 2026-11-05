@@ -869,7 +869,7 @@ let libraryMode = null;
 /** Map of book title → FileSystemFileHandle for Rashi Hebrew (folder-picker / offline mode) */
 const rashiHandles = new Map();
 let pasukRange = null; // { from:{ch,v}, to:{ch,v} } or null
-let showTranslation = false, showRashi = false, showRashiEn = false, showTosafot = false, showPdfBreaks = true, showVilna = false;
+let showTranslation = false, showRashi = false, showRashiEn = false, showTosafot = false, showPdfBreaks = true, showVilna = false; // Vilna layout option removed (feature not ready)
 /** When true, each pasuk/mishnah is its own block (line break after). When false, verses flow continuously. */
 let lineBreakPostPasuk = false;
 let siddurSel = new Set();
@@ -1349,7 +1349,6 @@ function setToolAvail(el, on, why = '') {
         if (input.id === 'opt-rashi') { showRashi = false; showRashiEn = false; }
         if (input.id === 'opt-rashi-en') showRashiEn = false;
         if (input.id === 'opt-tosafot') showTosafot = false;
-        if (input.id === 'opt-vilna') showVilna = false;
         if (input.id === 'opt-line-break') lineBreakPostPasuk = false;
       }
     }
@@ -1409,11 +1408,10 @@ function updateTanachToolsVisibility() {
 
   // Lock controls that don't apply to the current tab (grayed out + disabled)
   setToolAvail($('range-tools'), isText, 'Range is for Tanach / Mishna / Gemara');
-  setToolAvail($('lab-translation') || ($('opt-translation') && $('opt-translation').closest('label')), isText && !showVilna, isSiddur ? 'Not on Siddur' : 'Not available here');
-  setToolAvail($('lab-rashi'), hasRashi && !showVilna, isMishna ? 'No Rashi on Mishnah' : (noRashiBooks.test(bookTitle) ? 'No Rashi for this masechta' : 'Not available here'));
-  setToolAvail($('lab-rashi-en'), isTanach && !showVilna, 'Rashi EN is only for Tanach');
-  setToolAvail($('lab-tosafot'), hasTosafot && !showVilna, noRashiBooks.test(bookTitle) ? 'No Tosafot for this masechta' : 'Tosafot is only for Gemara');
-  setToolAvail($('lab-vilna'), isGemara, 'Vilna layout is only for Gemara');
+  setToolAvail($('lab-translation') || ($('opt-translation') && $('opt-translation').closest('label')), isText, isSiddur ? 'Not on Siddur' : 'Not available here');
+  setToolAvail($('lab-rashi'), hasRashi, isMishna ? 'No Rashi on Mishnah' : (noRashiBooks.test(bookTitle) ? 'No Rashi for this masechta' : 'Not available here'));
+  setToolAvail($('lab-rashi-en'), isTanach, 'Rashi EN is only for Tanach');
+  setToolAvail($('lab-tosafot'), hasTosafot, noRashiBooks.test(bookTitle) ? 'No Tosafot for this masechta' : 'Tosafot is only for Gemara');
   setToolAvail($('lab-pdf-breaks') || ($('opt-pdf-breaks') && $('opt-pdf-breaks').closest('label')), true);
   setToolAvail($('lab-line-break') || ($('opt-line-break') && $('opt-line-break').closest('label')), isText || isSiddur, 'Not available on this tab');
 
@@ -1798,11 +1796,7 @@ function render() {
   if (!v) return;
   const token = ++_renderToken;   // cancels any chunked render still streaming in
   _pendingFlush = null;
-  // Vilna three-column layout for Gemara (async)
-  if (corpus === 'gemara' && showVilna && chapters.length) {
-    renderVilnaGemara();
-    return;
-  }
+  // Vilna layout option removed for now (feature not ready)
   v.classList.remove('vilna-mode');
   const ids = tikkun ? ['R', 'L'] : ['R'];
   const src = getSource();
@@ -2670,7 +2664,7 @@ const openBook = guard(async () => {
   tosafotChapters = null;
   translationChapters = null;
 
-  // Gemara + Vilna: daf list + text from local JSON only (no Sefaria)
+  // Vilna layout path kept but unreachable (showVilna is forced off; feature not ready)
   if (corpus === 'gemara' && showVilna) {
     toast('Loading local daf list…');
     try {
@@ -3191,18 +3185,7 @@ function init() {
       render();
     }
   });
-  // Re-fit Vilna dafim when the window is resized
-  let _vilnaResizeTimer = null;
-  window.addEventListener('resize', () => {
-    if (!showVilna || corpus !== 'gemara') return;
-    clearTimeout(_vilnaResizeTimer);
-    _vilnaResizeTimer = setTimeout(() => {
-      const v = $('text-viewer');
-      if (v && typeof VilnaGemara !== 'undefined' && typeof VilnaGemara.fitToWidth === 'function') {
-        v.querySelectorAll('.vilna-daf').forEach(VilnaGemara.fitToWidth);
-      }
-    }, 120);
-  });
+  // Vilna resize handler removed (feature not ready)
   $('btn-print').onclick = () => window.print();
   // Load Full Preview = same as Print / Ctrl+P (no separate "load into preview" step)
   const fullPrev = $('btn-full-preview');
@@ -3331,15 +3314,7 @@ function init() {
     showTosafot = e.target.checked;
     await applyTanachOptions();
   });
-  if ($('opt-vilna')) $('opt-vilna').onchange = e => {
-    showVilna = e.target.checked;
-    updateTanachToolsVisibility();
-    // Chapters may have been built as placeholders (verses: ['']) for Vilna;
-    // re-open the book so non-Vilna gets real text (or Vilna gets labels).
-    const titleSel = $('select-title');
-    if (titleSel && titleSel.value !== '') openBook();
-    else render();
-  };
+  // Vilna layout option removed from UI (feature not ready)
   if ($('opt-pdf-breaks')) $('opt-pdf-breaks').onchange = e => {
     showPdfBreaks = e.target.checked;
     markPdfPageBreaks();
@@ -3366,7 +3341,6 @@ function init() {
   $('siddur-none').onclick = () => { siddurSel.clear(); buildSiddurPicker(); render(); };
   document.addEventListener('click', e => { const d = $('siddur-picker'); if (d && d.open && !d.contains(e.target)) d.open = false; });
   // Sync checkbox UI to JS defaults
-  if ($('opt-vilna')) $('opt-vilna').checked = showVilna;
   if ($('opt-pdf-breaks')) $('opt-pdf-breaks').checked = showPdfBreaks;
   if ($('opt-line-break')) $('opt-line-break').checked = lineBreakPostPasuk;
   if ($('opt-translation')) $('opt-translation').checked = showTranslation;
