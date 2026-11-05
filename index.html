@@ -1758,6 +1758,7 @@ select:disabled, .btn:disabled { opacity: .5; cursor: not-allowed; }
         <label class="chk" id="lab-rashi"><input type="checkbox" id="opt-rashi"> Rashi</label>
         <label class="chk" id="lab-rashi-en" title="English Rashi"><input type="checkbox" id="opt-rashi-en"> Rashi EN</label>
         <label class="chk" id="lab-tosafot" title="Tosafot (Gemara)"><input type="checkbox" id="opt-tosafot"> Tosafot</label>
+        <label class="chk" id="lab-vilna" title="Traditional three-column Vilna layout via Sefaria"><input type="checkbox" id="opt-vilna"> Vilna layout</label>
         <label class="chk" id="lab-pdf-breaks" title="Show approximate PDF page ends in the preview (can slow large views)"><input type="checkbox" id="opt-pdf-breaks"> PDF page ends</label>
         <label class="chk" id="lab-edit" title="Make the page editable (edits are lost whenever the view re-renders)"><input type="checkbox" id="opt-edit"> Edit text</label>
         <label class="chk" id="lab-line-break" title="When on, each unit starts on a new line. When off, text flows continuously."><input type="checkbox" id="opt-line-break"> Line break after pasuk</label>
@@ -1831,6 +1832,7 @@ select:disabled, .btn:disabled { opacity: .5; cursor: not-allowed; }
 </div>
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script src="vilna.js"></script>
 <script src="app.js"></script>
 </body>
 </html>
